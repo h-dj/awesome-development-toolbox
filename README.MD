@@ -9,10 +9,9 @@
 Copyright (c) 2020 huangjiajian. The project is licensed under the [MIT License](./LICENSE).
 
 ### 开发环境配置
-
-- Java
-  - JDK
-  - 多版本 JDK 管理工具
+- Java [点击查看详情](./doc/java_dev_env_conf.md)
+  - JDK安装
+  - 多版本 JDK 管理工具 jabba 
   - Maven
     - Maven 仓库配置
 - Node
@@ -26,13 +25,14 @@ Copyright (c) 2020 huangjiajian. The project is licensed under the [MIT License]
 
 ### 开发相关工具
 
-- [IntelliJ IDEA](https://www.jetbrains.com/idea/): 一款优秀的 Java 开发 IDE
-  - 好用的插件
-    - MyBatisX : 方便 Mapper 接口与 Xml 文件之间的导航。
-    - Maven Helper: Maven 依赖查看，方便解决依赖冲突
-    - Alibaba Java Coding Guidelines: 阿里的 Java 开发规范
-  - IDE 设置
-- [Visual Studio Code](https://code.visualstudio.com/): 开源的 IDE
+- IDE 工具
+    - [IntelliJ IDEA](https://www.jetbrains.com/idea/): 一款优秀的 Java 开发 IDE
+      - 好用的插件
+        - MyBatisX : 方便 Mapper 接口与 Xml 文件之间的导航。
+        - Maven Helper: Maven 依赖查看，方便解决依赖冲突
+        - Alibaba Java Coding Guidelines: 阿里的 Java 开发规范
+      - IDE 设置
+    - [Visual Studio Code](https://code.visualstudio.com/): 开源的 IDE
 - [Motrix 下载工具](https://github.com/agalwood/Motrix): Motrix 是一款全能的下载工具，支持下载 HTTP、FTP、BT、磁力链等资源。
 - [ToDesk 远程桌面](https://www.todesk.com/): 个人免费稳定的远程桌面工具，可作为 TeamViewer 的代替方案
 - 科学上网工具
@@ -77,3 +77,7 @@ Copyright (c) 2020 huangjiajian. The project is licensed under the [MIT License]
 - Chrome 插件
 
 ### 资讯 & 博客
+
+
+### 其它 awesome toolbox
+- [awesome-java](https://github.com/akullpp/awesome-java)
