@@ -11,15 +11,16 @@ Copyright (c) 2020 huangjiajian. The project is licensed under the [MIT License]
 ### 开发环境配置
 - Java [点击查看详情](./doc/java_dev_env_conf.md)
   - JDK安装
-  - 多版本 JDK 管理工具 jabba 
+  - 多版本 JDK 管理工具
   - Maven
-    - Maven 仓库配置
-- Node
+- Node [详情](./doc/node_conf.md)
   - 安装
   - 多版本管理工具: nvm
-- Python
+  - npm 源配置
+- Python [详情](./doc/python_conf.md)
   - 安装
   - 多版本管理工具: pyenv
+  - pip 源配置
 
 ### 代码片段
 
