@@ -1,4 +1,4 @@
-### My Personal Develop Box For Working Efficiency
+### My personal development toolbox
 
 我的开发工具箱: 记录代码片段、 开发工具、 资讯阅读等方面
 
@@ -32,6 +32,7 @@ Copyright (c) 2020 huangjiajian. The project is licensed under the [MIT License]
         - MyBatisX : 方便 Mapper 接口与 Xml 文件之间的导航。
         - Maven Helper: Maven 依赖查看，方便解决依赖冲突
         - Alibaba Java Coding Guidelines: 阿里的 Java 开发规范
+        - Lombok
       - IDE 设置
     - [Visual Studio Code](https://code.visualstudio.com/): 开源的 IDE
 - [Motrix 下载工具](https://github.com/agalwood/Motrix): Motrix 是一款全能的下载工具，支持下载 HTTP、FTP、BT、磁力链等资源。
@@ -72,7 +73,6 @@ Copyright (c) 2020 huangjiajian. The project is licensed under the [MIT License]
 - 内网穿透工具
   - [cpolar](https://www.cpolar.com/): 简单免费的内网穿透工具
 - 数据库字典
-
   - [DBCHM](https://gitee.com/lztkdr/DBCHM): 只支持 Window，支持导出 html，chm,pdf
 
 - Chrome 插件
