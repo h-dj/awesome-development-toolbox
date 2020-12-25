@@ -106,7 +106,7 @@ Copyright (c) 2020 huangjiajian. The project is licensed under the [MIT License]
 
   3. 直接在作品或者发布网站上写上协议内容
 
-![image-20201213194507756](./images/image-20201213194507756.png)
+    ![image-20201213194507756](./images/image-20201213194507756.png)
 
 
 ### 其它 awesome toolbox

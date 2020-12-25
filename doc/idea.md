@@ -8,7 +8,6 @@
 - Key Promoter X快捷键学习工具
 - ReadHub 每天高效浏览行业资讯
 - CodeGlance 代码地图插件
-- GsonFormat  可以把JSON格式的字符串转化为实体类
 
 
 

@@ -162,7 +162,7 @@ sudo systemctl restart docker
   docker rm -f $(docker image ls -a -q)
   
   //删除指定名称
-  docker rm -f $(docker ps -a |  grep "zhy*"  | awk '{print $1}')
+  docker rm -f $(docker ps -a | grep "zhy*" | awk '{print $1}')
   ```
 
 - docker  run 命令
@@ -179,7 +179,7 @@ sudo systemctl restart docker
   #启动mysql
   docker run --name mysql-serve \
   -e MYSQL_ROOT_PASSWORD=123456 \
-  -e TZ=Asia/Shanghai -d -i -p 3306:3306 \
+  -e TZ=Asia/Shanghai -d -i -p 3306:3306 \
   -v $PWD/mysql/data:/var/lib/mysql \
   --restart=always  mysql
   ```

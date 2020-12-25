@@ -1,0 +1,14 @@
+/*
+使用a 标签，实现tip 功能
+<a href="javascript:void(0);" title="测试" class="description">测试</a>
+*/
+
+.description{
+    overflow : hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    display: -webkit-box;
+    -webkit-line-clamp:4; /* 行数*/
+    -webkit-box-orient: vertical;
+    list-style: none;
+}
