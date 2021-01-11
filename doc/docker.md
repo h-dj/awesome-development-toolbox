@@ -208,6 +208,14 @@ sudo curl -L https://github.com/docker/compose/releases/download/1.25.5/docker-c
 sudo chmod +x /usr/local/bin/docker-compose
 #验证安装
 docker-compose --version
+
+
+# pip 安装
+sudo apt-get install -y python3 python3-pip
+sudo pip3 install docker-compose
+# 如果提示找不到ffi.h文件，先安装以下依赖
+sudo apt-get install libffi-dev 
+
 ```
 
 #### 4.2 docker-compose.yaml 文件了解

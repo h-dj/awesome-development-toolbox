@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3"
 services:
   mysql:
     container_name: mysql-serve
@@ -10,7 +10,7 @@ services:
       - MYSQL_ROOT_PASSWORD=123456
       - MYSQL_DATABASE=test
     volumes:
-      - ./mysql/data:/var/lib/mysql
+      - ./volumes/mysql/data:/var/lib/mysql
     ports:
       - 3306:3306
   oracle:
@@ -27,7 +27,7 @@ services:
     restart: always
     privileged: true
     volumes:
-      - ./redis/data:/data
+      - ./volumes/redis/data:/data
     ports:
       - 6379:6379
   mq:
@@ -57,11 +57,11 @@ services:
     restart: always
     privileged: true
     volumes:
-      #- ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
-      #- ./nginx/certs/full_chain.pem:/etc/nginx/certs/full_chain.pem
-      #- ./nginx/certs/private.key:/etc/nginx/certs/private.key
-      #- ./nginx/logs:/var/log/nginx
-      - ./nginx/www:/home/www/website
+      #- ./volumes/nginx/conf/nginx.conf:/etc/nginx/nginx.conf
+      #- ./volumes/nginx/certs/full_chain.pem:/etc/nginx/certs/full_chain.pem
+      #- ./volumes/nginx/certs/private.key:/etc/nginx/certs/private.key
+      #- ./volumes/nginx/logs:/var/log/nginx
+      - ./volumes/nginx/www:/home/www/website
     ports:
       - 80:80
       - 443:443

@@ -1,6 +1,6 @@
 ### My personal development toolbox
 
-我的开发工具箱: 记录代码片段，开发工具，常用脚本，资讯阅读，小知识点等方面
+我的开发工具箱: 记录项目搭建配置，代码片段，开发工具，常用脚本，资讯阅读，小知识点等方面
 
 持续更新中...
 
@@ -29,6 +29,8 @@ Copyright (c) 2020 huangjiajian. The project is licensed under the [MIT License]
       - rabbitmq
       - es
       - nginx
+
+
 
 ### 二、开发相关工具
 
