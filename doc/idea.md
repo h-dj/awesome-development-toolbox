@@ -49,3 +49,13 @@
 ![image-20201206220523027](../images/idea/image-20201206220523027.png)
 
 记得保存
+
+
+#### 4. 重用运行配置
+
+- 添加tomcat 配置，并保存
+
+  ![image-20210112113453936](..\images\idea\image-20210112113453936.png)
+
+- 再项目路径 .idea/runConfigurations中找到运行的配置，保存起来
+- 再新的项目中，重新包这些运行配置放到  .idea/runConfigurations中，重启IDEA，就可以重用配置

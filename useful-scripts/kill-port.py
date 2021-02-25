@@ -1,19 +1,27 @@
+#!/usr/bin/python
 # -*- coding: UTF-8 -*-
 import os
 
 
-def is_port_used(port=8009, kill=False):
+def is_port_used():
     """
     检查端口占用
-    :param port:  端口
-    :param kill: 是否终止端口
     :return:
     """
+    port = input("输入端口：")
+
+    while port != 'exit':
+        handler(port)
+        port = input("输入端口：")
+
+
+def handler(port):
     cmd = 'netstat -ano | findstr {} | findstr  LISTENING'.format(port)
     print(cmd)
     result = os.popen(cmd).read()
     print(result)
     pid = None
+    kill = None
     if result != '':
         try:
             pid = result.split()[-1]
@@ -26,11 +34,12 @@ def is_port_used(port=8009, kill=False):
             result = os.popen('wmic process where name="{0}" get executablepath'.format(program_name)).read()
             result = result.split()
             print("占用的程序所在位置：{}".format(result[1]))
+            kill = input("是否终止程序：Y/n")
         except Exception:
             import traceback
             traceback.print_exc()
         finally:
-            if kill:
+            if kill == 'Y':
                 if not pid:
                     raise Exception("pid is None")
                 print(os.popen("taskkill /F /PID {0}".format(pid)).read())  # 结束进程
@@ -38,10 +47,6 @@ def is_port_used(port=8009, kill=False):
         print('{}端口没有被占用'.format(port))
 
 
+
 if __name__ == '__main__':
-    port = input("请求输入被占用端口：")
-    kill = input("是否结束进程：")
-    if port is not None and kill is not None:
-        is_port_used(port, kill)
-    else:
-        is_port_used()
+    is_port_used()
