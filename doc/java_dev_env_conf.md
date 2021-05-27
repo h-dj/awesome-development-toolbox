@@ -69,3 +69,8 @@ java -version
   <mirrorOf>central</mirrorOf>          
 </mirror>
 ```
+
+### 四、远程监控参数配置VisualVM
+```
+-Dcom.sun.management.jmxremote.port=1099 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=192.168.11.94
+```

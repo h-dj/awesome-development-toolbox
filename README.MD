@@ -29,9 +29,6 @@ Copyright (c) 2020 huangjiajian. The project is licensed under the [MIT License]
       - rabbitmq
       - es
       - nginx
-
-
-
 ### 二、开发相关工具
 
 - IDE 工具
