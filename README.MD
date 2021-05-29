@@ -30,8 +30,6 @@ Copyright (c) 2020 huangjiajian. The project is licensed under the [MIT License]
       - es
       - nginx
 
-
-
 ### 二、开发相关工具
 
 - IDE 工具
@@ -77,38 +75,17 @@ Copyright (c) 2020 huangjiajian. The project is licensed under the [MIT License]
 - 作图工具
     - [draw.io](https://app.diagrams.net/): 在线画图工具，有离线版
     - [代码片段图片生成](https://github.com/carbon-app/carbon)
+    - [StarUML](https://staruml.io/download)  StarUML是一个开源的UML工具列表软件
 - [Motrix 下载工具](https://github.com/agalwood/Motrix): Motrix 是一款全能的下载工具，支持下载 HTTP、FTP、BT、磁力链等资源。
 - [ToDesk 远程桌面](https://www.todesk.com/): 个人免费稳定的远程桌面工具，可作为 TeamViewer 的代替方案
 - [在线 LaTeX 公式编辑器](https://www.codecogs.com/latex/eqneditor.php)
 - [ASCII 注释工具](http://asciiflow.com/)
 - [Shields](https://shields.io/)  开源项目徽章生成
-- [SnippetStore](https://github.com/ZeroX-DG/SnippetStore) :代码片段管理工具
 
 
 ### 三、资讯 & 博客
 - https://readhub.cn/tech
 - [阮一峰科技周刊](http://www.ruanyifeng.com/blog/weekly/)
-
-### 四、小知识
-#### 4.1 如何选择开源许可证？
-
-![img](./images/bg2011050101.png)
-
-#### 4.2 做知识分享时，如何使用cc协议？
-
-- 了解 https://zhuanlan.zhihu.com/p/20641764
-
-- 如何添加到作品当中
-
-  1. 进入网站 https://creativecommons.org/choose/
-
-  2. 选择许可范畴
-
-     ![image-20201213194417834](./images/image-20201213194417834.png)
-
-  3. 直接在作品或者发布网站上写上协议内容
-
-    ![image-20201213194507756](./images/image-20201213194507756.png)
 
 
 ### 其它 awesome toolbox
