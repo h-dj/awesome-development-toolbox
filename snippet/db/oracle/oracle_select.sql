@@ -47,9 +47,25 @@ FREE_SPACE
         GROUP BY TABLESPACE_NAME) F
  WHERE D.TABLESPACE_NAME = F.TABLESPACE_NAME(+)
 ORDER BY 1;
+--------------------------------------------
+--------------------------------------------
+
 
 --查看表空间里所有表
 -- 列传行
 select listagg(table_name, ',') within GROUP(ORDER BY table_name) AS tagg from dba_tables  where owner='CEMMALL';
 
 select xmlagg(xmlparse(content table_name||',' wellformed) order by table_name).getclobval() AS tagg from dba_tables  where owner='CEMMALL';
+
+
+
+-- 2、 组内排序
+--------------------------------------------
+--------------------------------------------
+select table_.*
+        -- 按照table_.COMPANY_ID 分组，
+        -- 按照table_.CREATE_TIME 排序
+       ,row_number() over (partition by table_.COMPANY_ID order by table_.CREATE_TIME desc nulls last ,table_.id) as n
+from table_ cs
+--------------------------------------------
+--------------------------------------------
