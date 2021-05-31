@@ -1,0 +1,14 @@
+#SID: xe
+#username: system
+#password: oracle
+
+version: '3'
+services:
+  oracle:
+    image: sath89/oracle-xe-11g
+    container_name: oracle
+    privileged: true
+    ports:
+      - 1521:1521
+    volumes:
+      - ./volumes/oracle:/u01/app/oracle

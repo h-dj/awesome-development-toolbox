@@ -23,15 +23,15 @@
     "vetur.format.defaultFormatter.html":"js-beautify-html",
     //格式化插件的配置
     "vetur.format.defaultFormatterOptions":{
-    "js-beautify-html":{
-    //属性强制折行对齐
-    "wrap_attributes":"force-aligned",
-    }
+        "js-beautify-html":{
+        //属性强制折行对齐
+        "wrap_attributes":"force-aligned",
+        }
     },
     "editor.codeActionsOnSave":{
-    "source.fixAll.eslint":true
-    },
-    "vetur.validation.template": false
+        "source.fixAll.eslint":true
+        },
+        "vetur.validation.template": false
     }
 ```
 
