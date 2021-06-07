@@ -1,9 +1,7 @@
-/*
-使用a 标签，实现tip 功能
-<a href="javascript:void(0);" title="测试" class="description">测试</a>
-*/
-
-.description{
+##### 1、实现tip 效果
+```html
+<style>
+    .description{
     overflow : hidden;
     text-overflow: ellipsis;
     word-break: break-all;
@@ -12,3 +10,7 @@
     -webkit-box-orient: vertical;
     list-style: none;
 }
+</style>
+<a href="javascript:void(0);" title="测试" class="description">测试</a>
+
+```

@@ -15,12 +15,13 @@ services:
       - 3306:3306
   oracle:
     container_name: oracle_serve
-    image: 'wnameless/oracle-xe-11g-r2'
+    image: 'sath89/oracle-xe-11g'
     restart: always
     privileged: true
     ports:
-      - 49161:1521
-      - 49188:8080
+      - 1521:1521
+    volumes:
+      - ./volumes/oracle:/u01/app/oracle
   redis:
     container_name: redis-serve
     image: 'redis:6.0'
