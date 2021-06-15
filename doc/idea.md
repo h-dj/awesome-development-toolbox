@@ -8,6 +8,7 @@
 - Key Promoter X快捷键学习工具
 - ReadHub 每天高效浏览行业资讯
 - CodeGlance 代码地图插件
+- RestfulTool 一套 Restful 服务开发辅助工具集，能快速通过请求url 找到Controller
 
 
 
