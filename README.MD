@@ -55,6 +55,7 @@ Copyright (c) 2020 huangjiajian. The project is licensed under the [MIT License]
   - DBeaver 有免费的社区版
   - [Another Redis Desktop Manager](https://github.com/qishibo/AnotherRedisDesktopManager) : Redids GUI 客户端
   - [PDMan](https://gitee.com/robergroup/pdman) PDMan-国产免费通用数据库建模工具
+  - Flashback 恢复数据
   
 - 开发调试
   - [whistle](https://github.com/avwo/whistle):基于 Node 实现的跨平台抓包调试代理工具
@@ -76,6 +77,9 @@ Copyright (c) 2020 huangjiajian. The project is licensed under the [MIT License]
     - [draw.io](https://app.diagrams.net/): 在线画图工具，有离线版
     - [代码片段图片生成](https://github.com/carbon-app/carbon)
     - [StarUML](https://staruml.io/download)  StarUML是一个开源的UML工具列表软件
+- Linux 下好用的工具
+    - jq
+    - clipboard
 - [Motrix 下载工具](https://github.com/agalwood/Motrix): Motrix 是一款全能的下载工具，支持下载 HTTP、FTP、BT、磁力链等资源。
 - [ToDesk 远程桌面](https://www.todesk.com/): 个人免费稳定的远程桌面工具，可作为 TeamViewer 的代替方案
 - [在线 LaTeX 公式编辑器](https://www.codecogs.com/latex/eqneditor.php)
