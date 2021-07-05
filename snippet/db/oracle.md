@@ -58,6 +58,9 @@ select * from group_info start with id='61' connect by prior parent_id=id
 ```shell
 select xmlagg(xmlparse(content table_name ||',' wellformed) order by table_name).getclobval() AS tagg
 from dba_tables  where owner='CEMMALL';
+
+#使用pivot
+select * from (select name, nums from demo) pivot (sum(nums) for name in ('苹果' 苹果, '橘子', '葡萄', '芒果'));
 ```
 
 - 分组排序
