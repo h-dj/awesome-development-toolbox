@@ -1,3 +1,44 @@
+### oracle 配置修改
+- 登陆oracle
+```shell
+sqlplus sys/123456  as sysdba
+```
+
+- 查询oracle server 字符集
+```shell
+select userenv('language') from dual;
+
+#SIMPLIFIED CHINESE_CHINA.ZHS16GBK
+```
+- dmp文件的第2和第3个字节记录了dmp文件的字符集
+```shell
+# cat exp.dmp |od -x|head -1|awk '{print $2 $3}'|cut -c 3-6
+ select nls_charset_name(to_number('0354','xxxx')) from dual;
+```
+- 查询oracle client端的字符集
+```shell
+echo $NLS_LANG
+```
+
+- 修改数据库字符集
+```shell
+#关闭数据库 
+sql> shutdown immediate;
+#数据库装载 
+sql> startup restrict;
+
+#数据字符集修改
+#AL32UTF8 \ ZHS16GBK
+#export NLS_LANG="simplified chinese"_china.zhs16gbk
+sql> ALTER DATABASE character set INTERNAL_USE ZHS16GBK;
+
+#重启数据库 
+sql> shutdown immediate;
+#启动实例
+sql> startup;
+sql> quit;
+```
+
 ### oracle 创建用户及授权
 - 创建表空间
 ```shell
