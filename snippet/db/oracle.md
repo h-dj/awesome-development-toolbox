@@ -104,6 +104,13 @@ from dba_tables  where owner='CEMMALL';
 select * from (select name, nums from demo) pivot (sum(nums) for name in ('苹果' 苹果, '橘子', '葡萄', '芒果'));
 ```
 
+- 查询 oracle 序列
+```shell
+select 'create sequence  '|| SEQUENCE_NAME || '_SEQ minvalue '||MIN_VALUE||' maxvalue '||MAX_VALUE||'   
+start with '||LAST_NUMBER||' increment by '||INCREMENT_BY||';' as sql
+from dba_sequences where SEQUENCE_OWNER='CEMMALL';
+```
+
 - 分组排序
 ```shell
 #按照table_.COMPANY_ID 分组
