@@ -56,7 +56,25 @@
 
 - 添加tomcat 配置，并保存
 
-  ![image-20210112113453936](..\images\idea\image-20210112113453936.png)
+  ![image-20210112113453936](../images/idea/image-20210112113453936.png)
 
 - 再项目路径 .idea/runConfigurations中找到运行的配置，保存起来
 - 再新的项目中，重新包这些运行配置放到  .idea/runConfigurations中，重启IDEA，就可以重用配置
+
+
+#### 5. 配置Live Template 
+- 进入设置Live Template
+![img.png](../images/idea/img-202108251827.png)
+- 模板
+```java
+/** 
+ * 
+ * @Author huangjiajian
+ * @Date $DATE$ $TIME$
+ * @Description: TODO(这里用一句话描述这个类的作用)
+ */
+```
+- 使用
+```java
+// 输入 cdesc 按 Tab 键
+```

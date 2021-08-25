@@ -8,6 +8,7 @@
 方法一
 ```
 npm config set registry https://registry.npm.taobao.org
+
 ```
 或者配置 .npmrc 文件  npm help config 命令查看配置帮助
 ```
@@ -65,7 +66,6 @@ nvm install 8.0.0
 nvm use 8.0
 ```
 
-nvm
 #### 参考
 - npm 切换源  https://www.runoob.com/w3cnote/npm-switch-repo.html
 - nvm-window 版 https://github.com/coreybutler/nvm-windows

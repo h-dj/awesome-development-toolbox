@@ -8,6 +8,12 @@
 
 Copyright (c) 2020 huangjiajian. The project is licensed under the [MIT License](./LICENSE).
 
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+<img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" />
+</a><br />本作品采用
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>进行许可。
+
 ### 一、开发环境配置
 - [Java](./doc/java_dev_env_conf.md)
   - JDK安装
@@ -59,8 +65,6 @@ Copyright (c) 2020 huangjiajian. The project is licensed under the [MIT License]
   
 - 开发调试
   - [whistle](https://github.com/avwo/whistle):基于 Node 实现的跨平台抓包调试代理工具
-  - [mitmproxy](https://mitmproxy.org/): 抓包工具
-  - [Java 堆栈分析](http://fastthread.io/)
 - 在线排版工具
   - [markdown-nice](https://github.com/mdnice/markdown-nice) :支持主题设计的 Markdown 编辑器，让排版变 Nice
 - 自动化工具
@@ -78,8 +82,8 @@ Copyright (c) 2020 huangjiajian. The project is licensed under the [MIT License]
     - [代码片段图片生成](https://github.com/carbon-app/carbon)
     - [StarUML](https://staruml.io/download)  StarUML是一个开源的UML工具列表软件
 - Linux 下好用的工具
-    - jq
-    - clipboard
+    - jq 命令行下 json 格式化
+    - clipboard 
 - [Motrix 下载工具](https://github.com/agalwood/Motrix): Motrix 是一款全能的下载工具，支持下载 HTTP、FTP、BT、磁力链等资源。
 - [ToDesk 远程桌面](https://www.todesk.com/): 个人免费稳定的远程桌面工具，可作为 TeamViewer 的代替方案
 - [在线 LaTeX 公式编辑器](https://www.codecogs.com/latex/eqneditor.php)
