@@ -1,3 +1,21 @@
-#### live template 模板收集
-> 1. https://www.jetbrains.com/help/idea/2016.3/creating-and-editing-template-variables.html
-> 2. https://github.com/mraible/idea-live-templates
+### live template 模板收集
+
+#### 常用模板
+- 快速编写 GET请求
+```shell
+
+@GetMapping("$path$")
+public String $methodName$(Model model,HttpServletRequest request,HttpServletResponse response) {
+    return $END$;
+}
+```
+- Post请求
+```shell
+
+@PostMapping("$paht$")
+@ResponseBody
+public BaseResponse $methodName$(@RequestBody $varType$ $var$) {
+        $END$
+    return BaseResponse.SUCCESS_RESPONSE;
+}
+```

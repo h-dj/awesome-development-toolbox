@@ -63,8 +63,26 @@
 
 
 #### 5. 配置Live Template 
+
+> 1. https://www.jetbrains.com/help/idea/2016.3/creating-and-editing-template-variables.html
+> 2. https://github.com/mraible/idea-live-templates
+
+
+- 调用变量
+```shell
+$<variable_name>$
+```
+- 创建和编辑变量
+![image-20210826093219756](../images/idea/image-20210826093219756.png)
+
+
+- 内置预设变量
+> https://www.jetbrains.com/help/idea/2016.3/live-template-variables.html#predefined_functions
+
+
 - 进入设置Live Template
 ![img.png](../images/idea/img-202108251827.png)
+  
 - 模板
 ```java
 /** 
@@ -75,6 +93,7 @@
  */
 ```
 - 使用
+
 ```java
 // 输入 cdesc 按 Tab 键
 ```
