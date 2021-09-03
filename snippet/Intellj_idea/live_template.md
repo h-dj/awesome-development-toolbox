@@ -19,3 +19,14 @@ public BaseResponse $methodName$(@RequestBody $varType$ $var$) {
     return BaseResponse.SUCCESS_RESPONSE;
 }
 ```
+
+- 打印二维数组
+```shell
+
+for(int $INDEX$ = 0; $INDEX$ < $ARR$.length; $INDEX$++) {
+    for(int $INDEX2$ = 0; $INDEX2$ < $ARR$[$INDEX$].length; $INDEX2$++) {
+        System.out.print($ARR$[$INDEX$]);
+    }
+    System.out.println();
+}
+```
