@@ -1,7 +1,7 @@
-### live template Ä£°åÊÕ¼¯
+### live template æ¨¡æ¿æ”¶é›†
 
-#### ³£ÓÃÄ£°å
-- ¿ìËÙ±àĞ´ GETÇëÇó
+#### å¸¸ç”¨æ¨¡æ¿
+- å¿«é€Ÿç¼–å†™ GETè¯·æ±‚
 ```shell
 
 @GetMapping("$path$")
@@ -9,7 +9,7 @@ public String $methodName$(Model model,HttpServletRequest request,HttpServletRes
     return $END$;
 }
 ```
-- PostÇëÇó
+- Postè¯·æ±‚
 ```shell
 
 @PostMapping("$paht$")

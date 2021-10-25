@@ -3,7 +3,7 @@
 alias ll="ls -l"
 
 #连接vpn
-alias startVPN = "sudo openvpn --config /etc/openvpn/huangjiajian/client.ovpn"
+alias startVPN="sudo openvpn --config /home/hdj/software/huangjiajian/client.ovpn"
 
 #设置命令行代理
 function setProxy() {

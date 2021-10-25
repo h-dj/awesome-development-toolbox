@@ -203,7 +203,7 @@ sudo systemctl restart docker
 
 ```shell
 #下载
-sudo curl -L https://github.com/docker/compose/releases/download/1.25.5/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 #授予执行权限
 sudo chmod +x /usr/local/bin/docker-compose
 #验证安装
