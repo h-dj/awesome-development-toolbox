@@ -15,7 +15,7 @@ services:
       - 3306:3306
   oracle:
     container_name: oracle_serve
-    image: 'sath89/oracle-xe-11g'
+    image: 'acktsw/oracle-xe-11g'
     restart: always
     privileged: true
     ports:

@@ -33,5 +33,6 @@
         },
         "vetur.validation.template": false
     }
+}
 ```
 
