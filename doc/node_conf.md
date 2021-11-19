@@ -5,6 +5,8 @@
 
 #### 配置npm 下载源
 
+> 淘宝 NPM 切换新域名 https://npmmirror.com/
+
 方法一
 ```
 npm config set registry https://registry.npm.taobao.org
