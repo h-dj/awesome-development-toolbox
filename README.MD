@@ -4,16 +4,6 @@
 
 持续更新中...
 
-### 版权声明 (Copyright and License)
-
-Copyright (c) 2020 huangjiajian. The project is licensed under the [MIT License](./LICENSE).
-
-<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
-<img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" />
-</a><br />本作品采用
-<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
-知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>进行许可。
-
 ### 一、开发环境配置
 - [Java](./doc/java_dev_env_conf.md)
   - JDK安装
@@ -94,6 +84,7 @@ Copyright (c) 2020 huangjiajian. The project is licensed under the [MIT License]
 ### 三、资讯 & 博客
 - https://readhub.cn/tech
 - [阮一峰科技周刊](http://www.ruanyifeng.com/blog/weekly/)
+- [Java 全栈知识体系](https://www.pdai.tech/md/project/project-x-overview.html)
 
 
 ### 其它 awesome toolbox

@@ -1,7 +1,8 @@
 ### oracle 配置修改
-- 登陆oracle
+- 登陆oracle  fgfdgd
 ```shell
-sqlplus sys/123456  as sysdba
+ 
+sqlplus root/admin123  as sysdba
 ```
 
 - 查询oracle server 字符集
@@ -58,7 +59,7 @@ default tablespace cemmall;
 ```
 - 授权
 ```shell
-grant connect,resource,dba to cemmall;
+grant connect,resource,dba to CEMMALL;
 grant create any sequence to cemmall;
 grant create any table to cemmall;
 grant delete any table to cemmall;
@@ -118,4 +119,10 @@ from dba_sequences where SEQUENCE_OWNER='CEMMALL';
 select table_.*
        ,row_number() over (partition by table_.COMPANY_ID order by table_.CREATE_TIME desc nulls last ,table_.id) as n
 from table_ cs
+```
+
+
+- oracle 日期格式写法
+```shell
+yyyy-MM-dd hh24:mi:ss
 ```
