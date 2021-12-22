@@ -60,6 +60,7 @@
 - 自动化工具
 - 在线练习工具
   - [SQL 在线练习](https://sqlzoo.net/wiki/SELECT_basics)
+  - [SQL语句练习](./snippet/db/SQL语句练习.md)
 - 算法可视化工具
   - https://algorithm-visualizer.org/
   - https://visualgo.net/en
