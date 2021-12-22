@@ -32,7 +32,10 @@
         "source.fixAll.eslint":true
         },
         "vetur.validation.template": false
-    }
+    },
+    "editor.fontFamily": "JetBrains Mono",
+    "editor.fontSize": 16,
+    "editor.fontLigatures": true
 }
 ```
 
