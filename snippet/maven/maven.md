@@ -10,7 +10,7 @@
   <mirrorOf>central</mirrorOf>          
 </mirror>
 ```
-```
+
 
 - maven 配置打包，生成执行命令
 ```xml
