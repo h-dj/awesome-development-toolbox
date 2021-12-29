@@ -98,6 +98,9 @@
 - [ASCII 注释工具](http://asciiflow.com/)
 - [Shields](https://shields.io/)  开源项目徽章生成
 
+- JVM 相关库或工具
+  - [JOL](https://openjdk.java.net/projects/code-tools/jol/) 用于查看 Java 对象头类库
+
 ### 三、资讯 & 博客
 
 - https://readhub.cn/tech
