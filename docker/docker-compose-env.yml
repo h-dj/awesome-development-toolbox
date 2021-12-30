@@ -7,12 +7,14 @@ services:
     privileged: true
     command: --default-authentication-plugin=mysql_native_password
     environment:
-      - MYSQL_ROOT_PASSWORD=123456
-      - MYSQL_DATABASE=test
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     volumes:
-      - ./volumes/mysql/data:/var/lib/mysql
+      - /opt/mysql/data:/var/lib/mysql
+      - /opt/mysql/conf/my.cnf:/etc/mysql/my.cnf
     ports:
       - 3306:3306
+    networks:
+      - blog-extranet
   oracle:
     container_name: oracle_serve
     image: 'acktsw/oracle-xe-11g'
@@ -21,14 +23,20 @@ services:
     ports:
       - 1521:1521
     volumes:
-      - ./volumes/oracle:/u01/app/oracle
+      - /opt/oracle:/u01/app/oracle
+    networks:
+      - blog-extranet
   redis:
     container_name: redis-serve
     image: 'redis:6.0'
     restart: always
     privileged: true
     volumes:
-      - ./volumes/redis/data:/data
+      - /opt/redis/data:/data
+      - /opt/redis/conf/redis.conf:/conf/redis.conf
+    command: redis-server /conf/redis.conf
+    networks:
+      - blog-extranet
     ports:
       - 6379:6379
   mq:
@@ -37,32 +45,14 @@ services:
     restart: always
     privileged: true
     environment:
-      - RABBITMQ_DEFAULT_USER=guest
-      - RABBITMQ_DEFAULT_PASS=guest
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
     ports:
       - 5672:5672
       - 15672:15672
-  es:
-    container_name: es-serve
-    image: 'elasticsearch:7.9.1'
-    restart: always
-    privileged: true
-    environment:
-      - "discovery.type=single-node"
-    ports:
-      - 9200:9200
-      - 9300:9300
-  nginx:
-    container_name: blog-nginx
-    image: 'nginx:1.16-alpine'
-    restart: always
-    privileged: true
-    volumes:
-      #- ./volumes/nginx/conf/nginx.conf:/etc/nginx/nginx.conf
-      #- ./volumes/nginx/certs/full_chain.pem:/etc/nginx/certs/full_chain.pem
-      #- ./volumes/nginx/certs/private.key:/etc/nginx/certs/private.key
-      #- ./volumes/nginx/logs:/var/log/nginx
-      - ./volumes/nginx/www:/home/www/website
-    ports:
-      - 80:80
-      - 443:443
+    networks:
+      - blog-extranet
+
+networks:
+  blog-extranet:
+    external: true # 指定外部创建的网络，不再创建

@@ -89,9 +89,11 @@
   - [代码片段图片生成](https://github.com/carbon-app/carbon)
   - [StarUML](https://staruml.io/download)  StarUML是一个开源的UML工具列表软件
 - Linux 下好用的工具
-
-  - jq 命令行下 json 格式化
-  - clipboard
+  - [jq](https://github.com/stedolan/jq) 命令行下 json 操作
+  - [clipboard](https://github.com/sindresorhus/clipboard-cli) 剪切板
+  - [fail2ban](https://github.com/fail2ban/fail2ban) fail2ban是一款实用软件，可以监视你的系统日志，然后匹配日志的错误信息（正则式匹配）执行相应的屏蔽动作。
+  
+  
 - [Motrix 下载工具](https://github.com/agalwood/Motrix): Motrix 是一款全能的下载工具，支持下载 HTTP、FTP、BT、磁力链等资源。
 - [ToDesk 远程桌面](https://www.todesk.com/): 个人免费稳定的远程桌面工具，可作为 TeamViewer 的代替方案
 - [在线 LaTeX 公式编辑器](https://www.codecogs.com/latex/eqneditor.php)
