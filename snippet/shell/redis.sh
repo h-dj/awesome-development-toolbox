@@ -1,12 +1,12 @@
-# redis 常用命令
+# redis 甯哥敤鍛戒护
 # https://redis.io/commands
 # https://redis.io/topics/rediscli
 
-- 登录redis
+- 鐧诲綍redis
 ```shell
 redis-cli -h host -p port
 ```
-- 验证密码
+- 楠岃瘉瀵嗙爜
 ```shell
  auth [username] password
 ```

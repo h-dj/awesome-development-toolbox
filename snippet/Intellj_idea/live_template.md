@@ -20,7 +20,7 @@ public BaseResponse $methodName$(@RequestBody $varType$ $var$) {
 }
 ```
 
-- - 打印二维数组
+- 打印二维数组
 ```shell
 
 for(int $INDEX$ = 0; $INDEX$ < $ARR$.length; $INDEX$++) {

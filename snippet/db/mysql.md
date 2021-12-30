@@ -1,5 +1,7 @@
 ### mysql 创建用户及授权
+
 - 创建用户
+
 ```shell
 CREATE USER 'blog'@'%' IDENTIFIED BY 'blog@123456';
 
@@ -7,7 +9,9 @@ CREATE USER 'blog'@'%' IDENTIFIED BY 'blog@123456';
 CREATE USER 'demo'@'192.168.43.178' IDENDIFIED BY '123456';
 CREATE USER 'demo'@'%' IDENTIFIED BY '123456';
 ```
+
 - 授权
+
 ```shell
 GRANT privileges ON databasename.tablename TO 'username'@'host'
 
@@ -22,18 +26,20 @@ GRANT ALL ON student.* TO 'demo'@'192.168.43.178';
 ```
 
 - 查询用户
+
 ```shell
 use mysql;
 select  host,user,plugin,authentication_string  from   mysql.user;
-
 ```
 
 - 设置与更改用户密码
+
 ```shell
 SET PASSWORD FOR 'username'@'host' = PASSWORD('newpassword');
 ```
 
 - 修改用户host
+
 ```shell
 #修改用户访问权限 
 ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'password';
@@ -41,16 +47,19 @@ FLUSH PRIVILEGES;
 ```
 
 - 撤销用户权限
+
 ```shell
 REVOKE privilege ON databasename.tablename FROM 'username'@'host';
 ```
 
 - 删除用户
+
 ```shell
 DROP USER 'username'@'host';
 ```
 
 ### mysql 备份与还原
+
 - 查看binlog相关参数
 
 ```shell
@@ -65,25 +74,29 @@ log_bin_index                  |/var/lib/mysql/binlog.index|
 log_bin_trust_function_creators|OFF                        |
 log_bin_use_v1_row_events      |OFF                        |
 ```
+
 - 开启binlog日志
+
 ```shell
 #在my.conf配置文件
 [mysqld] 
 #binlog日志文件目录,默认存储在mysql的datadir参数指定的目录下
 log-bin=/MySQL/my3306/log/binlog/binlog  
 #binlog_format的几种格式:(STATEMENT,ROW和MIXED):
-#STATEMENT:基于SQL语句的复制(statement-based replication, SBR)    
-#ROW:基于行的复制(row-based replication, RBR)    
+#STATEMENT:基于SQL语句的复制(statement-based replication, SBR)  
+#ROW:基于行的复制(row-based replication, RBR)  
 #MIXED:混合模式复制(mixed-based replication, MBR)
-binlog_format = row 
+binlog_format = row
 ```
 
 - 查看binlog日志文件
+
 ```shell
 mysqlbinlog '/var/lib/mysql/binlog.000010'
 ```
 
 - 常用操作
+
 ```shell
 show master logs;  #查看数据库所有日志文件。 
 show binlog events;  #查看当前使用的binlog文件信息。 
@@ -93,6 +106,7 @@ flush logs; reset master;  #删除所有二进制日志，并重新（binlog.000
 ```
 
 - 使用mysqldump全量备份（mysql8）
+
 ```shell
 # 备份命令mysqldump格式
 # 格式：mysqldump -h主机名  -P端口 -u用户名 -p密码 –database 数据库名 > 文件名.sql 
@@ -110,7 +124,8 @@ mysqldump -uroot -p123456 --databases blog >  /home/mysql/backup/backupfile.sql
 ```
 
 - 增量备份
-```shell
+
+```
 # https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html#option_mysqldump_source-data
 # --master-data  写binlog日志
 #首先做一次完整备份
@@ -121,7 +136,9 @@ flush logs;
 ```
 
 - 还原
-```shell
+
+```
+
 #格式
 #mysql -h主机 -P端口 -u用户名 -p密码 数据库名 < sql文件.sql
 mysql -hlocalhost -P3306  -uroot -p123456 blog-backup < backupfile2.sql
@@ -130,13 +147,36 @@ mysql -hlocalhost -P3306  -uroot -p123456 blog-backup < backupfile2.sql
 mysqldump -uusername -ppassword databasename | mysql –host=*.*.*.* -C databasename
 ```
 
+### MySQL 调试优化
+
+- 查看慢日志
+
+```
+-- 查看慢日志是否开启
+show variables like 'slow_query_log';
+-- 查看日志
+show variables like '%log%'
+-- 开启记录索引查询日志
+set global log_queries_not_using_indexes=ON
+
+-- 查询时间
+show variables LIKE 'long_query_time';
+-- 开启慢日志
+set global slow_query_log = ON
+-- 查看慢日志存储位置
+show variables like 'slow%'
+
+```
 
 
 
 ### mysql 使用技巧
+
 - 查询数据库表，并行转列
+
 ```shell
 select GROUP_CONCAT(table_name,",")  
 from information_schema.tables 
 where table_schema='cmall' and table_type='base table';
 ```
+
