@@ -31,21 +31,25 @@ sudo apt-get install \
     curl \
     gnupg-agent \
     software-properties-common
-    
+  
 #添加docker官方的GPG key
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+# 官方源
+#curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
-#验证 是否拥有指纹：9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88
-sudo apt-key fingerprint 0EBFCD88
 
-#添加docker软件源
-sudo add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) \
-   stable"
    
 #国内
-echo -e "deb [arch=amd64] https://mirrors.ustc.edu.cn/docker-ce/linux/debian stretch stable" >> /etc/apt/sources.list
+$ echo \
+  "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://mirrors.aliyun.com/docker-ce/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+
+# 官方源
+# $ echo \
+#   "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+#   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
 
 #安装
 sudo apt-get update
@@ -54,17 +58,15 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io
 
 - 使用一键安装脚本
 
-  ```
-  curl -fsSL https://get.docker.com -o get-docker.sh
-  sudo sh get-docker.sh --mirror Aliyun
-  ```
+```
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh --mirror Aliyun
+```
 
 #### 1.3 使用安装包安装
 
 - 从 https://download.docker.com/linux/ubuntu/dists/ 中下载对应的Docker安装包
 - 执行安装 `sudo dpkg -i /path/to/package.deb`
-
-
 
 ### 二、docker 配置
 
@@ -97,6 +99,7 @@ docker run hello-world
 #添加文件/etc/docker/daemon.json
 {
     "registry-mirrors": [
+        "https://mirror.ccs.tencentyun.com",
         "https://dockerhub.azk8s.cn",
         "https://docker.mirrors.ustc.edu.cn",
         "https://registry.docker-cn.com",
@@ -104,7 +107,7 @@ docker run hello-world
         "https://hub-mirror.c.163.com",
         "https://hub.daocloud.io"
     ]
-}      
+}
 ```
 
 - 获取阿里docker镜像加速器 https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors
@@ -116,12 +119,10 @@ sudo systemctl daemon-reload
 sudo systemctl restart docker
 ```
 
-
-
 ### 三、docker简单命令了解
 
 - 容器操作命令
-
+  
   ```
   #查看容器列表
   docker container ls 
@@ -164,9 +165,8 @@ sudo systemctl restart docker
   //删除指定名称
   docker rm -f $(docker ps -a | grep "zhy*" | awk '{print $1}')
   ```
-
 - docker  run 命令
-
+  
   ```
   --name  指定容器名
   -v 挂载数据卷
@@ -183,23 +183,23 @@ sudo systemctl restart docker
   -v $PWD/mysql/data:/var/lib/mysql \
   --restart=always  mysql
   ```
-
 - docker exec 进入容器终端
-
+  
   ```
   # 终端支持中文
   env LANG=C.UTF-8　
   
   docker exec -it mysql-serve  env LANG=C.UTF-8 bash
   ```
-
 - Dockerfile 文件了解
-
+  
   - https://yeasy.gitbook.io/docker_practice/image/dockerfile
 
 ### 四、安装docker-compose
 
 #### 4.1 安装
+
+> 旧版
 
 ```shell
 #下载
@@ -214,7 +214,24 @@ docker-compose --version
 sudo apt-get install -y python3 python3-pip
 sudo pip3 install docker-compose
 # 如果提示找不到ffi.h文件，先安装以下依赖
-sudo apt-get install libffi-dev 
+sudo apt-get install libffi-dev
+```
+
+> 新版
+```shell
+# 针对当前用户
+# 对全部用户生效，/usr/local/lib/docker/cli-plugins
+ mkdir -p ~/.docker/cli-plugins/
+ curl -SL https://github.com/docker/compose/releases/download/v2.2.2/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
+
+
+# 配置执行权限
+chmod +x ~/.docker/cli-plugins/docker-compose
+
+#测试
+docker compose version
+
+#新版使用命令变为 由 docker-compose docker compose
 
 ```
 
@@ -226,12 +243,11 @@ sudo apt-get install libffi-dev
 
 - https://yeasy.gitbook.io/docker_practice/compose/commands
 
-
-
 #### 参考
 
+- https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository
 - https://docs.docker.com/compose/gettingstarted/
 - https://docs.docker.com/engine/install/
 - https://docs.docker.com/engine/install/linux-postinstall/
-- https://yeasy.gitbook.io/docker_practice/compose/install
+- https://docs.docker.com/compose/cli-command/#install-on-linux
 

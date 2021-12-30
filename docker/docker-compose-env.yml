@@ -42,16 +42,6 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
-  es:
-    container_name: es-serve
-    image: 'elasticsearch:7.9.1'
-    restart: always
-    privileged: true
-    environment:
-      - "discovery.type=single-node"
-    ports:
-      - 9200:9200
-      - 9300:9300
   nginx:
     container_name: blog-nginx
     image: 'nginx:1.16-alpine'

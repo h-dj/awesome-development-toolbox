@@ -89,7 +89,7 @@
 - [在线 LaTeX 公式编辑器](https://www.codecogs.com/latex/eqneditor.php)
 - [ASCII 注释工具](http://asciiflow.com/)
 - [Shields](https://shields.io/)  开源项目徽章生成
-
+- [SwitchHosts](https://github.com/oldj/SwitchHosts/releases) hosts 切换工具
 
 ### 三、资讯 & 博客
 - https://readhub.cn/tech
