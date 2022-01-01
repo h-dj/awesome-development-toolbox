@@ -2,25 +2,25 @@ version: '3'
 services:
   es:
     container_name: blog-es
-    image: 'gagara/elasticsearch-oss-arm64:latest'
-    #restart: always
-    privileged: false
+    image: 'elasticsearch:7.6.2'
+    restart: always
+    privileged: true
     environment:
       - "cluster.name=elasticsearch" #设置集群名称为elasticsearch
       - "discovery.type=single-node" #以单一节点模式启动
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m" #设置使用jvm内存大小
     volumes:
-      - ./es/plugins:/usr/share/elasticsearch/plugins
-      - ./es/data:/usr/share/elasticsearch/data
+      - /opt/es/plugins:/usr/share/elasticsearch/plugins
+      - /opt/es/data:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
       - 9300:9300
     networks:
       - blog-nextwork
   kibana:
-    image: 'gagara/kibana-oss-arm64:latest'
+    image: 'kibana:7.6.2'
     container_name: blog-kibana
-    #restart: always
+    restart: always
     depends_on:
       - es #kibana在elasticsearch启动之后再启动
     environment:
@@ -30,13 +30,13 @@ services:
     networks:
       - blog-nextwork
   logstash:
-    image: 'gagara/logstash-oss-arm64:latest'
+    image: 'logstash:7.6.2'
     container_name: blog-logstash
-    #restart: always
+    restart: always
     environment:
       - TZ=Asia/Shanghai
     volumes:
-      - ./logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf #挂载logstash的配置文件
+      - /opt/logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf #挂载logstash的配置文件
     depends_on:
       - es #kibana在elasticsearch启动之后再启动
     ports:
@@ -44,6 +44,8 @@ services:
       - 5044:5044
     networks:
       - blog-nextwork
+
+
 networks:
   blog-nextwork:
-    driver: bridge
+    external: true # 指定外部创建的网络，不再创建

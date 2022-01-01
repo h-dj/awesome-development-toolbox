@@ -14,7 +14,7 @@ services:
     ports:
       - 3306:3306
     networks:
-      - blog-extranet
+      - blog-nextwork
   oracle:
     container_name: oracle_serve
     image: 'acktsw/oracle-xe-11g'
@@ -25,7 +25,7 @@ services:
     volumes:
       - /opt/oracle:/u01/app/oracle
     networks:
-      - blog-extranet
+      - blog-nextwork
   redis:
     container_name: redis-serve
     image: 'redis:6.0'
@@ -36,7 +36,7 @@ services:
       - /opt/redis/conf/redis.conf:/conf/redis.conf
     command: redis-server /conf/redis.conf
     networks:
-      - blog-extranet
+      - blog-nextwork
     ports:
       - 6379:6379
   mq:
@@ -51,8 +51,8 @@ services:
       - 5672:5672
       - 15672:15672
     networks:
-      - blog-extranet
+      - blog-nextwork
 
 networks:
-  blog-extranet:
+  blog-nextwork:
     external: true # 指定外部创建的网络，不再创建

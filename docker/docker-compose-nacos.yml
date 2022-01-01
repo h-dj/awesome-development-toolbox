@@ -1,0 +1,22 @@
+version: "3"
+services:
+  nacos:
+    image: nacos/nacos-server:2.0.3
+    container_name: nacos-standalone-mysql
+   env_file:
+      #需要先安装好mysql， 注意初始化sql
+      - ./nacos-standlone-mysql.env  
+    volumes:
+      - /opt/nacos/standalone-logs/:/home/nacos/logs  #日志
+      #- /opt/init.d/custom.properties:/home/nacos/init.d/custom.properties #初始化配置
+    ports:
+      - "8848:8848"
+    networks:
+      - blog-nextwork
+    depends_on:
+      - mysql
+    restart: always
+
+networks:
+  blog-nextwork:
+    external: true # 指定外部创建的网络，不再创建
