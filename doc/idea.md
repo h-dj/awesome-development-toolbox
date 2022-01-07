@@ -9,6 +9,9 @@
 - ReadHub 每天高效浏览行业资讯
 - CodeGlance 代码地图插件
 - RestfulTool 一套 Restful 服务开发辅助工具集，能快速通过请求url 找到Controller
+- Vuesion Theme IDEA 主题
+- Atom Material ICons  IDEA 文件图标显示插件
+- Search In Repository  搜索 maven/gradle 依赖
 
 
 
