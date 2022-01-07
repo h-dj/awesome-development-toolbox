@@ -1,0 +1,13 @@
+version: '3'
+services:
+  filebeat:
+    image: 'docker.elastic.co/beats/filebeat:7.6.2'
+    depends_on:
+      - es #kibana在elasticsearch启动之后再启动
+      - logstash
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./filebeat/filebeat.yml/usr/share/filebeat/filebeat.yml
+      - /home/hdj/IdeaProjects/blog-cloud/logs:/var/log/blog
+

@@ -1,0 +1,37 @@
+# 数据处理，如果我们的数据不存在唯一主键，则使用fingerprint否则可以使用add_id来实现
+processors:
+  # 指纹，防止同一条数据在output的es中存在多次。（此处为了演示使用message字段做指纹，实际情况应该根据不用的业务来选择不同的字段）
+  - fingerprint:
+      fields: ["message"]
+      ignore_missing: false
+      target_field: "@metadata._id"
+      method: "SHA256"
+
+
+# 输入配置
+filebeat.inputs:
+  - type: log
+    enabled: true
+    encoding: utf-8
+    # 容器内的路径，注意映射
+    # 映射宿路径： /home/hdj/IdeaProjects/blog-cloud/logs:/var/log/blog
+    paths:
+      # 抓取 info 等级日志
+      - /var/log/blog/*/blog_*.log
+    # 添加自定义字段
+    fields:
+      from: 'blog-cloud'
+    multiline:
+      # 正则表达式
+      pattern: "^[[:space:]]+(at|\\.{3})[[:space:]]+\\b|^Caused by:"
+      # 是否开启正则匹配，true:开启，false:不开启
+      negate: false
+      # 不匹配正则的行是放到匹配到正则的行的after(后面)还是before(前面)
+      match: after
+      # 多行日志结束的时间，多长时间没接收到日志，如果上一个是多行日志，则认为上一个结束了
+      timeout: 5s
+
+
+# 输出到 logstash
+output.logstash:
+  hosts: ["192.168.43.178:5044"]
