@@ -13,6 +13,7 @@
 - Vuesion Theme IDEA 主题
 - Atom Material ICons  IDEA 文件图标显示插件
 - Search In Repository  搜索 maven/gradle 依赖
+- String Manipulation 字符串处理插件： 大小写转换、变量名有下划线转驼峰命名等
 
 #### 1. 字体修改
 
