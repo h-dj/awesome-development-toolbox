@@ -45,6 +45,14 @@
 - 接口调试
 
   - [Postman](https://www.postman.com/) API 调试工具
+
+- Chrome浏览器插件
+    - Quick QR 二维码生成器
+    - JSON Viewer 响应的json格式化显示
+    - Proxy SwitchyOmega 代理切换
+    - floccus bookmarks 书签同步
+
+
 - shell 工具
 
   - [FinalShell](http://www.hostbuf.com/) :一款由 Java 开发的 shell 工具
