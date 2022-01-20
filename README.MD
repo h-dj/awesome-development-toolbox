@@ -107,8 +107,9 @@
 - [ASCII 注释工具](http://asciiflow.com/)
 - [Shields](https://shields.io/)  开源项目徽章生成
 
-- JVM 相关库或工具
+- Java 相关库或工具
   - [JOL](https://openjdk.java.net/projects/code-tools/jol/) 用于查看 Java 对象头类库
+  - [jmh 图表](https://github.com/Sayi/jmh-visual-chart) 用于可视化 jmh 基准测试数据
 
 ### 三、资讯 & 博客
 

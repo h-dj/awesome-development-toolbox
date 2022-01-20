@@ -125,4 +125,7 @@ from table_ cs
 - oracle 日期格式写法
 ```shell
 yyyy-MM-dd hh24:mi:ss
+
+#e.g
+# to_char(o.CREATE_TIME,'yyyy-MM-dd hh24:mi:ss')  &gt;= to_char(#{param.createTimeStart},'yyyy-MM-dd hh24:mi:ss')
 ```
