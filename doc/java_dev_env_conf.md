@@ -78,5 +78,5 @@ java -version
 
 - jvm参数： dump 日志
 ```shell
--XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/home/server/dump.hprof
+-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/home/server/oom
 ```
