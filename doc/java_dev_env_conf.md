@@ -79,4 +79,12 @@ java -version
 - jvm参数： dump 日志
 ```shell
 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/home/server/oom
+
+# 手动导出
+jmap -dump:format=b,file=/var/logs/heap.hprof  pid
+```
+
+- 查看堆大小
+```shell
+jmap -head  pid
 ```
