@@ -1,0 +1,31 @@
+version: '3.5'
+
+services:
+  db:
+    image: mariadb
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    volumes:
+      - "./db:/var/lib/mysql"       #./db是数据库持久化目录，可以修改
+    environment:
+      - "TZ=Asia/Shanghai"
+      - "MYSQL_ROOT_PASSWORD"
+      - "MYSQL_DATABASE"
+      - "MYSQL_USER"
+      - "MYSQL_PASSWORD"
+    restart: always
+  app:
+    image: kodcloud/kodbox
+    ports:
+      - 80:80                       #左边80是使用端口，可以修改
+    links:
+      - db
+      - redis
+    volumes:
+      - "./site:/var/www/html"      #./site是站点目录位置，可以修改
+    restart: always
+
+  redis:
+    image: redis:alpine
+    environment:
+      - "TZ=Asia/Shanghai"
+    restart: always

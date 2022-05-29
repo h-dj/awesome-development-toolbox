@@ -63,7 +63,6 @@
   - [PDMan](https://gitee.com/robergroup/pdman) PDMan-国产免费通用数据库建模工具
   - [PrettyZoo](https://github.com/vran-dev/PrettyZoo) 使用 JavaFX 实现的 Zookeeper GUI 管理工具
 - 开发调试
-
   - [whistle](https://github.com/avwo/whistle):基于 Node 实现的跨平台抓包调试代理工具
 - 在线排版工具
 
@@ -101,6 +100,7 @@
 
 - JVM 相关库或工具
   - [JOL](https://openjdk.java.net/projects/code-tools/jol/) 用于查看 Java 对象头类库
+  - [GCViewer](https://github.com/chewiebug/GCViewer) GC log 可视化工具
 
 ### 三、资讯 & 博客
 
