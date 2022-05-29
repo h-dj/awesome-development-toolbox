@@ -48,7 +48,7 @@ DATAFILE '/u01/app/oracle/oradata/XE/cemmall.dbf' size 800M
          EXTENT MANAGEMENT LOCAL SEGMENT SPACE MANAGEMENT AUTO;
          
 -- 表空间自动扩展
-alter database datafile '/u01/app/oracle/product/11.2.0/xe/dbs/CEMMALL.dbf' autoextend on next 5m maxsize unlimited;
+alter database datafile '/u01/app/oracle/oradata/XE/cemmall.dbf' autoextend on next 5m maxsize unlimited;
 -- 临时文件自动扩展
 alter database tempfile '/oradata/orcl/temp01.dbf' autoextend on next 5m maxsize unlimited;
 ```
@@ -59,7 +59,7 @@ default tablespace cemmall;
 ```
 - 授权
 ```shell
-grant connect,resource,dba to CEMMALL;
+grant connect,resource,dba to cemmall;
 grant create any sequence to cemmall;
 grant create any table to cemmall;
 grant delete any table to cemmall;
@@ -125,4 +125,7 @@ from table_ cs
 - oracle 日期格式写法
 ```shell
 yyyy-MM-dd hh24:mi:ss
+
+#e.g
+# to_char(o.CREATE_TIME,'yyyy-MM-dd hh24:mi:ss')  &gt;= to_char(#{param.createTimeStart},'yyyy-MM-dd hh24:mi:ss')
 ```

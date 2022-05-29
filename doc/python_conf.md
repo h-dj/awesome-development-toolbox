@@ -26,7 +26,7 @@ python3.9 --version
 ```
 
 执行以上操作后，Python 会安装在 /usr/local/bin 目录中
-Python 库安装在 /usr/local/lib/python3.8.0，3.8.0为你使用的 Python 的版本号。
+Python 库安装在 /usr/local/lib/python3.9.0，3.9.0为你使用的 Python 的版本号。
 
 ### 多版本管理工具: pyenv
 ```
@@ -66,6 +66,37 @@ index-url = http://mirrors.aliyun.com/pypi/simple/
 trusted-host=mirrors.aliyun.com
 
 ```
+### 虚拟环境配置
+-  创建虚拟机环境
+```shell
+python -m venv ./venv
+```
+   
+- 激活
+  
+| 平台 | Shell | 用于激活虚拟环境的命令 |
+| --- | --- | --- |
+| POSIX | bash/zsh | $ source <venv>/bin/activate |
+|  | fish | $ . <venv>/bin/activate.fish |
+|  | csh/tcsh | $ source <venv>/bin/activate.csh |
+|  | PowerShell Core | $ <venv>/bin/Activate.ps1 |
+| Windows | cmd.exe | C:\> <venv>\Scripts\activate.bat |
+|  | PowerShell | PSC:\> <venv>\Scripts\Activate.ps1 |
+
+- 取消激活
+
+| 平台 | Shell | 用于激活虚拟环境的命令 |
+| --- | --- | --- |
+| POSIX | bash/zsh | $ source <venv>/bin/activate |
+|  | fish | $ . <venv>/bin/activate.fish |
+|  | csh/tcsh | $ source <venv>/bin/activate.csh |
+|  | PowerShell Core | $ <venv>/bin/Activate.ps1 |
+| Windows | cmd.exe | C:\> <venv>\Scripts\activate.bat |
+|  | PowerShell | PSC:\> <venv>\Scripts\Activate.ps1 |
+
+
+- 更多请求看 [这里](https://www.yuque.com/h_dj/kd0g9f/qbbb4c)
+
 
 ### 参考
 - Python 环境搭建 https://www.runoob.com/python/python-install.html

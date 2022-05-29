@@ -45,6 +45,14 @@
 - 接口调试
 
   - [Postman](https://www.postman.com/) API 调试工具
+
+- Chrome浏览器插件
+    - Quick QR 二维码生成器
+    - JSON Viewer 响应的json格式化显示
+    - Proxy SwitchyOmega 代理切换
+    - floccus bookmarks 书签同步
+
+
 - shell 工具
 
   - [FinalShell](http://www.hostbuf.com/) :一款由 Java 开发的 shell 工具
@@ -63,6 +71,7 @@
   - [PDMan](https://gitee.com/robergroup/pdman) PDMan-国产免费通用数据库建模工具
   - [PrettyZoo](https://github.com/vran-dev/PrettyZoo) 使用 JavaFX 实现的 Zookeeper GUI 管理工具
 - 开发调试
+
   - [whistle](https://github.com/avwo/whistle):基于 Node 实现的跨平台抓包调试代理工具
 - 在线排版工具
 
@@ -100,6 +109,7 @@
 
 - JVM 相关库或工具
   - [JOL](https://openjdk.java.net/projects/code-tools/jol/) 用于查看 Java 对象头类库
+  - [jmh 图表](https://github.com/Sayi/jmh-visual-chart) 用于可视化 jmh 基准测试数据
   - [GCViewer](https://github.com/chewiebug/GCViewer) GC log 可视化工具
 
 ### 三、资讯 & 博客
