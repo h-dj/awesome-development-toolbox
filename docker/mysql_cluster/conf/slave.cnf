@@ -1,0 +1,32 @@
+[mysqld]
+
+
+# ###################################################
+# 如果当前实例既做主库又做从库次选线必须开启
+# log-slave-updates = true
+
+# 自增长ID
+# 特殊说明 当该实例为双主的架构时要特殊配置 以避免自增id冲突的问题
+# auto_increment_offset = 2
+# auto_increment_increment = 2
+# ####################################################
+
+default_authentication_plugin=mysql_native_password
+
+# [必须]服务器唯一ID，默认是1，一般取IP最后一段
+server-id=2
+
+# [必须]启用二进制日志
+log-bin=mysql-bin
+
+# 复制过滤：也就是指定哪个数据库不用同步（mysql库一般不同步）
+binlog-ignore-db=mysql
+
+#只读
+read-only=1
+
+
+[client]
+default-character-set=utf8mb4
+[mysql]
+default-character-set=utf8mb4

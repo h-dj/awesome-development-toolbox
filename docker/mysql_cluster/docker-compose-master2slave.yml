@@ -1,0 +1,45 @@
+version: "3"
+services:
+  mysql_master:
+    container_name: mysql_master
+    image: 'mysql:8.0'
+    volumes:
+      - ./data/master:/var/lib/mysql
+      - ./conf/master.cnf:/etc/mysql/my.cnf
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_MASTER_ROOT_PASSWORD}
+    ports:
+      - "4400:3306"
+    restart: always
+    networks:
+      - mysql-replicanet
+  mysql_slave_1:
+    image: 'mysql:8.0'
+    container_name: mysql_slave_1
+    volumes:
+      - ./data/slave1:/var/lib/mysql
+      - ./conf/slave1.cnf:/etc/mysql/my.cnf
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_SLAVE_ROOT_PASSWORD}
+    ports:
+      - "4401:3306"
+    restart: always
+    networks:
+      - mysql-replicanet
+  mysql_slave_2:
+    image: 'mysql:8.0'
+    container_name: mysql_slave_2
+    volumes:
+      - ./data/slave2:/var/lib/mysql
+      - ./conf/slave2.cnf:/etc/mysql/my.cnf
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_SLAVE_ROOT_PASSWORD}
+    ports:
+      - "4402:3306"
+    restart: always
+    networks:
+      - mysql-replicanet
+
+networks:
+  mysql-replicanet:
+    driver: bridge
