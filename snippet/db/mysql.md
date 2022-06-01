@@ -184,8 +184,8 @@ log_queries_not_using_indexes = 1 #表明记录没有使用索引的 SQL 语句
 - 查询数据库表，并行转列
 
 ```shell
-select GROUP_CONCAT(table_name,",")  
+select GROUP_CONCAT(table_name)  
 from information_schema.tables 
-where table_schema='cmall' and table_type='base table';
+where table_schema='test';
 ```
 
