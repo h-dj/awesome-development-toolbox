@@ -5,17 +5,20 @@
 
 #### 配置npm 下载源
 
-> 淘宝 NPM 切换新域名 https://npmmirror.com/
+> 淘宝 NPM 切换新域名
+- npm.taobao.org => http://npmmirror.com
+- http://registry.npm.taobao.org => http://registry.npmmirror.com
+
 
 方法一
 ```
-npm config set registry https://registry.npm.taobao.org
+npm config set registry http://registry.npmmirror.com
 
 ```
 或者配置 .npmrc 文件  npm help config 命令查看配置帮助
 ```
 sass_binary_site=https://npm.taobao.org/mirrors/node-sass/
-registry=https://registry.npm.taobao.org/
+registry=http://registry.npmmirror.com
 chromedriver_cdnurl=http://cdn.npm.taobao.org/dist/chromedriver
 electron_mirror=https://npm.taobao.org/mirrors/electron/
 phantomjs_cdnurl=https://npm.taobao.org/mirrors/phantomjs/
