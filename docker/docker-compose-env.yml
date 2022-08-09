@@ -22,6 +22,9 @@ services:
     privileged: true
     ports:
       - 1521:1521
+    environment:
+      - TZ=Asia/Shanghai
+      - ORACLE_CHARACTERSET=AL32UTF8
     volumes:
       - /opt/oracle:/u01/app/oracle
     networks:

@@ -3,7 +3,7 @@ services:
   nacos:
     image: nacos/nacos-server:2.0.3
     container_name: nacos-standalone-mysql
-   env_file:
+    env_file:
       #需要先安装好mysql， 注意初始化sql
       - ./nacos-standlone-mysql.env  
     volumes:
