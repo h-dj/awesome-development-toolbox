@@ -1,0 +1,16 @@
+#关闭保护模式
+protected-mode no
+#端口
+port ${PORT}
+#后台运行
+daemonize no
+#配置，数据文件路径
+dir ./
+#是否开启持久化
+appendonly yes
+#是否开启集群
+cluster-enabled yes
+#集群配置文件
+cluster-config-file nodes.conf
+#节点连接超时时间
+cluster-node-timeout 15000
