@@ -1,0 +1,18 @@
+version: "3"
+services:
+  jenkins:
+    image: 'jenkins/jenkins:lts-jdk11'
+    container_name: jenkins-service
+    # no，on-failure[:times]，always，unless-stopped
+    restart: 'always'
+    privileged: true
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - '5080:8080'
+      - '50000:50000'
+    volumes:
+      - ./jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker
+      - /usr/local/bin/docker-compose:/usr/local/bin/docker-compose

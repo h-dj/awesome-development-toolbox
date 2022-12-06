@@ -13,8 +13,6 @@ services:
       - "8848:8848"
     networks:
       - blog-nextwork
-    depends_on:
-      - mysql
     restart: always
 
 networks:
