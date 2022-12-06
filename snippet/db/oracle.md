@@ -3,6 +3,15 @@
 ```shell
  
 sqlplus root/admin123  as sysdba
+
+# 查询过期用户
+SELECT username, account_status FROM dba_users WHERE ACCOUNT_STATUS LIKE '%EXPIRED%';
+
+#修改用户密码
+ALTER USER system IDENTIFIED BY system;   
+
+#解锁用户
+ALTER USER system ACCOUNT UNLOCK;
 ```
 
 - 查询oracle server 字符集
