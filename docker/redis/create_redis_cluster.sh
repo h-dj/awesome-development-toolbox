@@ -18,11 +18,7 @@ for port in `seq 7000 7005`; do
     #stop
     docker container stop redis-cluster-$ms-$port
   fi
-  if [ "$(docker ps -aq -f status=exited -f name=redis-cluster-$ms-$port)" ]; then
-        #cleanup
-        docker container rm redis-cluster-$ms-$port
-  fi
-  if [ "$(docker ps -aq -f status=created -f name=redis-cluster-$ms-$port)" ]; then
+  if [ "$(docker ps -aq -f status=exited -f status=created -f status=dead -f name=redis-cluster-$ms-$port)" ]; then
         #cleanup
         docker container rm redis-cluster-$ms-$port
   fi
