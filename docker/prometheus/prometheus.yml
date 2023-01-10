@@ -1,0 +1,17 @@
+global:
+  scrape_interval:     60s  # 默认抓取间隔, 60秒向目标抓取一次数据。
+  evaluation_interval: 60s
+
+# 这里表示抓取对象的配置
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: ['192.168.56.109:9090']
+        labels:
+          instance: prometheus
+
+  - job_name: linux
+    static_configs:
+      - targets: ['192.168.56.109:9100']
+        labels:
+          instance: localhost

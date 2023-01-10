@@ -1,0 +1,22 @@
+filebeat.inputs:
+  - type: log #指定文件类型
+    enabled: true #是否开启，默认即开启，可不写
+    encoding: utf-8
+    paths:
+      - /apps/nginx/logs/access.log #日志文件路径
+    fields: #定义过滤字段
+      type: nginx_access_log #过滤字段
+  - type: log
+    enabled: true
+    encoding: utf-8
+    paths:
+      - /apps/nginx/logs/error.log
+    fields:
+      type: nginx_error_log
+
+setup.template.settings:
+  index.number_of_shards: 1
+
+# 输出到 logstash
+output.logstash:
+  hosts: ["192.168.56.108:5044"]

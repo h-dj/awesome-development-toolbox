@@ -6,5 +6,7 @@
 #
 server.host: 0.0.0.0
 elasticsearch.hosts: [ "http://elasticsearch:9200" ]
-monitoring.ui.container.elasticsearch.enabled: false
+xpack.monitoring.ui.container.elasticsearch.enabled: false
+#新版本使用以下属性代替 xpack.monitoring.ui.container.elasticsearch.enabled
+#monitoring.ui.container.elasticsearch.enabled: false
 

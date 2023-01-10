@@ -1,0 +1,19 @@
+version: '3'
+services:
+  filebeat:
+    image: 'elastic/filebeat:7.6.2'
+    # no，on-failure[:times]，always，unless-stopped
+    restart: 'always'
+    privileged: true
+    container_name: filebeat
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./config/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - ./logs:/var/log/nginx
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 100m
+        max-file: "3"
+

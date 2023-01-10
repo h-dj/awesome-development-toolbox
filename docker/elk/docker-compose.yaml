@@ -3,11 +3,13 @@ services:
   elasticsearch:
     container_name: blog-es
     image: 'elasticsearch:7.6.2'
+    # no，on-failure[:times]，always，unless-stopped
+    restart: 'always'
     privileged: true
     environment:
       - "cluster.name=elasticsearch" #设置集群名称为elasticsearch
       - "discovery.type=single-node" #以单一节点模式启动
-      - "ES_JAVA_OPTS=-Xms1G -Xmx1Gm" #设置使用jvm内存大小
+      - "ES_JAVA_OPTS=-Xms2G -Xmx2G" #设置使用jvm内存大小
     volumes:
       - ./es/plugins:/usr/share/elasticsearch/plugins
       - ./es/data:/usr/share/elasticsearch/data
@@ -15,39 +17,31 @@ services:
     ports:
       - 9200:9200
       - 9300:9300
-    networks:
-      - blog-nextwork
   kibana:
     image: 'kibana:7.6.2'
     container_name: blog-kibana
+    # no，on-failure[:times]，always，unless-stopped
+    restart: 'always'
+    privileged: true
     depends_on:
       - elasticsearch #kibana在elasticsearch启动之后再启动
     volumes:
       - ./config/kibana.yml:/usr/share/kibana/config/kibana.yml
     ports:
       - 5601:5601
-    networks:
-      - blog-nextwork
   logstash:
     image: 'logstash:7.6.2'
     container_name: blog-logstash
     environment:
       - TZ=Asia/Shanghai
-      - LS_JAVA_OPTS="-Xmx512m -Xms512m"
+    # no，on-failure[:times]，always，unless-stopped
+    restart: 'always'
+    privileged: true
     volumes:
-      - ./config/logstash.yml:/usr/share/logstash/config/logstash.yml
+      - ./config:/usr/share/logstash/config
       - ./config/pipeline:/usr/share/logstash/pipeline
     depends_on:
       - elasticsearch #kibana在elasticsearch启动之后再启动
     ports:
       - "5044:5044"
-      - "5000:5000/tcp"
-      - "5000:5000/udp"
       - "9600:9600"
-    networks:
-      - blog-nextwork
-
-
-networks:
-  blog-nextwork:
-    external: true # 指定外部创建的网络，不再创建
