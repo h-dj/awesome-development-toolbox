@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>灯笼挂件</title>
+</head>
+<body>
+<style>
+  :root {
+    --lantern-bg: rgba(255, 0, 0, .8);
+    --lantern-text-color: #ffc14e;
+    --lantern-line-color: #ffa500;
+  }
+  .lantern-box {
+    position: fixed;
+    top: -10px;
+    right: -20px;
+    max-width: 200px;
+    z-index: 1999;
+  }
+  .lantern-box1 {
+    top: -20px;
+    right: 60px;
+  }
+  .lantern-box2 {
+    top: 0px;
+    right: 140px;
+  }
+  .lantern-box3 {
+    top: -10px;
+    right: 220px;
+  }
+
+  .lantern-box1 .lantern,
+  .lantern-box3 .lantern{
+    -webkit-animation: swing 5s infinite ease-in-out;
+    animation: swing 5s infinite ease-in-out;
+    box-shadow: -5px 5px 30px 4px rgba(252, 144, 61, 1);
+  }
+
+  .lantern {
+    position: relative;
+    width: 120px;
+    height: 90px;
+    margin: 50px;
+    background: var(--lantern-bg);
+    border-radius: 50% 50%;
+    -webkit-transform-origin: 50% -100px;
+    -webkit-animation: swing 3s infinite ease-in-out;
+    animation: swing 3s infinite ease-in-out;
+    box-shadow: -5px 5px 50px 4px rgba(250, 108, 0, 1);
+  }
+
+  .lantern-main {
+    width: 95px;
+    height: 90px;
+    margin: 12px 8px 8px 10px;
+    border-radius: 50% 50%;
+    border: 2px solid var(--lantern-line-color);
+  }
+
+  .lantern-rect {
+    width: 45px;
+    height: 90px;
+    background: #d8000f;
+    background: rgba(216, 0, 15, 0.1);
+    margin: -4px 8px 8px 26px;
+    border-radius: 50% 50%;
+    border: 2px solid var(--lantern-line-color);
+  }
+
+  .lantern-line {
+    position: absolute;
+    top: -60px;
+    left: 60px;
+    width: 2px;
+    height: 60px;
+    background: var(--lantern-line-color);
+  }
+
+  .lantern-tassel-top {
+    position: relative;
+    width: 5px;
+    height: 20px;
+    margin: -5px 0 0 59px;
+    -webkit-animation: swing 4s infinite ease-in-out;
+    -webkit-transform-origin: 50% -45px;
+    background: var(--lantern-line-color);
+    border-radius: 0 0 5px 5px;
+  }
+
+  .lantern-tassel-middle {
+    position: absolute;
+    top: 14px;
+    left: -2px;
+    width: 10px;
+    height: 10px;
+    background: #dc8f03;
+    border-radius: 50%;
+  }
+
+  .lantern-tassel-bottom {
+    position: absolute;
+    top: 18px;
+    left: -2px;
+    width: 10px;
+    height: 35px;
+    background: var(--lantern-line-color);
+    border-radius: 0 0 0 5px;
+  }
+
+  .lantern:before {
+    position: absolute;
+    top: -7px;
+    left: 29px;
+    height: 12px;
+    width: 60px;
+    content: " ";
+    display: block;
+    z-index: 1999;
+    border-radius: 5px 5px 0 0;
+    border: solid 1px #dc8f03;
+    background: var(--lantern-line-color);
+    background: linear-gradient(to right, #ffa500, #ffc14e, #ffa500, #ffc14e, #ffa500);
+  }
+
+  .lantern:after {
+    position: absolute;
+    bottom: -7px;
+    left: 10px;
+    height: 12px;
+    width: 60px;
+    content: " ";
+    display: block;
+    margin-left: 20px;
+    border-radius: 0 0 5px 5px;
+    border: solid 1px #dc8f03;
+    background: var(--lantern-line-color);
+    background: linear-gradient(to right, #ffa500, #ffc14e, #ffa500, #ffc14e, #ffa500);
+  }
+
+  .lantern-text {
+    font-family: 华文行楷, 楷体, Arial, Lucida Grande, Tahoma, sans-serif;
+    font-size: 2.8rem;
+    color: var(--lantern-text-color);
+    font-weight: bold;
+    line-height: 90px;
+    text-align: center;
+  }
+
+  .night .lantern-text,
+  .night .lantern-box {
+    background: transparent !important;
+  }
+
+  @keyframes swing {
+    0% {
+      transform: rotate(-10deg)
+    }
+
+    50% {
+      transform: rotate(10deg)
+    }
+
+    100% {
+      transform: rotate(-10deg)
+    }
+  }
+
+  @-moz-keyframes swing {
+    0% {
+      -moz-transform: rotate(-10deg)
+    }
+
+    50% {
+      -moz-transform: rotate(10deg)
+    }
+
+    100% {
+      -moz-transform: rotate(-10deg)
+    }
+  }
+
+  @-webkit-keyframes swing {
+    0% {
+      -webkit-transform: rotate(-10deg)
+    }
+
+    50% {
+      -webkit-transform: rotate(10deg)
+    }
+
+    100% {
+      -webkit-transform: rotate(-10deg)
+    }
+  }
+</style>
+<!-- 灯笼 节 -->
+<div class="lantern-box">
+    <div class="lantern">
+        <div class="lantern-line"></div>
+        <div class="lantern-main">
+            <div class="lantern-rect">
+                <div class="lantern-text">节</div>
+            </div>
+        </div>
+        <div class="lantern-tassel lantern-tassel-top">
+            <div class="lantern-tassel-bottom"></div>
+            <div class="lantern-tassel-middle"></div>
+        </div>
+    </div>
+</div>
+<!-- 灯笼 春 -->
+<div class="lantern-box lantern-box1">
+    <div class="lantern">
+        <div class="lantern-line"></div>
+        <div class="lantern-main">
+            <div class="lantern-rect">
+                <div class="lantern-text">春</div>
+            </div>
+        </div>
+        <div class="lantern-tassel lantern-tassel-top">
+            <div class="lantern-tassel-bottom"></div>
+            <div class="lantern-tassel-middle"></div>
+        </div>
+    </div>
+</div>
+<!-- 灯笼 度 -->
+<div class="lantern-box lantern-box2">
+    <div class="lantern">
+        <div class="lantern-line"></div>
+        <div class="lantern-main">
+            <div class="lantern-rect">
+                <div class="lantern-text">度</div>
+            </div>
+        </div>
+        <div class="lantern-tassel lantern-tassel-top">
+            <div class="lantern-tassel-bottom"></div>
+            <div class="lantern-tassel-middle"></div>
+        </div>
+    </div>
+</div>
+<!-- 灯笼 欢 -->
+<div class="lantern-box lantern-box3">
+    <div class="lantern">
+        <div class="lantern-line"></div>
+        <div class="lantern-main">
+            <div class="lantern-rect">
+                <div class="lantern-text">欢</div>
+            </div>
+        </div>
+        <div class="lantern-tassel lantern-tassel-top">
+            <div class="lantern-tassel-bottom"></div>
+            <div class="lantern-tassel-middle"></div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
