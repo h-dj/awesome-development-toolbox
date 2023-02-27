@@ -2,7 +2,9 @@
 - 登陆oracle  fgfdgd
 ```shell
  
-sqlplus root/admin123  as sysdba
+sqlplus SYS/admin123  as sysdba
+
+
 
 # 查询过期用户
 SELECT username, account_status FROM dba_users WHERE ACCOUNT_STATUS LIKE '%EXPIRED%';
@@ -92,6 +94,16 @@ exp demo/demo@127.0.0.1:1521/orcl file=f:/f.dmp full=y
 exp demo/demo@orcl file=f:/f.dmp full=y
 #导入方式：
 imp demo/demo@orcl file=f:/f.dmp full=y ignore=y
+
+
+导入sql 文件
+# 登录用户
+sqlplus username/password
+# 导入文件
+@D:/test.sql; 
+
+#提交
+commit;
 ```
 
 ### 常用的sql 片段
