@@ -1,0 +1,81 @@
+version: '3'
+
+networks:
+  monitor-net:
+    driver: bridge
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.40.6
+    container_name: prometheus
+    user: "1000:1000"
+    volumes:
+      - $PWD/monitor/prometheus.yml:/etc/prometheus/prometheus.yml
+      - $PWD/monitor/prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+    ports:
+      - 9090:9090
+    networks:
+      - monitor-net
+
+
+  grafana:
+    image: grafana/grafana:9.3.1
+    container_name: grafana
+    user: "1000:1000"
+    volumes:
+      - $PWD/monitor/grafana-storage:/var/lib/grafana
+    environment:
+      - GF_INSTALL_PLUGINS=redis-app
+      - GF_INSTALL_PLUGINS=redis-datasource
+      - GF_INSTALL_PLUGINS=redis-explorer-app
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    networks:
+      - monitor-net
+
+  nodeexporter:
+    image: prom/node-exporter:v1.5.0
+    container_name: nodeexporter
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    restart: unless-stopped
+    ports:
+      - 9100:9100
+    networks:
+      - monitor-net
+
+  mysqld-exporter:
+    image: prom/mysqld-exporter:v0.14.0
+    container_name: mysqld-exporter
+    ports:
+      - 9104:9104
+    environment:
+      - DATA_SOURCE_NAME=exporter:exporter@tcp(192.168.56.105:3306)/
+    networks:
+      - monitor-net
+
+  redis-exporter:
+    image: oliver006/redis_exporter:v1.47.0
+    environment:
+      - REDIS_ADDR=redis://192.168.56.107:6379
+      - REDIS_PASSWORD=redis@123456
+    ports:
+      - 9121:9121
+    networks:
+      - monitor-net

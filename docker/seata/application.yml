@@ -1,0 +1,44 @@
+
+server:
+  port: 7091
+
+spring:
+  application:
+    name: seata-server
+
+console:
+  user:
+    username: seata
+    password: seata
+
+seata:
+  config:
+    type: nacos
+    nacos:
+      server-addr: 192.168.56.104:8848
+      username: nacos
+      password: nacos
+      namespace:
+      group: SEATA_GROUP
+      data-id: seataServer.properties
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: 192.168.56.104:8848
+      username: nacos
+      password: nacos
+      namespace:
+      group: SEATA_GROUP
+      cluster: default
+  store:
+    # support: file 、 db 、 redis
+    mode: db
+  server:
+    service-port: 8091 #If not configured, the default is '${server.port} + 1000'
+  security:
+    secretKey: SeataSecretKey0c382ef121d778043159209298fd40bf3850a017
+    tokenValidityInMilliseconds: 1800000
+    ignore:
+      urls: /,/**/*.css,/**/*.js,/**/*.html,/**/*.map,/**/*.svg,/**/*.png,/**/*.ico,/console-fe/public/**,/api/v1/auth/login
+

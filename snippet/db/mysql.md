@@ -6,7 +6,7 @@
 CREATE USER 'blog'@'%' IDENTIFIED BY 'blog@123456';
 
 #例子
-CREATE USER 'demo'@'192.168.43.178' IDENDIFIED BY '123456';
+CREATE USER 'demo'@'192.168.43.178' IDENTIFIED BY '123456';
 CREATE USER 'demo'@'%' IDENTIFIED BY '123456';
 ```
 
@@ -174,6 +174,7 @@ slow_query_log #慢查询开启状态,ON开启,OFF关闭
 slow_query_log_file #慢查询日志存放的位置（这个目录需要MySQL的运行帐号的可写权限,一般设置为MySQL的数据存放目录）
 long_query_time #查询超过多少秒才记录,默认10s,查询命令 SHOW VARIABLES LIKE 'long_query_time';
 log_queries_not_using_indexes = 1 #表明记录没有使用索引的 SQL 语句
+
 
 ```
 
