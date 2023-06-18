@@ -7,17 +7,17 @@ PORTS=`seq 7000 7005`
 function remove_cluster() {
     if [ "$(docker ps -q -f name=redis-cluster-$ms-$port)" ]; then
       #stop
-          echo "==========ÔİÍ£ redis docker ÈİÆ÷============"
+          echo "==========æš‚åœ redis docker å®¹å™¨============"
           docker container stop redis-cluster-$ms-$port
     fi
     if [ "$(docker ps -aq -f status=exited -f status=created -f status=dead -f name=redis-cluster-$ms-$port)" ]; then
           #cleanup
-          echo "==========É¾³ı redis docker ÈİÆ÷============"
+          echo "==========åˆ é™¤ redis docker å®¹å™¨============"
           docker container rm redis-cluster-$ms-$port
     fi
 
     if [ -d "$BASE_DIR" ]; then
-      echo -n "ÊÇ·ñÉ¾³ı redis ÅäÖÃºÍÊı¾İ default n:(Y/n)"
+      echo -n "æ˜¯å¦åˆ é™¤ redis é…ç½®å’Œæ•°æ® default n:(Y/n)"
       read remove_confirm
 
       if [ $remove_confirm = "N" ]; then
@@ -34,15 +34,15 @@ function remove_cluster() {
 
 
 function prepare() {
-    echo "========== ×¼±¸³õÊ¼»¯ =================="
-    echo -n "ÇëÊäÈë°²×°Â·¾¶ default $BASE_DIR:"
+    echo "========== å‡†å¤‡åˆå§‹åŒ– =================="
+    echo -n "è¯·è¾“å…¥å®‰è£…è·¯å¾„ default $BASE_DIR:"
     read install_dir
     if [ -d "$install_dir" ]; then
         $BASE_DIR = $install_dir
       else
-         echo -n "ÊäÈë°²×°Â·¾¶²»´æÔÚ£¬²ÉÓÃÄ¬ÈÏ $BASE_DIR"
+         echo -n "è¾“å…¥å®‰è£…è·¯å¾„ä¸å­˜åœ¨ï¼Œé‡‡ç”¨é»˜è®¤ $BASE_DIR"
     fi
-    #master ºÍ slave ÎÄ¼ş¼Ğ
+    #master å’Œ slave æ–‡ä»¶å¤¹
     for port in $PORTS; do
     	ms="master"
     	if [ $port -ge 7003 ]; then
@@ -55,11 +55,11 @@ function prepare() {
 }
 
 function start() {
-    #´´½¨ÍøÂç
+    #åˆ›å»ºç½‘ç»œ
     if [  ! -n "$( docker network ls -q -f name=network-redis-cluster)" ]; then
         docker network create network-redis-cluster
     fi
-    echo "========== Æô¶¯ÊµÀı =================="
+    echo "========== å¯åŠ¨å®ä¾‹ =================="
     for port in $PORTS; do
     	ms="master"
     	if [ $port -ge 7003 ]; then
@@ -76,7 +76,7 @@ function start() {
     done
 
 
-    echo "========== ÅäÖÃ¼¯Èº =================="
+    echo "========== é…ç½®é›†ç¾¤ =================="
     matches=""
     for port in $PORTS; do
     	ms="master"
@@ -86,14 +86,14 @@ function start() {
     	matches=$matches$(docker inspect --format '{{(index .NetworkSettings.Networks "network-redis-cluster").IPAddress}}' "redis-cluster-$ms-${port}"):${port}" ";
     done
 
-    # ´´½¨docker-cluster
-    # redis 4 or 3°æ±¾
-    #ĞèÒªredis-trib ¾µÏñ
+    # åˆ›å»ºdocker-cluster
+    # redis 4 or 3ç‰ˆæœ¬
+    #éœ€è¦redis-trib é•œåƒ
     #docker run -it --rm --net redis-cluster-net redis-trib ruby redis-trib.rb create --replicas 1 $matches
 
-    #redis 5 °æ±¾
+    #redis 5 ç‰ˆæœ¬
     docker run -it --rm --net network-redis-cluster --privileged=true redis  redis-cli --cluster create $matches --cluster-replicas 1
-    #Èç¹ûÈ¨ÏŞ²»¹»£¬ÔòÌí¼ÓÒ»ÏÂ²ÎÊı
+    #å¦‚æœæƒé™ä¸å¤Ÿï¼Œåˆ™æ·»åŠ ä¸€ä¸‹å‚æ•°
     #--privileged=true
 }
 
@@ -102,7 +102,7 @@ function redis_cluster_install() {
 }
 
 
-# Ö´ĞĞÉ¾³ı
+# æ‰§è¡Œåˆ é™¤
 if [ "$1" = "--remove" ]; then
   remove_cluster
   exit 0

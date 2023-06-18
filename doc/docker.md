@@ -112,11 +112,22 @@ docker run hello-world
 
 - 获取阿里docker镜像加速器 https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors
 
+
+- 配置代理
+```
+sudo vim /etc/systemd/system/docker.service.d/proxy.conf
+# Add content below
+[Service]
+Environment="HTTP_PROXY=http://192.168.43.47:7890/"
+Environment="HTTPS_PROXY=http://192.168.43.47:7890/"
+Environment="NO_PROXY=localhost,127.0.0.1,.example.com"
+```
+
+
 #### 2.4 重启
 
 ```
-sudo systemctl daemon-reload 
-sudo systemctl restart docker
+sudo systemctl daemon-reload && sudo systemctl restart docker
 ```
 
 ### 三、docker简单命令了解
@@ -203,7 +214,7 @@ sudo systemctl restart docker
 
 ```shell
 #下载
-sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo curl  --proxy http://192.168.43.47:7890 -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 #授予执行权限
 sudo chmod +x /usr/local/bin/docker-compose
 #验证安装

@@ -1,0 +1,55 @@
+#!/usr/bin/env ansible-playbook
+- hosts: all
+  tasks:
+    - debug: var=ansible_distribution,ansible_env #ansible nginx -m setup -a 'filter=ansible_'
+
+- hosts: mysql
+  become: yes
+  user: vagrant
+  roles:
+    - common
+- hosts: redis
+  become: yes
+  roles:
+    - common
+
+- hosts: rabbitmq
+  become: yes
+  user: vagrant
+  roles:
+    - common
+
+- hosts: elk
+  become: yes
+  user: vagrant
+  roles:
+    - common
+- hosts: nacos
+  become: yes
+  user: vagrant
+  roles:
+    - common
+
+
+- hosts: jenkins
+  become: yes
+  user: vagrant
+  roles:
+   - common
+
+- hosts: nexus3
+  become: yes
+  user: vagrant
+  roles:
+   - common
+
+- hosts: nginx
+  become: yes
+  user: vagrant
+  roles:
+   - common
+- hosts: git
+  become: yes
+  user: vagrant
+  roles:
+   - common

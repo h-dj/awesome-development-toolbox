@@ -1,2 +1,5 @@
 /.idea/
 /docker/volumes/
+devOps/vagrant/*.log
+devOps/vagrant/*.box
+devOps/vagrant/tmp

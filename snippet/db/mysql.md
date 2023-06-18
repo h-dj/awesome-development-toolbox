@@ -23,6 +23,9 @@ GRANT privileges ON databasename.tablename TO 'username'@'host'
 GRANT SELECT, INSERT ON test.user TO 'demo'@'192.168.43.178';
 GRANT ALL ON *.* TO 'demo'@'192.168.43.178';
 GRANT ALL ON student.* TO 'demo'@'192.168.43.178';
+
+FLUSH PRIVILEGES;
+
 ```
 
 - 查询用户

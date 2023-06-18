@@ -1,0 +1,13 @@
+version: "3"
+services:
+  mq:
+    container_name: rabbitmq-serve
+    image: 'rabbitmq:3.8-management'
+    restart: always
+    privileged: true
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+    ports:
+      - 5672:5672
+      - 15672:15672
