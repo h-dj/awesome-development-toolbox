@@ -1,0 +1,30 @@
+version: '3.5'
+services:
+  hertzbeat:
+    image: quay.io/tancloud/hertzbeat
+    container_name: hertzbeat 
+    restart: always
+    ports:
+      - 1158:1158
+      - 1157:1157
+    environment:
+      - LANG="zh_CN.UTF-8"
+      - TZ="Asia/Shanghai"
+    volumes:
+      - hertzbeat-data:/opt/hertzbeat/data
+      - hertzbeat-logs:/opt/hertzbeat/logs
+      - ./conf/application.yml:/opt/hertzbeat/config/application.yml
+
+  hertzbeat-collector:
+    image: quay.io/tancloud/hertzbeat-collector
+    container_name: hertzbeat-collector
+    restart: always
+    environment:
+      - IDENTITY=custom-collector-name
+      - MODE=public
+      - MANAGER_HOST=127.0.0.1
+      - MANAGER_PORT=1158
+
+volumes:
+  hertzbeat-data:
+  hertzbeat-logs:

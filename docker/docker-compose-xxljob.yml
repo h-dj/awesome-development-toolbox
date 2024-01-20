@@ -5,15 +5,12 @@ services:
     container_name: xxl-job-server
     environment:
       # 注意用空格分割每一个参数
-      - PARAMS=" --server.port=9090 --spring.datasource.url=jdbc:mysql://mysql:3306/xxl_job?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai --spring.datasource.username=root --spring.datasource.password=root@01234560 "
+      - PARAMS=" --server.port=9090 --spring.datasource.url=jdbc:mysql://192.168.56.10:3306/xxl_job?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai --spring.datasource.username=root --spring.datasource.password=123456 "
     volumes:
-      - /opt/xxl-job:/data
+      - xxl-job:/data
     ports:
       - "7070:9090"
-    networks:
-      - blog-nextwork  # 与外部已启动的mysql 通信
     restart: always
 
-networks:
-  blog-nextwork:
-    external: true # 指定外部创建的网络，不再创建
+volumes:
+  xxl-job:

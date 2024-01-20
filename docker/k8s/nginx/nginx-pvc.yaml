@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nginx-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local  # 与PV的存储类名称匹配
+  resources:
+    requests:
+      storage: 1Gi  # 与PV的容量匹配

@@ -1,9 +1,9 @@
 #!/bin/bash
 bakfile=/tmp/hosts_$RANDOM
-# ¶¨Òå²Ö¿âÓòÃûºÍ nexus Ç°Ì¨ÓòÃû
+# å®šä¹‰ä»“åº“åŸŸåå’Œ nexus å‰å°åŸŸå
 docker_domain=idocker.io
 repo_domain=repo.xxx.com
-# °ó¶¨²Ö¿âÓòÃû½âÎö
+# ç»‘å®šä»“åº“åŸŸåè§£æ
 cp /etc/hosts $bakfile || exit 1
 echo "/etc/hosts is bakcup to $bakfile"
 if grep -q "$idocker_domain" /etc/hosts;then
@@ -12,7 +12,7 @@ else
     echo "192.168.1.100 $docker_domain" >> /etc/hosts
 fi
 echo
-# Ì½²âµ½²Ö¿âÊÇ·ñ³©Í¨
+# æ¢æµ‹åˆ°ä»“åº“æ˜¯å¦ç•…é€š
 if which telnet >/dev/null 2>&1;then
     echo start trying to connect to $docker_domain:443 ...
     if ! echo "e" | telnet -e "e" $docker_domain 443 >/dev/null;then
@@ -22,7 +22,7 @@ if which telnet >/dev/null 2>&1;then
     fi
 fi
 echo
-# ¿ªÊ¼²¿ÊğÖ¤Êé
+# å¼€å§‹éƒ¨ç½²è¯ä¹¦
 mkdir -p /etc/docker/certs.d/$docker_domain
 curl -s -o /etc/docker/certs.d/$docker_domain/ca.crt http://$repo_domain/download/cert/ca.crt
 

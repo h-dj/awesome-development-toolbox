@@ -59,7 +59,7 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io
 - 使用一键安装脚本
 
 ```
-curl -fsSL https://get.docker.com -o get-docker.sh
+curl -fsSL get.docker.com -o get-docker.sh
 sudo sh get-docker.sh --mirror Aliyun
 ```
 
@@ -214,7 +214,7 @@ sudo systemctl daemon-reload && sudo systemctl restart docker
 
 ```shell
 #下载
-sudo curl  --proxy http://192.168.43.47:7890 -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo curl  --proxy http://192.168.43.35:7890 -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 #授予执行权限
 sudo chmod +x /usr/local/bin/docker-compose
 #验证安装

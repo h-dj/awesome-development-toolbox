@@ -1,0 +1,74 @@
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-ui-svc
+  namespace: kafka
+  labels:
+    app: kafka-ui
+spec:
+  type: NodePort
+  ports:
+    - name: tcp-client
+      port: 8080
+      targetPort: 8080
+      nodePort: 30008
+  selector:
+    app: kafka-ui
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kafka-ui-configmap
+  namespace: kafka  # 指定命名空间
+  labels:
+    app: kafka-ui
+  annotations:
+    kubesphere.io/alias-name: kafka-conf
+    kubesphere.io/creator: admin
+    kubesphere.io/description: kafka-ui 主配置文件
+data:
+  config.yml: | 
+      kafka:
+        clusters:
+          - name: kafka-0
+            bootstrapServers: kafka-cs.kafka.svc.cluster.local:9092
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-ui
+  namespace: kafka
+  labels:
+    app: kafka-ui
+spec:
+  selector:
+    matchLabels:
+      app: kafka-ui
+  template:
+    metadata:
+      labels:
+        app: kafka-ui
+    spec:
+      containers:
+        - name: kafka-ui
+          image: provectuslabs/kafka-ui:master
+          imagePullPolicy: "IfNotPresent"
+          resources:
+            limits: 
+              cpu: 1
+              memory: 1Gi
+          env:
+            - name: SPRING_CONFIG_ADDITIONAL-LOCATION
+              value: "/tmp/config.yml"
+          ports:
+            - name: http
+              containerPort: 8080
+          volumeMounts:         
+            - name: kafka-ui-config
+              mountPath: /tmp
+              
+      volumes:   # 挂载持久卷到Pod
+        - name: kafka-ui-config
+          configMap:
+            name: kafka-ui-configmap

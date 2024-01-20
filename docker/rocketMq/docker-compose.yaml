@@ -10,7 +10,7 @@ services:
       # 内存分配
       JAVA_OPT_EXT: "-server -Xms1g -Xmx1g"
     volumes:
-      - ./logs:/root/logs
+      - rmqnamesrv-logs:/root/logs
     command: sh mqnamesrv
     networks:
       rmq:
@@ -27,9 +27,9 @@ services:
       - 10909:10909
       - 10911:10911
     volumes:
-      - ./logs:/root/logs
-      - ./store:/root/store
-      - ./conf/broker.conf:/opt/rocketmq-4.4.0/conf/broker.conf
+      - rmqbroker-logs:/root/logs
+      - rmqbroker-store:/root/store
+      - ./broker.conf:/opt/rocketmq-4.4.0/conf/broker.conf
     command: sh mqbroker  -c /opt/rocketmq-4.4.0/conf/broker.conf
     environment:
       NAMESRV_ADDR: "rmqnamesrv:9876"
@@ -49,7 +49,7 @@ services:
       - rmqnamesrv
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ./console/logs:/root/logs
+      - rmqconsole-logs:/root/logs
     environment:
       JAVA_OPTS: "-Drocketmq.namesrv.addr=rmqnamesrv:9876 -Dcom.rocketmq.sendMessageWithVIPChannel=false"
     networks:
@@ -61,3 +61,10 @@ networks:
   rmq:
     name: rmq
     driver: bridge
+
+
+volumes:
+  rmqbroker-logs:
+  rmqbroker-store: 
+  rmqnamesrv-logs: 
+  rmqconsole-logs: 

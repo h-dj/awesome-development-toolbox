@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment  # 类型是部署 
+metadata:
+  name: gogs-deployment  # 对象的名字
+  namespace: git  # 指定命名空间
+spec:
+  replicas: 1	#使用该Deployment创建一个应用程序实例
+  selector:
+    matchLabels:
+      app: gogs
+  strategy:
+    type: Recreate
+  template:   # 开始定义Pod 
+    metadata:
+      labels:
+        app: gogs  #Pod的Label，用来标识Pod
+    spec:
+      containers: # 开始定义Pod里面的容器
+        - image: 'gogs/gogs:0.13'
+          name: gogs-service
+          imagePullPolicy: IfNotPresent # IfNotPresent  Always  Never
+          env:   #  定义环境变量
+            - name: TZ
+              value: Asia/Shanghai
+            - name: SOCAT_LINKS
+              value: "false"
+          ports:
+            - containerPort: 3000
+              name: http        
+            - containerPort: 22
+              name: ssh
+          volumeMounts: # 挂载Pod上的卷到容器
+            - name: gogs-persistent-storage # Pod上卷的名字，与“volumes”名字匹配
+              mountPath: /data/gogs # 挂载的Pod的目录
+            - name: gogs-persistent-storage
+              mountPath: /data/git/gogs-repositories
+      volumes:   # 挂载持久卷到Pod
+        - name: gogs-persistent-storage # 持久卷名字， 与“volumMounts”名字匹配
+          persistentVolumeClaim: 
+            claimName: gogs-pv-claim  # 持久卷申请名字

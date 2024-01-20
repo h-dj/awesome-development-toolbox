@@ -1,0 +1,23 @@
+version: "3"
+services:
+  etcd:
+    container_name: etcd-server
+    hostname: etcd
+    image: "quay.io/coreos/etcd:v3.5.0"
+    user: "1000:1000"
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    volumes:
+      - "./data:/etcd-data"
+      - "./conf/etcd.conf.yml:/etcd-conf/etcd.conf.yml"
+      - "./conf:/etcd-conf"
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+     - "ALLOW_NONE_AUTHENTICATION=yes"
+     - TZ=Asia/Shanghai
+    ports:
+      - 2379:2379
+      - 2380:2380
+    command: ["etcd", "--config-file=/etcd-conf/etcd.conf.yml"]

@@ -1,0 +1,6 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: development
+  labels:
+    name: development  # 用于开发环境的命名空间标签

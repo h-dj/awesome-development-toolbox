@@ -15,26 +15,3 @@ services:
 #      - '6667:6667'
     volumes:
       - ./data:/nexus-data
-    networks:
-      - nexus3-network
-  nginx:
-    container_name: nexus3-nginx
-    image: 'nginx:1.16-alpine'
-    restart: 'always'
-    privileged: true
-    environment:
-      - TZ=Asia/Shanghai
-    volumes:
-      - ./nginx/conf/logstash.conf:/etc/nginx/logstash.conf
-      - ./nginx/conf.d:/etc/nginx/conf.d
-      - ./nginx/logs:/var/log/nginx
-    ports:
-      - 80:80
-      - 443:443
-    networks:
-     - nexus3-network
-
-
-
-networks:
-  nexus3-network:

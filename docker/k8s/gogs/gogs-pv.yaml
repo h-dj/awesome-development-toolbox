@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: gogs-pv-claim
+  namespace: git  # 指定命名空间
+  labels:
+    app: gogs
+spec:
+  accessModes:
+    - ReadWriteOnce
+  # storageClassName:  # 这里的存储类型注释掉了
+  resources:
+    requests:
+      storage: 20Gi #1 GB

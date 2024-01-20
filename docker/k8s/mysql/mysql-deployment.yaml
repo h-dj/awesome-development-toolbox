@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: StatefulSet  # StatefulSet、Deployment、DaemonSet
+metadata:
+  name: mysql-deployment  # 对象的名字
+  namespace: database  # 指定命名空间
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+      app.kubernetes.io/name: mysql
+  serviceName: mysql # StatefulSet 才有的属性
+  replicas: 1
+  template:   # 开始定义Pod 
+    metadata:
+      labels:
+        app: mysql  #Pod的Label，用来标识Pod
+        app.kubernetes.io/name: mysql
+    spec:
+      containers: # 开始定义Pod里面的容器
+        - image: mysql:8.0
+          name: mysql-service
+          imagePullPolicy: IfNotPresent # IfNotPresent  Always  Never
+          env:   #  定义环境变量
+            - name: MYSQL_ROOT_PASSWORD  #  环境变量名
+              value: root  #  环境变量值
+            - name: TZ
+              value: Asia/Shanghai
+          args: ["--default-authentication-plugin=mysql_native_password"]
+          ports:
+            - containerPort: 3306 # mysql端口 
+              name: mysql 
+          volumeMounts: # 挂载Pod上的卷到容器
+            - name: mysql-persistent-storage # Pod上卷的名字，与“volumes”名字匹配
+              mountPath: /var/lib/mysql # 挂载的Pod的目录
+            - name: mysql-config
+              mountPath: /etc/mysql/conf.d  # 挂载Nginx配置文件路径
+      volumes:   # 挂载持久卷到Pod
+        - name: mysql-persistent-storage # 持久卷名字， 与“volumMounts”名字匹配
+          persistentVolumeClaim: 
+            claimName: mysql-pv-claim  # 持久卷申请名字
+        - name: mysql-config
+          configMap:
+            name: mysql-configmap  # 引用的ConfigMap的名称

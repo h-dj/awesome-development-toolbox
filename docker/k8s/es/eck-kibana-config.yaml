@@ -1,0 +1,25 @@
+apiVersion: kibana.k8s.elastic.co/v1
+kind: Kibana
+metadata:
+  name: kibana
+  namespace: elastic-system
+  labels:
+    app: kibana
+spec:
+  version: 8.0.0
+  count: 1
+  elasticsearchRef:
+    name: elasticsearch
+    namespace: elastic-system
+  http:
+    service:
+      spec:
+        type: NodePort # default is ClusterIP
+        ports:
+        - protocol : TCP
+          nodePort: 30561  #  30000-32767
+          port: 5601
+          targetPort: 5601
+    tls:
+      selfSignedCertificate:
+        disabled: true

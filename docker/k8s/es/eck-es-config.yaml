@@ -1,0 +1,36 @@
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: elasticsearch
+  namespace: elastic-system
+spec:
+  version: 8.0.0
+  volumeClaimDeletePolicy: DeleteOnScaledownOnly
+  nodeSets:
+  - name: elasticsearch
+    count: 3
+    config:
+      node.store.allow_mmap: false
+    volumeClaimTemplates:
+    - metadata:
+        name: elasticsearch-data # Do not change this name unless you set up a volume mount for the data path.
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 50Gi
+        storageClassName: local
+  http:
+  #   service:
+  #     spec:
+  #       type: NodePort # default is ClusterIP
+  #       ports:
+  #       - protocol : TCP
+  #         nodePort: 30920  #  30000-32767
+  #         port: 9200
+  #         targetPort: 9200
+  #         name: outer
+    tls:
+      selfSignedCertificate:
+        disabled: true

@@ -1,224 +1,81 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+# 定义一个 map 变量，包含虚拟机名称和配置信息
+vm_configurations = {
+  "mysql" => {
+    "box" => "ubuntu/bionic64",
+    "network" => "private_network",
+    "ip" => "192.168.56.10",
+    "memory"=> 4096,
+    "cpus"=> 2
+  },
+  "redis" => {
+    "box" => "ubuntu/bionic64",
+    "network" => "private_network",
+    "ip" => "192.168.56.11",
+    "memory"=> 4096,
+    "cpus"=> 2
+  },
+  "elk" => {
+    "box" => "ubuntu/bionic64",
+    "network" => "private_network",
+    "ip" => "192.168.56.12",
+    "memory"=> 16384,
+    "cpus"=> 8
+  },
+  "mq" => {
+    "box" => "ubuntu/bionic64",
+    "network" => "private_network",
+    "ip" => "192.168.56.13",
+    "memory"=> 8192,
+    "cpus"=> 4
+  },
+  "harbor" => {
+    "box" => "ubuntu/bionic64",
+    "network" => "private_network",
+    "ip" => "192.168.56.14",
+    "memory"=> 8192,
+    "cpus"=> 4
+  },
+  "git" => {
+    "box" => "ubuntu/bionic64",
+    "network" => "private_network",
+    "ip" => "192.168.56.15",
+    "memory"=> 2048,
+    "cpus"=> 2
+  },
+  "monitor" => {
+    "box" => "ubuntu/bionic64",
+    "network" => "private_network",
+    "ip" => "192.168.56.16",
+    "memory"=> 4096,
+    "cpus"=> 4
+  },
+  "web" => {
+    "box" => "ubuntu/bionic64",
+    "network" => "private_network",
+    "ip" => "192.168.56.17",
+    "memory"=> 4096,
+    "cpus"=> 4
+  }
+}
 
-
-
-Vagrant.configure(2) do |config|
-
-    ## example
-    # 网络设置3 - 将端口映射到宿主机
-    # 在宿主机使用 127.0.0.1:8080 即可访问虚拟机里的 80 端口
-    #config.vm.network "forwarded_port", guest: 80, host: 8080
-    # 共享目录
-    # 注意：
-    #config.vm.synced_folder "/Users/用户名/www", "/var/www/html", create:true, owner:"www-data", group:"www-data",, disabled: true
-    config.vm.synced_folder ".", "/home/vagrant/sync", disabled: true
-    # 执行脚本
-    # path
-    # inline
-    # config.vm.provision "shell", inline: <<-SHELL
-    #     apt-get update
-    #     apt-get install -y ansible
-    # SHELL
-    # config.vm.provision "ansible" do |ansible|
-    #     ansible.playbook = "playbook.yml"
-    # end
-
-
-    #对于每台虚拟机的统一配置
-    # https://app.vagrantup.com/boxes/search?page=2
-    # 构建的虚拟机所使用的基础镜像
-    # config.vm.box = "generic/ubuntu1804"
-    # 本地box ubuntu18-docker 
-    config.vm.box = "ubuntu18-docker"
-   
-    # VirtualBox 虚拟机配置（内存、CPU、显示名称等）
-    # config.vm.provider "virtualbox" do |vb|
-    #     #   # Display the VirtualBox GUI when booting the machine
-    #     #   vb.gui = true
-    #     #
-    #     #   # Customize the amount of memory on the VM:
-    #     vb.memory = "4096"
-    #     vb.cpus = "2"
-    # end
-
-    config.ssh.insert_key=false
-
-
-
-    # 虚拟机名称，在类似创建备份等操作中会用到
-    # 定义多个虚拟机
-    config.vm.define "mysql" do |config|
-            # 虚拟机中 linux 的 hostname
-        config.vm.hostname = "mysql"
-        # 配置网络，注意ip 网段
-        # # 如果配置文件仅配置了一个private_network，则vagrant自动创建NAT网卡
-        config.vm.network "private_network", ip: "192.168.56.101"
-
-        config.vm.provider "virtualbox" do |vb|
-            #   # Display the VirtualBox GUI when booting the machine
-            #   vb.gui = true
-            #
-            #   # Customize the amount of memory on the VM:
-            vb.memory = "2048"
-            vb.cpus = "2"
-            vb.name = "mysql"
-        end
+Vagrant.configure("2") do |config|
+   config.vm.box_check_update = false
+   config.ssh.insert_key=false
+  # 遍历 map 变量并创建虚拟机
+  vm_configurations.each do |vm_name, vm_config|
+    config.vm.define vm_name do |vm|
+      vm.vm.box = vm_config["box"]
+      vm.vm.box = "ubuntu/bionic64"
+      vm.vm.hostname = vm_name
+      vm.vm.network "private_network", ip: vm_config['ip']
+      vm.vm.provider "virtualbox" do |vb|
+              vb.memory = vm_config['memory']
+              vb.cpus = vm_config['cpus']
+      end
+      vm.vm.provision "shell", path: "kubesphere/scripts/common.sh"
     end
-    config.vm.define "redis" do |config|
-            # 虚拟机中 linux 的 hostname
-        config.vm.hostname = "redis"
-        # 配置网络，注意ip 网段
-        # # 如果配置文件仅配置了一个private_network，则vagrant自动创建NAT网卡
-        config.vm.network "private_network", ip: "192.168.56.102"
-
-        config.vm.provider "virtualbox" do |vb|
-            #   # Display the VirtualBox GUI when booting the machine
-            #   vb.gui = true
-            #
-            #   # Customize the amount of memory on the VM:
-            vb.memory = "2048"
-            vb.cpus = "2"
-            vb.name = "redis"
-        end
-    end
-    config.vm.define "rabbitmq" do |config|
-        # 虚拟机中 linux 的 hostname
-        config.vm.hostname = "rabbitmq"
-        # 配置网络，注意ip 网段
-        # # 如果配置文件仅配置了一个private_network，则vagrant自动创建NAT网卡
-        config.vm.network "private_network", ip: "192.168.56.103"
-
-        config.vm.provider "virtualbox" do |vb|
-            #   # Display the VirtualBox GUI when booting the machine
-            #   vb.gui = true
-            #
-            #   # Customize the amount of memory on the VM:
-            vb.memory = "2048"
-            vb.cpus = "2"
-            vb.name = "rabbitmq"
-        end
-    end  
-    config.vm.define "elk" do |config|
-        # 虚拟机中 linux 的 hostname
-        config.vm.hostname = "elk"
-        # 配置网络，注意ip 网段
-        # # 如果配置文件仅配置了一个private_network，则vagrant自动创建NAT网卡
-        config.vm.network "private_network", ip: "192.168.56.104"
-
-        config.vm.provider "virtualbox" do |vb|
-            #   # Display the VirtualBox GUI when booting the machine
-            #   vb.gui = true
-            #
-            #   # Customize the amount of memory on the VM:
-            vb.memory = "8192"
-            vb.cpus = "4"
-            vb.name = "elk"
-        end
-    end
-    config.vm.define "nacos" do |config|
-        # 虚拟机中 linux 的 hostname
-        config.vm.hostname = "nacos"
-        # 配置网络，注意ip 网段
-        # # 如果配置文件仅配置了一个private_network，则vagrant自动创建NAT网卡
-        config.vm.network "private_network", ip: "192.168.56.105"
-
-        config.vm.provider "virtualbox" do |vb|
-            #   # Display the VirtualBox GUI when booting the machine
-            #   vb.gui = true
-            #
-            #   # Customize the amount of memory on the VM:
-            vb.memory = "4096"
-            vb.cpus = "2"
-            vb.name = "nacos"
-        end
-    end
-    config.vm.define "jenkins" do |config|
-        # 虚拟机中 linux 的 hostname
-        config.vm.hostname = "jenkins"
-        # 配置网络，注意ip 网段
-        # # 如果配置文件仅配置了一个private_network，则vagrant自动创建NAT网卡
-        config.vm.network "private_network", ip: "192.168.56.106"
-
-        config.vm.provider "virtualbox" do |vb|
-            #   # Display the VirtualBox GUI when booting the machine
-            #   vb.gui = true
-            #
-            #   # Customize the amount of memory on the VM:
-            vb.memory = "4096"
-            vb.cpus = "4"
-            vb.name = "jenkins"
-        end
-    end
-    config.vm.define "nexus3" do |config|
-        # 虚拟机中 linux 的 hostname
-        config.vm.hostname = "nexus3"
-        # 配置网络，注意ip 网段
-        # # 如果配置文件仅配置了一个private_network，则vagrant自动创建NAT网卡
-        config.vm.network "private_network", ip: "192.168.56.107"
-
-        config.vm.provider "virtualbox" do |vb|
-            #   # Display the VirtualBox GUI when booting the machine
-            #   vb.gui = true
-            #
-            #   # Customize the amount of memory on the VM:
-            vb.memory = "8192"
-            vb.cpus = "4"
-            vb.name = "nexus3"
-        end
-    end
-
-    config.vm.define "git" do |config|
-        # 虚拟机中 linux 的 hostname
-        config.vm.hostname = "git"
-        # 配置网络，注意ip 网段
-        # # 如果配置文件仅配置了一个private_network，则vagrant自动创建NAT网卡
-        config.vm.network "private_network", ip: "192.168.56.108"
-
-        config.vm.provider "virtualbox" do |vb|
-            #   # Display the VirtualBox GUI when booting the machine
-            #   vb.gui = true
-            #
-            #   # Customize the amount of memory on the VM:
-            vb.memory = "2048"
-            vb.cpus = "2"
-            vb.name = "git"
-        end
-    end
-    config.vm.define "nginx" do |config|
-        # 虚拟机中 linux 的 hostname
-        config.vm.hostname = "nginx"
-        # 配置网络，注意ip 网段
-        # # 如果配置文件仅配置了一个private_network，则vagrant自动创建NAT网卡
-        config.vm.network "private_network", ip: "192.168.56.109"
-
-        config.vm.provider "virtualbox" do |vb|
-            #   # Display the VirtualBox GUI when booting the machine
-            #   vb.gui = true
-            #
-            #   # Customize the amount of memory on the VM:
-            vb.memory = "2048"
-            vb.cpus = "2"
-            vb.name = "nginx"
-        end
-    end
-    config.vm.define "ansible" do |config|
-        # 虚拟机中 linux 的 hostname
-        config.vm.hostname = "ansible"
-        # 配置网络，注意ip 网段
-        # # 如果配置文件仅配置了一个private_network，则vagrant自动创建NAT网卡
-        config.vm.network "private_network", ip: "192.168.56.110"
-
-        config.vm.provider "virtualbox" do |vb|
-            #   # Display the VirtualBox GUI when booting the machine
-            #   vb.gui = true
-            #
-            #   # Customize the amount of memory on the VM:
-            vb.memory = "2048"
-            vb.cpus = "2"
-            vb.name = "ansible"
-        end
-    end
-
+  end
 end

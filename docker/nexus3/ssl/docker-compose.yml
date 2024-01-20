@@ -1,0 +1,40 @@
+version: "3"
+services:
+  nexus3:
+    image: 'sonatype/nexus3:3.40.0'
+    container_name: nexus3-service
+    # no，on-failure[:times]，always，unless-stopped
+    restart: 'always'
+    privileged: true
+    environment:
+      - TZ=Asia/Shanghai
+      - INSTALL4J_ADD_VM_PARAMS=-Xms1024m -Xmx1024m -XX:MaxDirectMemorySize=1024m
+#    ports:
+#      - '5555:8081'
+#      - '6666:6666'
+#      - '6667:6667'
+    volumes:
+      - ./data:/nexus-data
+    networks:
+      - nexus3-network
+  nginx:
+    container_name: nexus3-nginx
+    image: 'nginx:1.16-alpine'
+    restart: 'always'
+    privileged: true
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./nginx/conf/logstash.conf:/etc/nginx/logstash.conf
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/logs:/var/log/nginx
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+     - nexus3-network
+
+
+
+networks:
+  nexus3-network:

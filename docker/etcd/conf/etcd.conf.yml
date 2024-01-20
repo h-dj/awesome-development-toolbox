@@ -1,0 +1,21 @@
+name: etcd-202
+data-dir: /etcd-data
+listen-client-urls: https://0.0.0.0:2379
+advertise-client-urls: https://192.168.56.202:2379
+listen-peer-urls: https://0.0.0.0:2380
+initial-advertise-peer-urls: https://192.168.56.202:2380
+initial-cluster-token: etcd-cluster
+initial-cluster: etcd-202=https://192.168.56.202:2380,etcd-203=https://192.168.56.203:2380,etcd-204=https://192.168.56.204:2380
+initial-cluster-state: new
+heartbeat-interval: 200
+quota-backend-bytes: 10240
+dial-timeout: 1000
+request-timeout: 500
+client-transport-security:
+  cert-file: "/etcd-conf/etcd-peer.pem"
+  key-file: "/etcd-conf/etcd-peer-key.pem"
+  trusted-ca-file: "/etcd-conf/ca.pem"
+peer-transport-security:
+  cert-file: "/etcd-conf/etcd-peer.pem"
+  key-file: "/etcd-conf/etcd-peer-key.pem"
+  trusted-ca-file: "/etcd-conf/ca.pem"

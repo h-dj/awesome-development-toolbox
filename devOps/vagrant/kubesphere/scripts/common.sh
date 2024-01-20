@@ -14,7 +14,7 @@ sudo systemctl start docker
 sudo usermod -aG docker $USER
 # docker 镜像加速
 # 获取阿里docker镜像加速器 https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors
-cat <<EOF | sudo tee /etc/docker/daemon.json
+sudo cat <<EOF | sudo tee /etc/docker/daemon.json
 {
   "registry-mirrors": [
     "https://30pma5a7.mirror.aliyuncs.com",
@@ -26,6 +26,11 @@ cat <<EOF | sudo tee /etc/docker/daemon.json
 EOF
 sudo systemctl daemon-reload
 sudo systemctl restart docker
+
+# 安装docker-compose
+sudo curl  -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+#授予执行权限
+sudo chmod +x /usr/local/bin/docker-compose
 
 # 安装软件
 sudo apt-get install -y selinux-utils vim socat conntrack ebtables ipset chrony
@@ -42,5 +47,13 @@ sudo sed -ri 's/.*swap.*/#&/' /etc/fstab
 # 设置时区
 sudo timedatectl set-timezone   Asia/Shanghai
 
-# 重启
-sudo reboot
+# 修改root 密码
+sudo echo "root:123456" | chpasswd 
+
+# 在sshd配置文件中启用root密码登录
+sudo sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+sudo sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+sudo sed -i 's/#PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+# 重启SSH服务以应用更改
+sudo systemctl restart ssh
