@@ -4,7 +4,6 @@ services:
     container_name: redis-serve
     image: 'redis:6.0'
     restart: always
-    privileged: true
     volumes:
       - ./data:/data
       - ./conf/redis.conf:/conf/redis.conf

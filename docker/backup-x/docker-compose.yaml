@@ -1,0 +1,13 @@
+version: "3"
+services:
+  gogs:
+    container_name: backup-x
+    image: 'jeessy/backup-x:latest'
+    restart: always
+    privileged: true
+    volumes:
+      - /home/vagrant/sync:/app/backup-x-files
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - '9977:9977'

@@ -1,0 +1,44 @@
+version: "3"
+services:
+  registry:
+    image: 'registry:2.8.3'
+    container_name: docker-registry
+    # no，on-failure[:times]，always，unless-stopped
+    restart: 'always'
+    privileged: true
+    environment:
+     - TZ=Asia/Shanghai
+    ports:
+      - '5000:5000'
+    volumes:
+      - /home/vagrant/sync/registry:/var/lib/registry 
+    networks:
+      - registry-net
+  registry-ui:
+    image: 'joxit/docker-registry-ui:main'
+    container_name: docker-registry-ui
+    # no，on-failure[:times]，always，unless-stopped
+    restart: 'always'
+    privileged: true
+    environment:
+      - SINGLE_REGISTRY=true
+      - REGISTRY_TITLE=Docker Registry UI
+      - DELETE_IMAGES=true
+      - SHOW_CONTENT_DIGEST=true
+      - NGINX_PROXY_PASS_URL=http://registry:5000
+      - SHOW_CATALOG_NB_TAGS=true
+      - CATALOG_MIN_BRANCHES=1
+      - CATALOG_MAX_BRANCHES=1
+      - TAGLIST_PAGE_SIZE=100
+      - REGISTRY_SECURED=false
+      - CATALOG_ELEMENTS_LIMIT=1000
+    ports:
+      - '5100:80'
+    networks:
+      - registry-net
+    depends_on:
+      - registry
+
+networks:
+  registry-net:
+    driver: bridge

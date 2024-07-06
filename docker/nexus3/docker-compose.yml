@@ -8,10 +8,13 @@ services:
     privileged: true
     environment:
       - TZ=Asia/Shanghai
-      - INSTALL4J_ADD_VM_PARAMS=-Xms1024m -Xmx1024m -XX:MaxDirectMemorySize=1024m
-#    ports:
-#      - '5555:8081'
-#      - '6666:6666'
-#      - '6667:6667'
+      - INSTALL4J_ADD_VM_PARAMS=-Xms2048m -Xmx2048m -XX:MaxDirectMemorySize=1024m
+    ports:
+      - '5555:8081'
+      - '6666:6666'
+      - '6667:6667'
     volumes:
-      - ./data:/nexus-data
+      - nexus3-data:/nexus-data
+
+volumes:
+  nexus3-data:

@@ -13,7 +13,7 @@ Vagrant.configure(2) do |config|
     # 共享目录
     # 注意：
     #config.vm.synced_folder "/Users/用户名/www", "/var/www/html", create:true, owner:"www-data", group:"www-data",, disabled: true
-    config.vm.synced_folder ".", "/home/vagrant/sync", disabled: true
+    config.vm.synced_folder "D:\VirtualBox VMs\share", "/home/vagrant/sync", disabled: true
     # 执行脚本
     # path
     # inline
@@ -32,6 +32,9 @@ Vagrant.configure(2) do |config|
     # config.vm.box = "generic/ubuntu1804"
     # 本地box ubuntu18-docker 
     config.vm.box = "ubuntu/bionic64"
+
+    # vagrant plugin install vagrant-disksize
+    config.disksize.size = '50GB'
    
     # VirtualBox 虚拟机配置（内存、CPU、显示名称等）
     # config.vm.provider "virtualbox" do |vb|

@@ -1,0 +1,142 @@
+pipeline {
+    agent any
+    parameters {
+        choice(name: 'BRANCH', choices: ['master', 'develop','develop-study'], description: '选择代码分支')
+        // SSH 配置的ID app-ssh-server-config
+        choice(name: 'deploy_on', choices: ['app-ssh-server-config'], description: '选择部署机器')
+
+    }
+    environment {
+        current_build_number = "${BUILD_NUMBER}"
+        // 自建镜像仓库地址
+        docker_hub = "192.168.56.200:5000"
+        docker_hub_namespace = 'youlai'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout([$class: 'GitSCM'
+                , branches: [[name: "*/${params.BRANCH}"]]
+                ,extensions: [[$class: 'CloneOption', depth: 1, noTags: false, reference: '', shallow: true]]
+                , userRemoteConfigs: [[credentialsId: 'gogs-password', url: 'http://192.168.56.200:3000/hdj/mall-admin.git']]])
+            }
+        }
+        stage ("打印相关变量") {
+            steps{
+                script{
+                    env.GIT_COMMIT_ID = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+                    env.GIT_TAG = "build-${env.BUILD_NUMBER}-${GIT_COMMIT_ID}"
+                    echo "GIT_TAG：${env.GIT_TAG}"
+                    echo "GIT_COMMIT_ID : ${GIT_COMMIT_ID}"
+                    // 本端tag名
+                    env.local_tag = "mall-admin:${current_build_number}_${GIT_COMMIT_ID}"
+                    // 远端tag名，必须以这种方式命令，才能push到远端
+                    env.remote_tag = "${docker_hub}/${docker_hub_namespace}/${local_tag}"
+                    "local_tag信息为：${env.local_tag}"
+                    "remote_tag信息为：${env.remote_tag}"
+                    "current_build_number信息为：${current_build_number}"
+                }
+            }
+        }
+        stage('Build') {
+             agent {
+                docker {
+                    image 'node:18.20.3'
+                    args '-u root:root -v /var/run/docker.sock:/var/run/docker.sock'
+                    reuseNode true
+                }
+            }
+            steps {
+                echo 'Building...'
+                script {
+                        sh 'npm config set registry https://registry.npmmirror.com'
+                        sh 'npm i -g pnpm'
+                        sh 'rm -rf node_modules'
+                        sh 'rm -rf pnpm-lock.yaml'
+                        sh 'pnpm install'
+                        sh 'pnpm run build:prod'
+                        sh "docker build -t ${env.local_tag} -f ./devops/Dockerfile ."
+                        //sh 'echo "$DOCKER_PASSWORD" | docker login http://k8s-harbor:30002 -u "$DOCKER_USERNAME" --password-stdin'
+                        sh "docker tag ${env.local_tag} ${env.remote_tag}"
+                        sh "docker push  ${env.remote_tag}"
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing...'
+                // 测试步骤
+                 sh 'ls -l ./'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                 echo "Deploying to ${params.ENV} environment"
+                sh "ls -l $WORKSPACE/devops"
+                script {
+                
+                    sshPublisher(
+                            continueOnError: false,
+                            failOnError: true,
+                            publishers: [
+                                sshPublisherDesc(
+                                    configName: "${deploy_on}", // 在 Jenkins 管理界面中配置的 SSH Server 配置名称
+                                    transfers: [
+                                        sshTransfer(
+                                            verbose: true,
+                                            //远程服务器 已配置目录 /opt
+                                            execCommand: "mkdir -p /opt/youlai/mall-admin/", // 在远程服务器上执行的命令
+                                            execTimeout: 120000, // 可选的命令执行超时时间（毫秒）
+                                            usePty: false // 是否使用伪终端执行命令（默认为 false）
+                                        ),
+                                        sshTransfer(
+                                            sourceFiles: "devops/deploy.sh", // 本地文件路径
+                                            removePrefix: "",
+                                            remoteDirectory: "youlai/mall-admin", // 远程目标目录
+                                            usePty: false // 是否使用伪终端执行命令（默认为 false）
+                                        ),
+
+                                        sshTransfer(
+                                            execCommand: "sh /opt/youlai/mall-admin/devops/deploy.sh ${env.remote_tag} 8011 ${docker_hub_namespace} mall-admin", // 在远程服务器上执行的命令
+                                            execTimeout: 120000, // 可选的命令执行超时时间（毫秒）
+                                            usePty: false // 是否使用伪终端执行命令（默认为 false）
+                                        )
+                                    ]
+                                )
+                            ]
+                        )
+            
+				}
+			}
+        }
+        stage('Tag and Push') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'gogs-password', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+                    script {
+                        echo "Creating Git tag ${env.GIT_TAG}"
+                        sh """
+                            git config --global user.email "jenkins@example.com"
+                            git config --global user.name "jenkins"
+                            git remote set-url origin http://${GIT_USERNAME}:${GIT_PASSWORD}@192.168.56.200:3000/hdj/mall-admin.git
+                            git tag ${env.GIT_TAG} -m 'mall-admin Build ${env.BUILD_NUMBER}'
+                            git push origin ${env.GIT_TAG}
+                        """
+                    }
+                }
+            }
+        }
+    }
+     post {
+        success {
+            script {
+                echo "Build successful, tag ${env.GIT_TAG} created and pushed."
+            }
+        }
+        failure {
+            script {
+                echo "Build failed, no tag created."
+            }
+        }
+    }
+}

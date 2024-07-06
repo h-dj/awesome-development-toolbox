@@ -4,7 +4,6 @@ services:
     container_name: sentinel-serve
     image: seataio/seata-server:1.5.2
     hostname: seata-server
-    restart: 'always'
     privileged: true
     ports:
       - "8091:8091"
@@ -14,7 +13,7 @@ services:
       # 注意公网ip和内网ip的差异。
       # 如果使用本地端口映射连接远程seata，则填写本机的内网地址
       # 192.168.253.117
-      - SEATA_IP=192.168.56.107
+      - SEATA_IP=192.168.56.200
       - TZ=Asia/Shanghai
     volumes:
       - ./conf:/seata-server/resources

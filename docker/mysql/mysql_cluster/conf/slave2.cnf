@@ -1,0 +1,40 @@
+[mysqld]
+
+default_authentication_plugin=mysql_native_password
+
+######replication settings######
+server-id=3
+
+# binlog 配置
+log-bin=mysql-bin
+binlog_format=row
+
+
+
+######gtid#######
+gtid_mode=on
+enforce_gtid_consistency=on
+binlog_gtid_simple_recovery=on
+
+relay_log_recovery = ON
+relay-log-index=mysql-relay
+relay-log=mysql-relay
+
+master_info_repository = TABLE 
+relay_log_info_repository = TABLE
+
+# 半异步复制(在MySQL 初始化时，无效，需要重新启动)
+plugin-load-add=semisync_source.so
+plugin-load-add=semisync_replica.so
+loose_rpl_semi_sync_source_enabled = ON
+loose_rpl_semi_sync_replica_enabled = ON
+loose_rpl_semi_sync_master_wait_no_slave = ON
+log_slow_replica_statements = 1
+
+# 从库只读
+read_only = on
+
+[client]
+default-character-set=utf8mb4
+[mysql]
+default-character-set=utf8mb4

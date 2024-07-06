@@ -1,0 +1,64 @@
+pipeline {
+    agent {
+        docker {
+            image 'maven:3.8.1-openjdk-17'
+            label 'maven'
+            args '-v /var/run/docker.sock:/var/run/docker.sock -v /root/.m2:/root/.m2' 
+        }
+    }
+
+    environment {
+        DOCKER_IMAGE = "youlai/youlai-gateway"
+        DOCKER_REGISTRY_CREDENTIALS = 'docker-register'
+    }
+
+    stages {
+        //检出代码
+        stage('Checkout') {
+            steps {
+                // Checkout code from your version control system
+                git 'http://192.168.56.200:3000/hdj/youlai-mall.git'
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                // Build your Spring Boot application
+                sh './mvnw clean package -DskipTests'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    dockerImage = docker.build("${DOCKER_IMAGE}:${env.BUILD_ID}")
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    docker.withRegistry('https://index.docker.io/v1/', "${DOCKER_REGISTRY_CREDENTIALS}") {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+
+        stage('Clean Up') {
+            steps {
+                sh 'docker rmi ${DOCKER_IMAGE}:${env.BUILD_ID}'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Build completed successfully!'
+        }
+        failure {
+            echo 'Build failed!'
+        }
+    }
+}

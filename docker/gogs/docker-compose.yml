@@ -6,14 +6,12 @@ services:
     restart: always
     volumes:
       - gogs-data:/data
-      - gogs-logs:/app/gogs/log
     environment:
       - TZ=Asia/Shanghai
+    privileged: false
     ports:
       - '8022:22'
       - '3000:3000'
 
-
 volumes:
   gogs-data:
-  gogs-logs:

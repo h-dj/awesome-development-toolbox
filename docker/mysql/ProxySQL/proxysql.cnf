@@ -1,0 +1,133 @@
+# Config file contents referred to as "/path/to/proxysql.cnf"
+datadir="/var/lib/proxysql"
+
+# 加载变量
+#LOAD ADMIN VARIABLES FROM DISK;
+#LOAD MYSQL VARIABLES FROM DISK;
+#LOAD MYSQL SERVERS FROM DISK;
+#LOAD MYSQL USERS FROM DISK;
+#LOAD MYSQL QUERY RULES FROM DISK;
+
+# 持久化变量
+#SAVE ADMIN VARIABLES TO DISK;
+#SAVE MYSQL VARIABLES TO DISK;
+#SAVE MYSQL SERVERS TO DISK;
+#SAVE MYSQL USERS TO DISK;
+#SAVE MYSQL QUERY RULES TO DISK;
+
+
+
+# 系统全局变量
+admin_variables=
+{
+    admin_credentials="admin:admin;radmin:radmin"
+    mysql_ifaces="0.0.0.0:6032"
+    refresh_interval=2000
+    admin-web_enabled=true
+
+    admin-restapi_enabled=true
+    admin-restapi_port=6070
+    admin-restapi_threads=4
+    admin-restapi_credentials="admin:admin_password"
+}
+
+
+
+# mysql  链接变量
+mysql_variables=
+{
+    threads=4
+    max_connections=2048
+    default_query_delay=0
+    default_query_timeout=36000000
+    have_compress=true
+    poll_timeout=2000
+    interfaces="0.0.0.0:6033;/tmp/proxysql.sock"
+    default_schema="information_schema"
+    stacksize=1048576
+    server_version="8.0.37"
+    connect_timeout_server=10000
+    monitor_history=60000
+    monitor_connect_interval=200000
+    monitor_ping_interval=200000
+    ping_interval_server_msec=10000
+    ping_timeout_server=200
+    commands_stats=true
+    sessions_sort=true
+    monitor_username="monitor"
+    monitor_password="123456"
+}
+
+# 链接mysql 服务
+# hostgroup = 2 只读分组
+# hostgroup 读写分组
+mysql_servers =
+(
+  {
+    address="192.168.56.200"
+    port=4400
+    hostgroup=0
+    max_connections=200
+  },
+  {
+    address="192.168.56.200"
+    port=4401
+    hostgroup=1
+    max_connections=200
+  },
+   {
+    address="192.168.56.200"
+    port=4402
+    hostgroup=1
+    max_connections=200
+  }
+)
+
+# 链接用户
+mysql_users:
+(
+  {
+    username = "proxyuser",
+    password = "123456",
+    default_hostgroup = 0,
+    max_connections=1000,
+    transaction_persistent=true, 
+    fast_forward=true,
+    active = 1
+  }
+)
+
+# 查询规则
+mysql_query_rules:
+(
+  {
+    rule_id=1
+    active=1
+    match_pattern="^SELECT .* FOR UPDATE$"
+    destination_hostgroup=0
+    apply=1
+  },
+  {
+    rule_id=1
+    active=1
+    match_pattern="^(?!SELECT).*"
+    destination_hostgroup=0
+    apply=1
+  },
+  {
+    rule_id=2
+    active=1
+    match_pattern="^SELECT"
+    destination_hostgroup=1
+    apply=1
+  }
+)
+
+mysql_replication_hostgroups=
+(
+        {
+                writer_hostgroup=0
+                reader_hostgroup=1
+                comment="test repl 1"
+       }
+)

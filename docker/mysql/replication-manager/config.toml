@@ -1,0 +1,28 @@
+[default]
+
+
+prov-orchestrator = "local"
+http-bind-address = "0.0.0.0"
+
+db-servers-hosts =  "192.168.56.200:4400,192.168.56.200:4401,192.168.56.200:4402"
+db-servers-prefered-master = "192.168.56.200:4400"
+db-servers-credential = "root:123456"
+db-servers-connect-timeout = 5
+replication-credential = "rpl_user:123456"
+
+
+
+#################################
+###### proxysql settings ########
+#################################
+proxysql = true
+proxysql-servers = "192.168.56.200"
+proxysql-port = "6033"
+proxysql-admin-port = "6032"
+proxysql-writer-hostgroup = "0"
+proxysql-reader-hostgroup = "1"
+proxysql-user = "admin"
+proxysql-password = "admin"
+proxysql-bootstrap = false
+#不从master复制用户到proxysql，因为复制会出问题
+proxysql-bootstrap-users = false 

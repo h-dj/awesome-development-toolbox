@@ -15,15 +15,15 @@ services:
       - hertzbeat-logs:/opt/hertzbeat/logs
       - ./conf/application.yml:/opt/hertzbeat/config/application.yml
 
-  hertzbeat-collector:
-    image: quay.io/tancloud/hertzbeat-collector
-    container_name: hertzbeat-collector
-    restart: always
-    environment:
-      - IDENTITY=custom-collector-name
-      - MODE=public
-      - MANAGER_HOST=127.0.0.1
-      - MANAGER_PORT=1158
+  # hertzbeat-collector:
+  #   image: quay.io/tancloud/hertzbeat-collector
+  #   container_name: hertzbeat-collector
+  #   restart: always
+  #   environment:
+  #     - IDENTITY=custom-collector-name
+  #     - MODE=public
+  #     - MANAGER_HOST=127.0.0.1
+  #     - MANAGER_PORT=1158
 
 volumes:
   hertzbeat-data:

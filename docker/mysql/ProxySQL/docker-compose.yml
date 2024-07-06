@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  proxysql:
+    image: proxysql/proxysql:2.6.2-debian
+    container_name: proxysql
+    ports:
+      - "6033:6033"
+      - "6070:6070"
+      - "6032:6032"
+    volumes:
+      - ./proxysql.cnf:/etc/proxysql.cnf
+      - ./data:/var/lib/proxysql
+    entrypoint: ["sh", "-c", "
+                  sleep 10 && proxysql -f --idle-threads -D /var/lib/proxysql
+                "
+    ]

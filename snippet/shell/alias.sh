@@ -10,13 +10,15 @@ function setProxy() {
     echo "setProxy: On/off, default off"
 
     if [ "$1" == "On" ];then
-      export http_proxy=http://127.0.0.1:8889
-      export https_proxy=http://127.0.0.1:8889
+      export http_proxy=http://192.168.8.7:7899
+      export https_proxy=http://192.168.8.7:7899
     else
       unset http_proxy
       unset https_proxy
     fi
 }
+
+
 
 
 #拷贝文件到多个文件夹

@@ -1,81 +1,163 @@
 version: '3'
 
-networks:
-  monitor-net:
-    driver: bridge
 
 services:
   prometheus:
-    image: prom/prometheus:v2.40.6
+    image: bitnami/prometheus:2.47.2
     container_name: prometheus
-    user: "1000:1000"
+    environment:
+      - TZ=Asia/Shanghai
     volumes:
-      - $PWD/monitor/prometheus.yml:/etc/prometheus/prometheus.yml
-      - $PWD/monitor/prometheus-data:/prometheus
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./web-config.yml:/etc/prometheus/web-config.yml
+      - prometheus-data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--web.config.file=/etc/prometheus/web-config.yml'
       - '--storage.tsdb.path=/prometheus'
-      - '--web.console.libraries=/etc/prometheus/console_libraries'
-      - '--web.console.templates=/etc/prometheus/consoles'
-      - '--storage.tsdb.retention.time=200h'
+      - '--storage.tsdb.retention.time=30d'
       - '--web.enable-lifecycle'
-    restart: unless-stopped
     ports:
-      - 9090:9090
+      - 9901:9090
     networks:
       - monitor-net
 
 
   grafana:
-    image: grafana/grafana:9.3.1
+    image: grafana/grafana:10.2.0
     container_name: grafana
-    user: "1000:1000"
     volumes:
-      - $PWD/monitor/grafana-storage:/var/lib/grafana
+      - grafana-data:/var/lib/grafana
     environment:
-      - GF_INSTALL_PLUGINS=redis-app
-      - GF_INSTALL_PLUGINS=redis-datasource
-      - GF_INSTALL_PLUGINS=redis-explorer-app
-    restart: unless-stopped
+      - GF_SECURITY_ADMIN_PASSWORD=123456   # 设置 Grafana 的管理员密码
+      - TZ=Asia/Shanghai
     ports:
-      - 3000:3000
+      - 9902:3000
     networks:
       - monitor-net
 
   nodeexporter:
     image: prom/node-exporter:v1.5.0
     container_name: nodeexporter
+    environment:
+      - TZ=Asia/Shanghai
     volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /:/rootfs:ro
+      - "/:/host:ro,rslave"
     command:
-      - '--path.procfs=/host/proc'
-      - '--path.rootfs=/rootfs'
-      - '--path.sysfs=/host/sys'
-      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
-    restart: unless-stopped
+      - '--path.rootfs=/host'
     ports:
       - 9100:9100
     networks:
       - monitor-net
 
-  mysqld-exporter:
-    image: prom/mysqld-exporter:v0.14.0
-    container_name: mysqld-exporter
+  mysqld-exporter-master:
+    image: prom/mysqld-exporter:v0.15.0
+    container_name: mysqld-exporter-master
     ports:
-      - 9104:9104
+      - 9101:9104
     environment:
-      - DATA_SOURCE_NAME=exporter:exporter@tcp(192.168.56.105:3306)/
+      - MYSQLD_EXPORTER_PASSWORD=123456
+      - TZ=Asia/Shanghai
     networks:
       - monitor-net
+    command:
+      - '--web.listen-address=:9104'
+      - '--mysqld.address=192.168.56.200:4400'
+      - '--mysqld.username=exporter'
+  mysqld-exporter-slave1:
+    image: prom/mysqld-exporter:v0.15.0
+    container_name: mysqld-exporter-slave1
+    ports:
+      - 9102:9104
+    environment:
+      - MYSQLD_EXPORTER_PASSWORD=123456
+      - TZ=Asia/Shanghai
+    networks:
+      - monitor-net
+    command:
+      - '--web.listen-address=:9104'
+      - '--mysqld.address=192.168.56.200:4401'
+      - '--mysqld.username=exporter'
+  mysqld-exporter-slave2:
+    image: prom/mysqld-exporter:v0.15.0
+    container_name: mysqld-exporter-slave2
+    ports:
+      - 9103:9104
+    environment:
+      - MYSQLD_EXPORTER_PASSWORD=123456
+      - TZ=Asia/Shanghai
+    networks:
+      - monitor-net
+    command:
+      - '--web.listen-address=:9104'
+      - '--mysqld.address=192.168.56.200:4402'
+      - '--mysqld.username=exporter'
 
-  redis-exporter:
-    image: oliver006/redis_exporter:v1.47.0
-    environment:
-      - REDIS_ADDR=redis://192.168.56.107:6379
-      - REDIS_PASSWORD=redis@123456
-    ports:
-      - 9121:9121
-    networks:
-      - monitor-net
+  redis-exporter-6031:
+      image: 'oliver006/redis_exporter:v1.61.0'
+      container_name: redis-exporter-6031
+      environment:
+        - REDIS_ADDR=redis://192.168.56.200:6301
+        - TZ=Asia/Shanghai
+      ports:
+        - 9121:9121
+      networks:
+        - monitor-net
+  redis-exporter-6032:
+      image: 'oliver006/redis_exporter:v1.61.0'
+      container_name: redis-exporter-6032
+      environment:
+        - REDIS_ADDR=redis://192.168.56.200:6302
+        - TZ=Asia/Shanghai
+      ports:
+        - 9122:9121
+      networks:
+        - monitor-net      
+  redis-exporter-6033:
+      image: 'oliver006/redis_exporter:v1.61.0'
+      container_name: redis-exporter-6033
+      environment:
+        - REDIS_ADDR=redis://192.168.56.200:6303
+        - TZ=Asia/Shanghai
+      ports:
+        - 9123:9121
+      networks:
+        - monitor-net      
+  redis-exporter-6034:
+      image: 'oliver006/redis_exporter:v1.61.0'
+      container_name: redis-exporter-6034
+      environment:
+        - REDIS_ADDR=redis://192.168.56.200:6304
+        - TZ=Asia/Shanghai
+      ports:
+        - 9124:9121
+      networks:
+        - monitor-net      
+  redis-exporter-6035:
+      image: 'oliver006/redis_exporter:v1.61.0'
+      container_name: redis-exporter-6035
+      environment:
+        - REDIS_ADDR=redis://192.168.56.200:6305
+        - TZ=Asia/Shanghai
+      ports:
+        - 9125:9121
+      networks:
+        - monitor-net      
+  redis-exporter-6036:
+      image: 'oliver006/redis_exporter:v1.61.0'
+      container_name: redis-exporter-6036
+      environment:
+        - REDIS_ADDR=redis://192.168.56.200:6306
+        - TZ=Asia/Shanghai
+      ports:
+        - 9126:9121
+      networks:
+        - monitor-net      
+
+networks:
+  monitor-net:
+    driver: bridge
+volumes:
+  prometheus-data:
+  grafana-data:
+  db-data-slave2:

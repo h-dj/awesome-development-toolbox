@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  starrocks-fe:
+    image: starrocks/fe-ubuntu:latest
+    container_name: starrocks-fe
+    ports:
+      - "8030:8030"
+      - "9030:9030"
+      - "8031:8031"
+    environment:
+      TZ: "Asia/Shanghai"
+    volumes:
+      #- ./conf/fe.conf:/opt/starrocks/conf/fe.conf
+      - ./data/fe:/opt/starrocks
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8030"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    privileged: true
+    networks:
+      - starrocks-network
+  starrocks-be:
+    image: starrocks/be-ubuntu:latest
+    container_name: starrocks-be
+    ports:
+      - "8040:8040"
+      - "8041:8041"
+      - "8050:8050"
+    environment:
+      FRONTEND_IP: "starrocks-fe"
+      TZ: "Asia/Shanghai"
+    volumes:
+      #- ./conf/be.conf:/opt/starrocks/conf/be.conf
+      - ./data/be:/opt/starrocks
+    depends_on:
+      starrocks-fe:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8040"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    privileged: true
+    networks:
+      - starrocks-network
+
+networks:
+  starrocks-network:
+    driver: bridge

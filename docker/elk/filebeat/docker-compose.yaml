@@ -1,7 +1,7 @@
 version: '3'
 services:
   filebeat:
-    image: 'elastic/filebeat:7.14.2'
+    image: 'elastic/filebeat:6.8.23'
     # no，on-failure[:times]，always，unless-stopped
     restart: 'always'
     privileged: true

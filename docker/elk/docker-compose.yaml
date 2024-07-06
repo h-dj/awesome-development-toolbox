@@ -9,12 +9,17 @@ services:
     environment:
       - "cluster.name=elasticsearch" #设置集群名称为elasticsearch
       - "discovery.type=single-node" #以单一节点模式启动
-      - "ES_JAVA_OPTS=-Xms8G -Xmx8G" #设置使用jvm内存大小
+      - "ES_JAVA_OPTS=-Xms4G -Xmx4G" #设置使用jvm内存大小
       - TZ=Asia/Shanghai
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
     volumes:
       #- ./es/plugins:/usr/share/elasticsearch/plugins
       - es-data:/usr/share/elasticsearch/data
-      #- ./config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ./config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     ports:
       - 9200:9200
       - 9300:9300
@@ -27,7 +32,8 @@ services:
     environment:
       - TZ=Asia/Shanghai
     depends_on:
-      - elasticsearch #kibana在elasticsearch启动之后再启动
+      elasticsearch:
+        condition: service_healthy
     volumes:
       - ./config/kibana.yml:/usr/share/kibana/config/kibana.yml
     ports:
@@ -41,10 +47,11 @@ services:
     restart: 'always'
     privileged: true
     volumes:
-      - ./config:/usr/share/logstash/config
-     # - ./config/pipeline:/usr/share/logstash/pipeline
+      - ./config/logstash.yml:/usr/share/logstash/config/logstash.yml
+      - ./config/pipeline:/usr/share/logstash/pipeline
     depends_on:
-      - elasticsearch #kibana在elasticsearch启动之后再启动
+      elasticsearch:
+        condition: service_healthy
     ports:
       - "5044:5044"
       - "9600:9600"

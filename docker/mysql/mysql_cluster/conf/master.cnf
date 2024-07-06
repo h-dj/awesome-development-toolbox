@@ -1,29 +1,37 @@
 [mysqld]
 
-
-# ###################################################
-# 主主复制配置
-#
-# 如果当前实例既做主库又做从库次选线必须开启
-# log-slave-updates = true
-
-# 自增长ID
-# 特殊说明 当该实例为双主的架构时要特殊配置 以避免自增id冲突的问题
-# auto_increment_offset = 1
-# auto_increment_increment = 2
-# ####################################################
-
-
 default_authentication_plugin=mysql_native_password
 
-# [必须]服务器唯一ID，默认是1，一般取IP最后一段
+######replication settings######
 server-id=1
 
-# [必须]启用二进制日志
+# binlog 配置
 log-bin=mysql-bin
+binlog_format=row
 
-# 复制过滤：也就是指定哪个数据库不用同步（mysql库一般不同步）
-binlog-ignore-db=mysql
+
+######gtid#######
+gtid_mode=on
+enforce_gtid_consistency=on
+binlog_gtid_simple_recovery=on
+
+relay_log_recovery = ON
+relay-log-index=mysql-relay
+relay-log=mysql-relay
+master_info_repository = TABLE 
+relay_log_info_repository = TABLE
+
+
+# 半异步复制(在MySQL 初始化时，无效，需要重新启动)
+plugin-load-add=semisync_source.so
+plugin-load-add=semisync_replica.so
+# 在 MySQL 中，以 loose_ 开头的配置参数表示这些参数是动态配置参数（Dynamic Variables）。
+# 这些参数可以在 MySQL 运行时动态修改，并且它们的值可以通过 SET GLOBAL 或 SET PERSIST 命令进行更改，而不需要重启 MySQL 实例即可生效。
+loose_rpl_semi_sync_source_enabled = ON
+loose_rpl_semi_sync_replica_enabled = ON
+loose_rpl_semi_sync_master_wait_no_slave = ON
+
+log_slow_replica_statements = 1
 
 [client]
 default-character-set=utf8mb4

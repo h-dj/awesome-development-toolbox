@@ -1,0 +1,10 @@
+version: '3.0'
+
+services:
+  replication-manager:
+    image: 'signal18/replication-manager:2.0'
+    container_name: replication-manager
+    ports:
+      - "10001:10001"
+    volumes:
+      - ./config.toml:/etc/replication-manager/config.toml

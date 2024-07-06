@@ -1,0 +1,115 @@
+version: '3'
+services:
+  redis-node1:
+    image: redis:6.2
+    container_name: redis-node1
+    restart: always
+    networks:
+      - redis-cluster
+    ports:
+      - "6301:6301"
+      - "16301:16301"
+    volumes:
+      - node1-data:/data
+      - ./conf/node1.conf:/usr/local/etc/redis/redis.conf
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+
+  redis-node2:
+    image: redis:6.2
+    restart: always
+    networks:
+      - redis-cluster
+    container_name: redis-node2
+    ports:
+      - "6302:6302"
+      - "16302:16302"
+    volumes:
+      - node2-data:/data
+      - ./conf/node2.conf:/usr/local/etc/redis/redis.conf
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+
+  redis-node3:
+    image: redis:6.2
+    restart: always
+    networks:
+      - redis-cluster
+    container_name: redis-node3
+    ports:
+      - "6303:6303"
+      - "16303:16303"
+    volumes:
+      - node3-data:/data
+      - ./conf/node3.conf:/usr/local/etc/redis/redis.conf
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+
+  redis-node4:
+    image: redis:6.2
+    restart: always
+    networks:
+      - redis-cluster
+    container_name: redis-node4
+    ports:
+      - "6304:6304"
+      - "16304:16304"
+    volumes:
+      - node4-data:/data
+      - ./conf/node4.conf:/usr/local/etc/redis/redis.conf
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+
+  redis-node5:
+    image: redis:6.2
+    container_name: redis-node5
+    restart: always
+    networks:
+      - redis-cluster
+    ports:
+      - "6305:6305"
+      - "16305:16305"
+    volumes:
+      - node5-data:/data
+      - ./conf/node5.conf:/usr/local/etc/redis/redis.conf
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+
+  redis-node6:
+    image: redis:6.2
+    restart: always
+    container_name: redis-node6
+    networks:
+      - redis-cluster
+    ports:
+      - "6306:6306"
+      - "16306:16306"
+    volumes:
+      - node6-data:/data
+      - ./conf/node6.conf:/usr/local/etc/redis/redis.conf
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+
+
+  redis-cluster-init:
+    image: redis:6.2
+    container_name: redis-cluster-init
+    networks:
+      - redis-cluster
+    depends_on:
+      - redis-node1
+      - redis-node2
+      - redis-node3
+      - redis-node4
+      - redis-node5
+      - redis-node6
+    entrypoint: ["sh", "-c", "
+                  sleep 10 
+                  && yes yes | redis-cli --cluster create 192.168.56.200:6301 192.168.56.200:6302 192.168.56.200:6303 192.168.56.200:6304 192.168.56.200:6305 192.168.56.200:6306 --cluster-replicas 1
+                "
+    ]
+
+networks:
+  redis-cluster:
+    driver: bridge
+volumes:
+  node6-data:
+  node5-data:
+  node4-data:
+  node3-data:
+  node2-data:
+  node1-data:

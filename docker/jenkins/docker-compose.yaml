@@ -1,7 +1,7 @@
 version: "3"
 services:
   jenkins:
-    image: 'jenkins/jenkins:lts-jdk11'
+    image: 'jenkins/jenkins:lts-jdk17'
     container_name: jenkins-service
     # no，on-failure[:times]，always，unless-stopped
     restart: 'always'
@@ -9,10 +9,18 @@ services:
     environment:
       - TZ=Asia/Shanghai
     ports:
-      - '8080:8080'
-      - '50000:50000'
+      - '8500:8080'
+      - '8555:50000'
     volumes:
-      - ./jenkins_home:/var/jenkins_home
+      - jenkins_home:/var/jenkins_home
+      - ./.m2:/root/.m2
       - /var/run/docker.sock:/var/run/docker.sock
       - /usr/bin/docker:/usr/bin/docker
       - /usr/local/bin/docker-compose:/usr/local/bin/docker-compose
+    networks:
+      - jenkins-net   
+networks:
+  jenkins-net:
+    driver: bridge
+volumes:
+  jenkins_home:
