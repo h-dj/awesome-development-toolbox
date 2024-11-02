@@ -2,42 +2,46 @@ pipeline {
     agent any
     parameters {
         choice(name: 'ENV', choices: ['dev', 'test', 'prod'], description: '选择部署环境')
-        choice(name: 'BRANCH', choices: ['master', 'setup_by_setup'], description: '选择代码分支')
+        choice(name: 'BRANCH', choices: ['master', 'develop_study'], description: '选择代码分支')
         // SSH 配置的ID app-ssh-server-config
         choice(name: 'deploy_on', choices: ['app-ssh-server-config'], description: '选择部署机器')
 
     }
     environment {
-        GIT_COMMIT_ID = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
-        GIT_TAG = "build-${env.BUILD_NUMBER}-${GIT_COMMIT_ID}"
-        current_build_number = "${BUILD_NUMBER}"
         // 自建镜像仓库地址
         docker_hub = "192.168.56.200:5000"
-        docker_hub_namespace = 'app'
+        docker_hub_namespace = 'youlai'
     }
 
     stages {
-        stage ("打印相关变量") {
-            steps{
-                echo "current_build_number信息为：${current_build_number}"
-                echo "GIT_COMMIT_ID : ${GIT_COMMIT_ID}"
-                script{
-                    // 本端tag名
-                    env.local_tag = "simple-java-maven-app:${current_build_number}_${GIT_COMMIT_ID}"
-                    // 远端tag名，必须以这种方式命令，才能push到远端
-                    env.remote_tag = "${docker_hub}/${docker_hub_namespace}/${local_tag}"
-                    "local_tag信息为：${env.local_tag}"
-                    "remote_tag信息为：${env.remote_tag}"
-                    "current_build_number信息为：${current_build_number}"
-                }
-            }
-        }
         stage('Checkout') {
             steps {
                 checkout([$class: 'GitSCM'
                 , branches: [[name: "*/${params.BRANCH}"]]
                 ,extensions: [[$class: 'CloneOption', depth: 1, noTags: false, reference: '', shallow: true]]
-                , userRemoteConfigs: [[credentialsId: 'gogs-password', url: 'http://192.168.56.200:3000/hdj/simple-java-maven-app.git']]])
+                , userRemoteConfigs: [[credentialsId: 'gogs-password', url: 'http://192.168.56.200:3000/hdj/youlai-mall.git']]])
+            }
+        }
+        stage ("打印相关变量") {
+            steps{
+   
+                script{
+                    env.current_build_number = "${BUILD_NUMBER}"
+                    env.GIT_COMMIT_ID = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+                    env.GIT_TAG = "build-${env.BUILD_NUMBER}-${GIT_COMMIT_ID}"
+                    echo "GIT_TAG：${env.GIT_TAG}"
+                    echo "GIT_COMMIT_ID : ${GIT_COMMIT_ID}"
+                    // 本端tag名
+                    env.local_tag = "simple-java-maven-app:${current_build_number}_${GIT_COMMIT_ID}"
+                    // 远端tag名，必须以这种方式命令，才能push到远端
+                    env.remote_tag = "${docker_hub}/${docker_hub_namespace}/${local_tag}"
+                    
+                    echo "local_tag信息为：${env.local_tag}"
+                    echo "remote_tag信息为：${env.remote_tag}"
+                    echo "current_build_number信息为：${current_build_number}"
+                    echo "GIT_TAG：${env.GIT_TAG}"
+                    echo "GIT_COMMIT_ID : ${GIT_COMMIT_ID}"
+                }
             }
         }
         stage('Build') {
@@ -110,7 +114,7 @@ pipeline {
                     script {
                         echo "Creating Git tag ${env.GIT_TAG}"
                         sh """
-                            git remote set-url origin http://${GIT_USERNAME}:${GIT_PASSWORD}@192.168.56.200:3000/hdj/simple-java-maven-app.git
+                            git remote set-url origin http://${GIT_USERNAME}:${GIT_PASSWORD}@192.168.56.200:3000/hdj/youlai-mall.git
                             git tag ${env.GIT_TAG} -m 'simple-java-maven-app Build ${env.BUILD_NUMBER}'
                             git push origin ${env.GIT_TAG}
                         """

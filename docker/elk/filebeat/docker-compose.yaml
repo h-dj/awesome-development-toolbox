@@ -10,7 +10,7 @@ services:
       - TZ=Asia/Shanghai
     volumes:
       - ./config/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
-      - ./logs:/var/log/nginx
+      - /opt/logs:/logs
     logging:
       driver: "json-file"
       options:

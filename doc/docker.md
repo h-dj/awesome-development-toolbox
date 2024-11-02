@@ -205,6 +205,11 @@ sudo systemctl daemon-reload && sudo systemctl restart docker
   -p 映射端口号
   -d  后台启动
   --restart=always 开机启动
+    --restart=always  # 表示容器退出时，docker会总是自动重启这个容器
+    --restart=on-failure:3  # 表示容器的退出状态码非0(非正常退出)，自动重启容器，3是自动重启的次数。超过3此则不重启
+    --restart=no  # 默认值，容器退出时，docker不自动重启容器
+    --restart=unless-stopped  # 表示容器退出时总是重启，但是不考虑docker守护进程运行时就已经停止的容器
+
   --privileged=true 权限
   -e 常量
   

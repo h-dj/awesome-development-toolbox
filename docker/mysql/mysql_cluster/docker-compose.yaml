@@ -4,7 +4,7 @@ services:
     container_name: mysql_master
     image: 'mysql:8.0'
     volumes:
-      - db-data-master:/var/lib/mysql
+      - db-master:/var/lib/mysql
       - ./conf/master.cnf:/etc/mysql/my.cnf
       - ./init/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     environment:
@@ -12,7 +12,7 @@ services:
       - TZ=Asia/Shanghai
     ports:
       - "4400:3306"
-    restart: always
+    restart: unless-stopped
     privileged: true
     networks:
       - mysql-replicanet
@@ -26,7 +26,7 @@ services:
     image: 'mysql:8.0'
     container_name: mysql_slave_1
     volumes:
-      - db-data-slave1:/var/lib/mysql
+      - db-slave1:/var/lib/mysql
       - ./conf/slave1.cnf:/etc/mysql/my.cnf
       - ./init/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     environment:
@@ -34,7 +34,7 @@ services:
       - TZ=Asia/Shanghai
     ports:
       - "4401:3306"
-    restart: always
+    restart: unless-stopped
     privileged: true
     networks:
       - mysql-replicanet
@@ -51,7 +51,7 @@ services:
     image: 'mysql:8.0'
     container_name: mysql_slave_2
     volumes:
-      - db-data-slave2:/var/lib/mysql
+      - db-slave2:/var/lib/mysql
       - ./conf/slave2.cnf:/etc/mysql/my.cnf
       - ./init/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     environment:
@@ -59,7 +59,7 @@ services:
       - TZ=Asia/Shanghai
     ports:
       - "4402:3306"
-    restart: always
+    restart: unless-stopped
     privileged: true
     networks:
       - mysql-replicanet
@@ -80,7 +80,7 @@ services:
         - MYSQL_REPL_PASSWORD=${MYSQL_REPL_PASSWORD}
         - TZ=Asia/Shanghai
       privileged: true
-      restart: always
+      restart: unless-stopped
       networks:
         - mysql-replicanet
       depends_on:
@@ -96,11 +96,11 @@ services:
                   &&  mysql -uroot -p\"$MYSQL_ROOT_PASSWORD\" -h192.168.56.200 -P4402 -e \"STOP REPLICA; change master to master_host='192.168.56.200',master_port=4400,master_auto_position=1; START REPLICA USER='\"$MYSQL_REPL_USER\"' PASSWORD='\"$MYSQL_REPL_PASSWORD\"';\"
                   &&  echo 'MySQL replication configured successfully.'
                 "]
-      command: ["/bin/true"]  # 确保容器在完成任务后立即退出
 networks:
   mysql-replicanet:
     driver: bridge
 volumes:
+#  db-master:
   db-data-master:
   db-data-slave1:
   db-data-slave2:

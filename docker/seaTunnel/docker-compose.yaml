@@ -14,10 +14,4 @@ services:
       timeout: 5s
       retries: 3
     networks:
-      - sr-replicanet
-    volumes:
-      -  ./be/storage:/data/deploy/starrocks/be/storage
-      - ./fe/meta:/data/deploy/starrocks/fe/meta
-networks:
-  sr-replicanet:
-    driver: bridge
+      - version: "3"

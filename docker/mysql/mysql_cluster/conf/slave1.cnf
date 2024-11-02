@@ -1,7 +1,8 @@
 [mysqld]
 
 default_authentication_plugin=mysql_native_password
-
+#忽略表大小写
+lower_case_table_names=1
 ######replication settings######
 server-id=2
 

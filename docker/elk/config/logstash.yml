@@ -10,3 +10,7 @@ xpack.monitoring.elasticsearch.hosts: [ "http://elasticsearch:9200" ]
 xpack.monitoring.enabled: false
 xpack.monitoring.elasticsearch.username: elastic
 xpack.monitoring.elasticsearch.password: elastic
+
+
+# 指定使用管道ID
+#xpack.management.pipeline.id: ["main"]

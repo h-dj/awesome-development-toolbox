@@ -3,20 +3,69 @@ filebeat.inputs:
     enabled: true #是否开启，默认即开启，可不写
     encoding: utf-8
     paths:
-      - /apps/nginx/logs/access.log #日志文件路径
+      - /logs/mall-admin/access.log #日志文件路径
     fields: #定义过滤字段
-      type: nginx_access_log #过滤字段
+      appname: mall-admin #过滤字段
+    fields_under_root: true
   - type: log
     enabled: true
     encoding: utf-8
     paths:
-      - /apps/nginx/logs/error.log
+      - /logs/mall-admin/error.log #日志文件路径
     fields:
-      type: nginx_error_log
-
+      appname: mall-admin #过滤字段
+    fields_under_root: true
+  - type: log
+    enabled: true
+    paths:
+      - /logs/youlai-system/log.log
+    fields:
+      appname: youlai-admin  # 自定义字段，提供给 Logstash 用于区分日志来源
+    fields_under_root: true  # 开启自定义字段
+  - type: log
+    enabled: true
+    paths:
+      - /logs/youlai-auth/log.log
+    fields:
+      appname: youlai-auth
+    fields_under_root: true
+  - type: log
+    enabled: true
+    paths:
+      - /logs/youlai-gateway/log.log
+    fields:
+      appname: youlai-gateway
+    fields_under_root: true
+  - type: log
+    enabled: true
+    paths:
+      - /logs/mall-oms/log.log
+    fields:
+      appname: youlai-oms
+  - type: log
+    enabled: true
+    paths:
+      - /logs/mall-pms/log.log
+    fields:
+      appname: youlai-pms
+    fields_under_root: true
+  - type: log
+    enabled: true
+    paths:
+      - /logs/mall-ums/log.log
+    fields:
+      appname: youlai-ums
+    fields_under_root: true
+  - type: log
+    enabled: true
+    paths:
+      - /logs/mall-sms/log.log
+    fields:
+      appname: youlai-sms
+    fields_under_root: true
 setup.template.settings:
   index.number_of_shards: 1
 
 # 输出到 logstash
 output.logstash:
-  hosts: ["192.168.56.108:5044"]
+  hosts: ["192.168.56.40:5044"]

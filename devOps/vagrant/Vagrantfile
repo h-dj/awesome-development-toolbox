@@ -9,28 +9,40 @@ vm_configurations = {
   #   "ip" => "192.168.56.10",
   #   "memory"=> 4096,
   #   "cpus"=> 2
+  # "shell_path"=> "kubesphere/scripts/common.sh"
   # },
-  "starRock-server" => {
-    "box" => "ubuntu/bionic64",
-    "network" => "private_network",
-    "ip" => "192.168.56.30",
-    "memory"=> 8192,
-    "cpus"=> 2
-  },
   "app-server" => {
     "box" => "ubuntu/bionic64",
     "network" => "private_network",
     "ip" => "192.168.56.20",
     "memory"=> 8192,
-    "cpus"=> 2
+    "cpus"=> 2,
+    "shell_path"=> "kubesphere/scripts/common.sh"
+  },
+  "starrock" => {
+    "box" => "generic/ubuntu2204",
+    "network" => "private_network",
+    "ip" => "192.168.56.30",
+    "memory"=> 8192,
+    "cpus"=> 4,
+    "shell_path"=> "scripts/ubuntu2204.sh"
+  },
+  "elk" => {
+    "box" => "ubuntu/bionic64",
+    "network" => "private_network",
+    "ip" => "192.168.56.40",
+    "memory"=> 16384,
+    "cpus"=> 6,
+    "shell_path"=> "scripts/common.sh"
   },
   "my-pc" => {
-  "box" => "ubuntu/bionic64",
-  "network" => "private_network",
-  "ip" => "192.168.56.200",
-  "memory"=> 16384,
-  "cpus"=> 4
-}
+    "box" => "ubuntu/bionic64",
+    "network" => "private_network",
+    "ip" => "192.168.56.200",
+    "memory"=> 16384,
+    "cpus"=> 6,
+    "shell_path"=> "kubesphere/scripts/common.sh"
+  },
 }
 
 Vagrant.configure("2") do |config|
@@ -43,14 +55,13 @@ Vagrant.configure("2") do |config|
   vm_configurations.each do |vm_name, vm_config|
     config.vm.define vm_name do |vm|
       vm.vm.box = vm_config["box"]
-      vm.vm.box = "ubuntu/bionic64"
       vm.vm.hostname = vm_name
       vm.vm.network "private_network", ip: vm_config['ip']
       vm.vm.provider "virtualbox" do |vb|
               vb.memory = vm_config['memory']
               vb.cpus = vm_config['cpus']
       end
-      vm.vm.provision "shell", path: "kubesphere/scripts/common.sh"
+      vm.vm.provision "shell", path: vm_config["shell_path"]
     end
   end
 end

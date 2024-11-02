@@ -46,10 +46,25 @@ show variables like 'rpl_semi%';
 -- 备份数据库
 DBS=$(mysql -u root -p123456 -e 'SHOW DATABASES;' | grep -Ev 'Database|information_schema|performance_schema|sys')
 mysqldump -u root -p123456 --databases $DBS --set-gtid-purged=OFF > alldb.sql
-
+mysqldump -u root -p123456 --databases $DBS  > alldb.sql
 mysqldump -h localhost -u root -p123456 --skip-triggers --compact mysql user > users_backup.sql
 
 
+mysqldump -u root -p123456 --all-databases --set-gtid-purged=OFF > alldb.sql
+
 -- 恢复
 mysql  -u root -p123456 <  /alldb.sql
+
+
+
+-- 查看问题，是否有错误的事务
+SELECT * FROM performance_schema.replication_applier_status_by_worker;
+
+SHOW SLAVE STATUS;
+-- Last_SQL_Error: Error in applying GTID 12345: Duplicate entry '1' for key 'PRIMARY'
+-- Retrieved_Gtid_Set: df427bd0-3c65-11ef-a995-0242c0a87002:61-833
+STOP SLAVE;
+reset slave
+show variables like 'gtid%';
+SET GLOBAL  gtid_purged='';
 ```

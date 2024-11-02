@@ -11,9 +11,9 @@ services:
    command: server --console-address ":9001" http://minio/data{1...2}
    environment:
     - MINIO_ROOT_USER=admin
-    - MINIO_ROOT_PASSWORD=123456
-   #- MINIO_ACCESS_KEY=AKIAIOSFODNN7EXAMPLE
-   #- MINIO_SECRET_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+    - MINIO_ROOT_PASSWORD=12345678
+    #- MINIO_ACCESS_KEY=app_mini
+    #- MINIO_SECRET_KEY=01234560
    healthcheck:
     test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
     interval: 30s

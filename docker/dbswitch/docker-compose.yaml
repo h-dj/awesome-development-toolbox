@@ -1,0 +1,34 @@
+services:
+  mysqldb:
+    container_name: dbswitch_mysqldb
+    image: mysql:5.7
+    volumes:
+      - "./data/mysql:/var/lib/mysql"
+    environment:
+      MYSQL_DATABASE: dbswitch
+      MYSQL_USER: tangyibo
+      MYSQL_PASSWORD: 123456
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_ROOT_HOST: '%'
+    healthcheck:
+      test: ["CMD", "mysql", "-uroot", "-p123456" ,"-e"," select 1 "]
+      interval: 10s
+      timeout: 3s
+      retries: 60
+      start_period: 30s
+  dbswitch:
+    container_name: dbswitch_webui
+    image: inrgihc/dbswitch:1.9.7
+    environment:
+      MYSQLDB_HOST: dbswitch_mysqldb
+      MYSQLDB_PORT: 3306
+      MYSQLDB_USERNAME: tangyibo
+      MYSQLDB_PASSWORD: 123456
+      MYSQLDB_NAME: dbswitch
+    volumes:
+      - ./tmp:/tmp   
+    ports:
+      - 9088:9088
+    depends_on:
+      mysqldb:
+        condition: service_healthy

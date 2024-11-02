@@ -1,6 +1,5 @@
 # 更换国内源
-sudo sed -i s@/archive.ubuntu.com/@/mirrors.aliyun.com/@g /etc/apt/sources.list
-sudo sed -i s@/security.ubuntu.com/@/mirrors.aliyun.com/@g /etc/apt/sources.list
+sudo sed -i s@/mirrors.edge.kernel.org/@/mirrors.aliyun.com/@g /etc/apt/sources.list
 sudo apt clean
 sudo apt-get update -y
 
@@ -37,12 +36,7 @@ sudo cat <<EOF | sudo tee /etc/docker/daemon.json
         "https://30pma5a7.mirror.aliyuncs.com"
     ],
   "exec-opts": ["native.cgroupdriver=systemd"],
-  "proxies": {
-                "http-proxy": "http://192.168.8.7:7899",
-                "https-proxy": "http://192.168.8.7:7899",
-                "no-proxy": "*.test.example.com,.example.org,127.0.0.0/8,dockerhub.icu,30pma5a7.mirror.aliyuncs.com"
-        },
-        "insecure-registries":["192.168.56.200:5000"]
+  "insecure-registries":["192.168.56.200:5000"]
 }
 EOF
 sudo systemctl daemon-reload
@@ -57,22 +51,10 @@ sudo chmod +x /usr/local/bin/docker-compose
 sudo apt-get install -y selinux-utils vim socat conntrack ebtables ipset chrony
 
 
-# 修改root 密码
-sudo echo "root:123456" | chpasswd 
-
-# 在sshd配置文件中启用root密码登录
-sudo sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-sudo sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-sudo sed -i 's/#PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
-sudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
-sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
-# 重启SSH服务以应用更改
-sudo systemctl restart sshd
-
 # 关闭防火墙
 sudo ufw disable
 # 关闭 selinx
-#sudo setenforce 0
+sudo setenforce 0
 echo SELINUX=disabled | sudo tee -a /etc/selinux/config
 # 关闭 swap
 sudo swapoff -a
@@ -80,3 +62,22 @@ sudo sed -ri 's/.*swap.*/#&/' /etc/fstab
 
 # 设置时区
 sudo timedatectl set-timezone   Asia/Shanghai
+
+
+# 修改root 密码
+sudo echo "root:123456" | chpasswd 
+
+# # 在sshd配置文件中启用root密码登录
+# sudo echo "PubkeyAcceptedAlgorithms +ssh-rsa" >> /etc/ssh/sshd_config
+# sudo echo "HostKeyAlgorithms +ssh-rsa" >> /etc/ssh/sshd_config
+# sudo echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
+# sudo echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
+# # PubkeyAcceptedAlgorithms +ssh-rsa
+# # 重启SSH服务以应用更改
+# sudo systemctl start sshd
+# 在sshd配置文件中启用root密码登录
+sudo sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+sudo sed -i 's/#PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+sudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
+# 重启SSH服务以应用更改
+sudo systemctl restart sshd
