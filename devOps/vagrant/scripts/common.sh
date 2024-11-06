@@ -49,9 +49,10 @@ sudo systemctl daemon-reload
 sudo systemctl restart docker
 
 # 安装docker-compose
-sudo curl  -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+#sudo curl  -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 #授予执行权限
-sudo chmod +x /usr/local/bin/docker-compose
+#sudo chmod +x /usr/local/bin/docker-compose
+sudo apt-get install docker-compose-plugin
 
 # 安装软件
 sudo apt-get install -y selinux-utils vim socat conntrack ebtables ipset chrony

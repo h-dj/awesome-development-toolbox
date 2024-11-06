@@ -1,0 +1,27 @@
+# docker-compose 编排
+version: '3'
+services:
+  # 服务名
+  kafka-console-ui:
+    # 容器名
+    container_name: "kafka-console-ui"
+    # 镜像地址
+    image: "wdkang/kafka-console-ui"
+    # 端口
+    ports:
+      - "7766:7766"
+    # 持久化
+    volumes:
+      - console-ui-data:/app/data
+      - console-ui-log:/app/log
+    environment:
+      TZ: Asia/Shanghai
+    restart: always
+    networks:
+      - console-ui-net
+volumes:
+  console-ui-data:
+  console-ui-log:
+networks:
+  console-ui-net:
+    driver: bridge

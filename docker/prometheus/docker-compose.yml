@@ -153,6 +153,18 @@ services:
         - 9126:9121
       networks:
         - monitor-net      
+  kafka-exporter:
+    image: bitnami/kafka-exporter:latest
+    container_name: kafka-exporter
+    command:
+      - '--kafka.server=192.168.56.50:32767'
+      - '--kafka.server=192.168.56.50:32768'
+      - '--kafka.server=192.168.56.50:32769'
+      - '--kafka.version=3.8.0'
+    restart: always
+    ports:
+      - 9308:9308
+
 
 networks:
   monitor-net:
@@ -160,4 +172,3 @@ networks:
 volumes:
   prometheus-data:
   grafana-data:
-  db-data-slave2:
