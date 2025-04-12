@@ -5,6 +5,7 @@ services:
   prometheus:
     image: bitnami/prometheus:2.47.2
     container_name: prometheus
+    restart: always
     environment:
       - TZ=Asia/Shanghai
     volumes:
@@ -26,6 +27,7 @@ services:
   grafana:
     image: grafana/grafana:10.2.0
     container_name: grafana
+    restart: always
     volumes:
       - grafana-data:/var/lib/grafana
     environment:
@@ -39,6 +41,7 @@ services:
   nodeexporter:
     image: prom/node-exporter:v1.5.0
     container_name: nodeexporter
+    restart: always
     environment:
       - TZ=Asia/Shanghai
     volumes:

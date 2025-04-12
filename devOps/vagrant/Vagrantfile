@@ -11,14 +11,14 @@ vm_configurations = {
   #   "cpus"=> 2
   # "shell_path"=> "kubesphere/scripts/common.sh"
   # },
-#   "app-server" => {
-#     "box" => "ubuntu/bionic64",
-#     "network" => "private_network",
-#     "ip" => "192.168.56.20",
-#     "memory"=> 8192,
-#     "cpus"=> 2,
-#     "shell_path"=> "kubesphere/scripts/common.sh"
-#   },
+  "app-server" => {
+    "box" => "ubuntu/bionic64",
+    "network" => "private_network",
+    "ip" => "192.168.56.20",
+    "memory"=> 8192,
+    "cpus"=> 2,
+    "shell_path"=> "kubesphere/scripts/common.sh"
+  },
 #   "starrock" => {
 #     "box" => "generic/ubuntu2204",
 #     "network" => "private_network",
@@ -27,28 +27,28 @@ vm_configurations = {
 #     "cpus"=> 4,
 #     "shell_path"=> "scripts/ubuntu2204.sh"
 #   },
-#   "elk" => {
-#     "box" => "ubuntu/bionic64",
-#     "network" => "private_network",
-#     "ip" => "192.168.56.40",
-#     "memory"=> 16384,
-#     "cpus"=> 6,
-#     "shell_path"=> "scripts/common.sh"
-#   },
-#   "my-pc" => {
-#     "box" => "ubuntu/bionic64",
-#     "network" => "private_network",
-#     "ip" => "192.168.56.200",
-#     "memory"=> 16384,
-#     "cpus"=> 6,
-#     "shell_path"=> "kubesphere/scripts/common.sh"
-#   },
+  "elk" => {
+    "box" => "ubuntu/bionic64",
+    "network" => "private_network",
+    "ip" => "192.168.56.40",
+    "memory"=> 16384,
+    "cpus"=> 4,
+    "shell_path"=> "scripts/common.sh"
+  },
+  "my-pc" => {
+    "box" => "ubuntu/bionic64",
+    "network" => "private_network",
+    "ip" => "192.168.56.200",
+    "memory"=> 16384,
+    "cpus"=> 4,
+    "shell_path"=> "kubesphere/scripts/common.sh"
+  },
    "kafka" => {
      "box" => "ubuntu/bionic64",
      "network" => "private_network",
      "ip" => "192.168.56.50",
      "memory"=> 16384,
-     "cpus"=> 6,
+     "cpus"=> 4,
      "shell_path"=> "scripts/common.sh"
    },
   "prometheus" => {
@@ -58,7 +58,7 @@ vm_configurations = {
     "memory"=> 4096,
     "cpus"=> 2,
     "shell_path"=> "scripts/common.sh"
-  }
+  },
 }
 
 Vagrant.configure("2") do |config|

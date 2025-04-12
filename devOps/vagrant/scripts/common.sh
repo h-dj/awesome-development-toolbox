@@ -33,15 +33,10 @@ sudo usermod -aG docker $USER
 sudo cat <<EOF | sudo tee /etc/docker/daemon.json
 {
    "registry-mirrors": [
-        "https://dockerhub.icu",
+        "https://cjie.eu.org",
         "https://30pma5a7.mirror.aliyuncs.com"
     ],
   "exec-opts": ["native.cgroupdriver=systemd"],
-  "proxies": {
-                "http-proxy": "http://192.168.8.7:7899",
-                "https-proxy": "http://192.168.8.7:7899",
-                "no-proxy": "*.test.example.com,.example.org,127.0.0.0/8,dockerhub.icu,30pma5a7.mirror.aliyuncs.com"
-        },
         "insecure-registries":["192.168.56.200:5000"]
 }
 EOF

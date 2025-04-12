@@ -51,6 +51,7 @@
     - JSON Viewer 响应的json格式化显示
     - Proxy SwitchyOmega 代理切换
     - floccus bookmarks 书签同步
+    - 沉浸式翻译 
 
 
 - shell 工具

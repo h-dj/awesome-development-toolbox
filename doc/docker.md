@@ -98,6 +98,7 @@ docker run hello-world
 ```
 {
   "registry-mirrors": [
+    "https://dockerpull.org",
     "https://dockerhub.icu",
     "https://30pma5a7.mirror.aliyuncs.com",
     "https://hub-mirror.c.163.com",
@@ -112,23 +113,27 @@ docker run hello-world
   ],
   "exec-opts": ["native.cgroupdriver=systemd"],
   "proxies": {
-                "http-proxy": "http://192.168.8.7:7899",
-                "https-proxy": "http://192.168.8.7:7899",
+                "http-proxy": "http://192.168.8.17:7896",
+                "https-proxy": "http://192.168.8.17:7896",
                 "no-proxy": "*.test.example.com,.example.org,127.0.0.0/8"
         }
 }
 #添加文件/etc/docker/daemon.json
+
+
+sudo tee /etc/docker/daemon.json <<EOF
 {
-    "registry-mirrors": [
-        "https://dockerhub.icu"
+     "registry-mirrors": [
+        "https://ghcr.dockerhub.icu"
+        "https://dockerproxy.net",
+        "https://docker.1panel.dev"
     ],
-    "exec-opts": ["native.cgroupdriver=systemd"],
-    "proxies": {
-                "http-proxy": "http://192.168.8.7:7899",
-                "https-proxy": "http://192.168.8.7:7899",
-                "no-proxy": "*.test.example.com,.example.org,127.0.0.0/8"
-        }
+    "exec-opts": ["native.cgroupdriver=systemd"]
 }
+EOF
+
+sudo systemctl daemon-reload 
+sudo systemctl restart docker
 ```
 
 - 获取阿里docker镜像加速器 https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors
