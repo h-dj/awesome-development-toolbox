@@ -51,7 +51,7 @@ vm_configurations = {
      "cpus"=> 4,
      "shell_path"=> "scripts/common.sh"
    },
-  "prometheus" => {
+    "prometheus" => {
     "box" => "ubuntu/bionic64",
     "network" => "private_network",
     "ip" => "192.168.56.60",
@@ -59,6 +59,14 @@ vm_configurations = {
     "cpus"=> 2,
     "shell_path"=> "scripts/common.sh"
   },
+      "apollo" => {
+          "box" => "ubuntu/bionic64",
+          "network" => "private_network",
+          "ip" => "192.168.56.70",
+          "memory"=> 4096,
+          "cpus"=> 2,
+          "shell_path"=> "scripts/common.sh"
+        },
 }
 
 Vagrant.configure("2") do |config|

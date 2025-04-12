@@ -124,11 +124,14 @@ docker run hello-world
 sudo tee /etc/docker/daemon.json <<EOF
 {
      "registry-mirrors": [
-        "https://ghcr.dockerhub.icu"
-        "https://dockerproxy.net",
-        "https://docker.1panel.dev"
+       "https://dockerproxy.net"
     ],
-    "exec-opts": ["native.cgroupdriver=systemd"]
+    "exec-opts": ["native.cgroupdriver=systemd"],
+    "proxies": {
+                "http-proxy": "http://192.168.8.17:7896",
+                "https-proxy": "http://192.168.8.17:7896",
+                "no-proxy": "*.test.example.com,.example.org,127.0.0.0/8,dockerproxy.net"
+    }
 }
 EOF
 
@@ -245,7 +248,7 @@ sudo systemctl daemon-reload && sudo systemctl restart docker
 
 ```shell
 #下载
-sudo curl  --proxy http://192.168.43.35:7890 -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo curl  --proxy http://192.168.8.17:7899 -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 #授予执行权限
 sudo chmod +x /usr/local/bin/docker-compose
 #验证安装
