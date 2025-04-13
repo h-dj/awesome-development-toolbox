@@ -1,51 +1,102 @@
 version: '3.0'
 
 services:
-  apollo-quick-start:
-    image: nobodyiam/apollo-quick-start
-    container_name: apollo-quick-start
-    restart: 'always'
-    depends_on:
-      apollo-db:
-        condition: service_healthy
+  apollo-configservice:
+    image: apolloconfig/apollo-configservice:2.4.0
+    container_name: apollo-configservice
     ports:
       - "8080:8080"
-      - "8070:8070"
-      - "8090:8090"
-    links:
-      - apollo-db
-    environment:
-      TZ: Asia/Shanghai
-      #JAVA_OPTS: '-Xms2048m -Xmx2048m -Xmn1000m -Xss512k -XX:MetaspaceSize=10m -XX:MaxMetaspaceSize=512m'
-#      APOLLO_CONFIG_DB_USERNAME: 'root'
-#      APOLLO_CONFIG_DB_PASSWORD: 'apollo'
-#      APOLLO_PORTAL_DB_USERNAME: 'root'
-#      APOLLO_PORTAL_DB_PASSWORD: 'apollo'
-
-  apollo-db:
-    image: mysql:8.0
-    container_name: apollo-db
-    restart: 'always'
-    environment:
-      TZ: Asia/Shanghai
-      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
-      #MYSQL_ROOT_PASSWORD: 'apollo'
     healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      test: ["CMD", "curl" ,"localhost:8080/health"]
       interval: 5s
       timeout: 1s
       retries: 10
     depends_on:
-      - apollo-dbdata
+      apollo-db:
+        condition: service_healthy
+    networks:
+      - apollo-network
+    environment:
+      - EUREKA_INSTANCE_IP_ADDRESS=192.168.56.70
+      - SPRING_DATASOURCE_URL=jdbc:mysql://apollo-db:3306/ApolloConfigDB?characterEncoding=utf8
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=123456
+
+  apollo-adminservice:
+    image: apolloconfig/apollo-adminservice:2.4.0
+    container_name: apollo-adminservice
     ports:
-      - "13306:3306"
+      - "8090:8090"
+    healthcheck:
+      test: ["CMD", "curl" ,"localhost:8090/health"]
+      interval: 5s
+      timeout: 1s
+      retries: 10
+    depends_on:
+      apollo-configservice:
+        condition: service_healthy
+    networks:
+      - apollo-network
+    environment:
+      - EUREKA_INSTANCE_IP_ADDRESS=192.168.56.70
+      - SPRING_DATASOURCE_URL=jdbc:mysql://apollo-db:3306/ApolloConfigDB?characterEncoding=utf8
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=123456
+
+  apollo-portal:
+    image: apolloconfig/apollo-portal:2.4.0
+    container_name: apollo-portal
+    ports:
+      - "8070:8070"
+    healthcheck:
+      test: ["CMD", "curl" ,"localhost:8070/health"]
+      interval: 5s
+      timeout: 1s
+      retries: 10
+    depends_on:
+      apollo-adminservice:
+        condition: service_healthy
+      apollo-configservice:
+        condition: service_healthy
+    networks:
+      - apollo-network
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://apollo-db:3306/ApolloPortalDB?characterEncoding=utf8
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=123456
+      - APOLLO_PORTAL_ENVS=dev
+      - DEV_META=http://apollo-configservice:8080
+
+  apollo-db:
+    image: mysql:8.0
+    container_name: apollo-db
+    restart: always
+    command: '--default-authentication-plugin=mysql_native_password'
+    environment:
+      - TZ=Asia/Shanghai
+      - MYSQL_ROOT_PASSWORD=123456
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    ports:
+      - "33066:3306"
     volumes:
       - ./sql:/docker-entrypoint-initdb.d
+    networks:
+      - apollo-network
     volumes_from:
       - apollo-dbdata
 
   apollo-dbdata:
     image: alpine:latest
     container_name: apollo-dbdata
+    networks:
+      - apollo-network
     volumes:
       - ./mysql_data:/var/lib/mysql
+
+networks:
+  apollo-network:
+    driver: bridge
