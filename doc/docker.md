@@ -96,28 +96,6 @@ docker run hello-world
 #### 2.3 配置加速
 
 ```
-{
-  "registry-mirrors": [
-    "https://dockerpull.org",
-    "https://dockerhub.icu",
-    "https://30pma5a7.mirror.aliyuncs.com",
-    "https://hub-mirror.c.163.com",
-    "https://mirror.baidubce.com",
-    "https://mirror.ccs.tencentyun.com",
-        "https://dockerhub.azk8s.cn",
-        "https://docker.mirrors.ustc.edu.cn",
-        "https://registry.docker-cn.com",
-        "https://reg-mirror.qiniu.com",
-        "https://hub-mirror.c.163.com",
-        "https://hub.daocloud.io"
-  ],
-  "exec-opts": ["native.cgroupdriver=systemd"],
-  "proxies": {
-                "http-proxy": "http://192.168.8.17:7896",
-                "https-proxy": "http://192.168.8.17:7896",
-                "no-proxy": "*.test.example.com,.example.org,127.0.0.0/8"
-        }
-}
 #添加文件/etc/docker/daemon.json
 
 
@@ -128,8 +106,8 @@ sudo tee /etc/docker/daemon.json <<EOF
     ],
     "exec-opts": ["native.cgroupdriver=systemd"],
     "proxies": {
-                "http-proxy": "http://192.168.8.17:7896",
-                "https-proxy": "http://192.168.8.17:7896",
+                "http-proxy": "http://192.168.8.3:7899",
+                "https-proxy": "http://192.168.8.3:7899",
                 "no-proxy": "*.test.example.com,.example.org,127.0.0.0/8,dockerproxy.net"
     }
 }
