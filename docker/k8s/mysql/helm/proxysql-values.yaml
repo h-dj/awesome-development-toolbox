@@ -1,0 +1,61 @@
+# https://artifacthub.io/packages/helm/dysnix/proxysql
+image:
+  # -- image registory
+  registry: docker.io
+  # -- image repository
+  repository: proxysql/proxysql
+  # -- image pull policy
+  pullPolicy: Always
+  # -- Overrides the image tag
+  tag: "2.7.3"
+
+## ProxySQL service configuration
+service:
+  ## ProxySQL service type
+  type: NodePort
+  ## SQL proxying port
+  proxyPort: 6033
+  proxyNodePort: 30033
+  ## Admin and clustering port
+  adminPort: 6032
+  adminNodePort: 30032
+  ## Admin Web UI port
+  webPort: 6080
+  webNodePort: 30031
+
+secret:
+  # This are the variables to set `admin_credentials`
+  # WARNING: Set the `admin_credentials` variable to a non-default user other than admin`.
+  #          ProxySQL reserves the default `admin` user for local connection via localhost only.
+  admin_user: "proxysql-admin"
+  admin_password: "123456"
+admin_variables:
+  debug: false
+  # admin/clustering listening interfaces
+  # NOTE:
+  #   The mysql_ifaces parameter (e.g. interfaces="0.0.0.0:6032") is
+  #   configured by default based on `.Values.service.adminPort`
+  mysql_ifaces: "0.0.0.0:6032"
+  refresh_interval: 2000
+
+mysql_users:
+ - username: "root"
+   password: "123456"
+   default_hostgroup: 10
+   max_connections: 200
+   default_schema: "information_schema"
+   active: 1
+
+mysql_servers:
+ - address: "my-mysql-primary-0.my-mysql-primary-headless"
+   port: 3306
+   hostgroup: 10
+   max_connections: 200
+ - address: "my-mysql-secondary-1.my-mysql-headless.mysql.svc.cluster.local"
+   port: 3306
+   hostgroup: 20
+   max_connections: 200
+ - address: "my-mysql-secondary-1.my-mysql-headless.mysql.svc.cluster.local"
+   port: 3306
+   hostgroup: 20
+   max_connections: 200

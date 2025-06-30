@@ -1,0 +1,40 @@
+auth:
+  rootPassword: '123456'
+  replicationPassword: '123456'
+
+architecture: replication
+
+image:
+  registry: docker.io
+  repository: bitnami/mysql
+  tag: 8.0.36  # 指定 MySQL 版本，例如 8.0.36
+
+
+primary:
+  persistence:
+    enabled: true
+    size: 8Gi
+    storageClass: "" # 或 longhorn 等你 K3s 集群支持的 StorageClass
+  service:
+    type: NodePort
+    port: 3306
+    # nodePorts:
+    #   mysql: 32306
+    headless:
+      annotations: { }
+      enabled: true  # 启用 headless service（集群内部发现）
+
+secondary:
+  replicaCount: 2
+  persistence:
+    enabled: true
+    storageClass: ""
+    size: 8Gi
+  service:
+    type: NodePort
+    port: 3306
+    # nodePorts:
+    #   mysql: 32307  # 如果有多个从节点，K8s 会自动分配其余
+    headless:
+      annotations: { }
+      enabled: true  # 启用 headless service
