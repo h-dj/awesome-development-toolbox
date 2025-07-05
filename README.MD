@@ -35,16 +35,13 @@
     - [IDE 设置](./doc/idea.md)
   - [Visual Studio Code](https://code.visualstudio.com/): 开源的 IDE
 - 科学上网工具
-
-  - [v2ray-core](https://github.com/v2ray/v2ray-core)
-  - v2rayN
-  - [Qv2ray](https://github.com/Qv2ray/Qv2ray) : 使用 Qt 框架的跨平台 V2Ray 客户端。支持 Windows, Linux, macOS
+  - [clash-verge](https://github.com/clash-verge-rev/clash-verge-rev)
 - 书签同步工具
-
   - [floccus](https://floccus.org/) + webdev 多平台同步，不支持 Safari 浏览器
 - 接口调试
 
   - [Postman](https://www.postman.com/) API 调试工具
+  - vscode rest-client 插件
 
 - Chrome浏览器插件
     - Quick QR 二维码生成器
@@ -58,6 +55,7 @@
 
   - [FinalShell](http://www.hostbuf.com/) :一款由 Java 开发的 shell 工具
   - [MobaXterm](https://mobaxterm.mobatek.net/) 在 Window 下可以使用一些 Linux 命令，免费版限制了 sessions 数量
+  - [XTerminal](https://www.terminal.icu/) 
 - 版本控制
 
   - [Git](https://git-scm.com/) : 版本管理工具
@@ -117,7 +115,6 @@
 
 - https://readhub.cn/tech
 - [阮一峰科技周刊](http://www.ruanyifeng.com/blog/weekly/)
-- [Java 全栈知识体系](https://www.pdai.tech/md/project/project-x-overview.html)
 
 ### 其它 awesome toolbox
 

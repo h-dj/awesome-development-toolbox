@@ -1,0 +1,51 @@
+replicaCount: 3
+
+kraft:
+  enabled: true
+zookeeper:
+  enabled: false
+
+persistence:
+  enabled: true
+  size: 10Gi
+  storageClass: ""
+
+statefulset:
+  enabled: true
+
+defaultInitContainers:
+  autoDiscovery:
+    enabled: true
+externalAccess:
+  enabled: true
+  controller:
+    service:
+      type: NodePort
+  broker:
+    service:
+      type: NodePort
+
+rbac:
+  create: true
+serviceAccount:
+  create: true
+
+controller:
+  automountServiceAccountToken: true
+broker:
+  automountServiceAccountToken: true
+
+# listeners 和端口设置
+listeners:
+  client:
+    protocol: PLAINTEXT
+  interbroker:
+    protocol: PLAINTEXT
+  controller:
+    protocol: PLAINTEXT
+  external:
+    protocol: PLAINTEXT
+
+extraEnvVars:
+  - name: KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE
+    value: "true"

@@ -1,0 +1,26 @@
+
+
+image:
+  registry: docker.io
+  repository: bitnami/redis-cluster
+  tag: 7.4.3
+  pullPolicy: IfNotPresent
+
+cluster:
+  enabled: true
+  nodes: 6
+
+password: "123456"
+
+persistence:
+  enabled: true
+  storageClass: ""
+  size: 1Gi
+  path: /bitnami/redis/data
+
+service:
+  type: NodePort                  # 使用 NodePort 暴露服务给局域网
+  ports:
+    redis: 6379                   # 集群内部端口
+  nodePorts:
+    redis: ""                  # 节点暴露端口（可被局域网访问）

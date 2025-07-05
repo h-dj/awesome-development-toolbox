@@ -1,0 +1,73 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: console-ui-data
+  namespace: kafka
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: console-ui-log
+  namespace: kafka
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-console-ui
+  namespace: kafka
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-console-ui
+  template:
+    metadata:
+      labels:
+        app: kafka-console-ui
+    spec:
+      containers:
+        - name: kafka-console-ui
+          image: wdkang/kafka-console-ui
+          ports:
+            - containerPort: 7766
+          env:
+            - name: TZ
+              value: Asia/Shanghai
+          volumeMounts:
+            - name: data
+              mountPath: /app/data
+            - name: log
+              mountPath: /app/log
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: console-ui-data
+        - name: log
+          persistentVolumeClaim:
+            claimName: console-ui-log
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-console-ui
+  namespace: kafka
+spec:
+  type: NodePort
+  ports:
+    - port: 7766
+      targetPort: 7766
+      #nodePort: 30766  # 可自定义，必须在 30000~32767
+  selector:
+    app: kafka-console-ui
