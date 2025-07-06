@@ -1,0 +1,25 @@
+configdb:
+  name: apollo-configdb
+  host: my-proxysql.mysql
+  port: 6033
+  dbName: ApolloConfigDB
+  userName: "root"
+  password: "123456"
+  connectionStringProperties: characterEncoding=utf8&useSSL=false
+
+configService:
+  name: apollo-configservice
+  replicaCount: 1
+  containerPort: 8080
+  image:
+    repository: 'apolloconfig/apollo-configservice'
+    tag: '2.2.0'
+    pullPolicy: IfNotPresent
+
+adminService:
+  name: apollo-adminservice
+  replicaCount: 1
+  containerPort: 8090
+  image:
+    repository: 'apolloconfig/apollo-adminservice'
+    tag: '2.2.0'

@@ -1,0 +1,35 @@
+name: apollo-portal
+replicaCount: 1
+containerPort: '8070'
+image:
+  repository: apolloconfig/apollo-portal
+  tag: '2.2.0'
+  pullPolicy: IfNotPresent
+
+service:
+  fullNameOverride: ""
+  port: '8070'
+  targetPort: '8070'
+  type: NodePort
+
+config:
+  # spring profiles to activate
+  #profiles: "github,auth"
+  # specify the env names, e.g. dev,pro
+  envs: "dev"
+  # specify the meta servers, e.g.
+  # dev: http://apollo-configservice-dev:8080
+  # pro: http://apollo-configservice-pro:8080
+  metaServers:
+    "dev": "http://apollo-service-dev-apollo-configservice.apollo.svc.cluster.local:8080"
+
+
+portaldb:
+  name: apollo-portaldb
+  # apolloportaldb host
+  host: my-proxysql.mysql
+  port: 6033
+  dbName: ApolloPortalDB
+  userName: "root"
+  password: "123456"
+  connectionStringProperties: characterEncoding=utf8&useSSL=false
