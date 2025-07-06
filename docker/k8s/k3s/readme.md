@@ -84,3 +84,25 @@ sudo systemctl restart rpcbind nfs-server
 
 echo "✅ NFS 服务已安装并共享目录 /opt/k3s/nfs"
 ```
+
+7、安装 metallb
+```shell
+# kubectl create namespace metallb-system
+# kubectl apply -f metallb-config.yaml
+
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: ip-pool
+  namespace: metallb-system
+spec:
+  addresses:
+    - 192.168.56.230-192.168.56.255
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: layer2
+  namespace: metallb-system
+
+```

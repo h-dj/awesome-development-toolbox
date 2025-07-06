@@ -1,5 +1,3 @@
-
-
 image:
   registry: docker.io
   repository: bitnami/redis-cluster
@@ -9,6 +7,18 @@ image:
 cluster:
   enabled: true
   nodes: 6
+  externalAccess:
+    enabled: true
+    service:
+      type: LoadBalancer
+      port: 6379
+      loadBalancerIP:
+        - 192.168.56.231  # 对应 redis-cluster-0
+        - 192.168.56.232  # 对应 redis-cluster-1
+        - 192.168.56.233  # 对应 redis-cluster-2
+        - 192.168.56.234  # 对应 redis-cluster-3
+        - 192.168.56.235  # 对应 redis-cluster-4
+        - 192.168.56.236  # 对应 redis-cluster-5
 
 password: "123456"
 
@@ -18,9 +28,8 @@ persistence:
   size: 1Gi
   path: /bitnami/redis/data
 
-service:
-  type: NodePort                  # 使用 NodePort 暴露服务给局域网
-  ports:
-    redis: 6379                   # 集群内部端口
-  nodePorts:
-    redis: ""                  # 节点暴露端口（可被局域网访问）
+metrics:
+  enabled: true
+  service:
+    type: LoadBalancer
+    loadBalancerIP: "192.168.56.237"
