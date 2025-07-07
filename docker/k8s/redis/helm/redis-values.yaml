@@ -30,6 +30,15 @@ persistence:
 
 metrics:
   enabled: true
-  service:
-    type: LoadBalancer
-    loadBalancerIP: "192.168.56.237"
+  serviceMonitor:
+    enabled: true
+    namespace: monitoring  # 你的 kube-prometheus-stack 安装命名空间
+    interval: 15s
+    scrapeTimeout: 10s
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi
