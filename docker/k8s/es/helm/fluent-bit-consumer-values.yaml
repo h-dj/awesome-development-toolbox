@@ -1,0 +1,29 @@
+input:
+  kafka:
+    enabled: true
+    brokers: kafka-kraft.kafka.svc.cluster.local:9092
+    topics: logs-topic
+    group_id: fluentbit-group
+    format: json
+    auto_offset_reset: latest
+    tag: kafka.*
+
+filter:
+  modify:
+    enabled: true
+    match: kafka.*
+    remove:
+      - log_level
+      - extra_field
+    rename:
+      message: log
+
+output:
+  es:
+    enabled: true
+    host: elasticsearch-coordinating-only.search-platform.svc.cluster.local
+    port: 9200
+    index: kafka-logs
+    type: _doc
+    logstash_prefix: kafka-log
+    replace_dots: On

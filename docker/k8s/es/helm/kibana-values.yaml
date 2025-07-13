@@ -1,0 +1,14 @@
+elasticsearch:
+  hosts:
+    - elasticsearch.search-platform.svc.cluster.local
+  port: 9200
+
+service:
+  type: LoadBalancer
+
+
+image:
+  registry: docker.io
+  repository: bitnami/kibana
+  tag: 8.12.2
+  pullPolicy: IfNotPresent
