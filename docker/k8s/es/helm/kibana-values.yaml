@@ -4,7 +4,7 @@ elasticsearch:
   port: 9200
 
 service:
-  type: LoadBalancer
+  type: NodePort
 
 
 image:

@@ -1,53 +1,35 @@
-input:
-  tail:
-    enabled: true
-    path: /var/log/containers/*.log
-    parser: docker
-    tag: kube.*
-    dockerMode: true
-    multiline:
-      enabled: true
-    refreshInterval: 5
-    memBufLimit: 10MB
-    skipLongLines: true
+image:
+  repository: bitnami/fluent-bit
+  tag: 2.2.0
 
-parser:
+daemonset:
   enabled: true
-  parsers:
-    docker:
-      Name: docker
-      Format: json
-      Time_Key: time
-      Time_Format: "%Y-%m-%dT%H:%M:%S.%L"
-      Time_Keep: On
 
-filter:
-  kubernetes:
-    enabled: true
-    match: kube.*
-    mergeLog: On
-    mergeLogKey: log
-    keepLog: Off
-    labels: On
-    annotations: Off
+config:
+  inputs: |
+    [INPUT]
+        Name              tail
+        Path              /var/log/containers/*.log
+        Parser            docker
+        Tag               kube.*
+        Refresh_Interval  5
 
-  modify:
-    enabled: true
-    match: kube.*
-    remove:
-      - stream
-      - docker_id
-      - kubernetes.annotations
-      - kubernetes.labels."pod-template-hash"
-    rename:
-      log: message
+  filters: |
+    [FILTER]
+        Name                kubernetes
+        Match               kube.*
+        Merge_Log           On
+        Keep_Log            Off
+        K8S-Logging.Parser  On
+        K8S-Logging.Exclude On
 
-output:
-  kafka:
-    enabled: true
-    brokers: kafka-kraft.kafka.svc.cluster.local:9092
-    topics: logs-topic
-    timestamp_key: @timestamp
-    rdkafka:
-      log.connection.error: true
-      request.required.acks: 1
+  outputs: |
+    [OUTPUT]
+        Name            kafka
+        Match           *
+        Brokers         kafka-kraft.kafka.svc.cluster.local:9092
+        Topics          fluent-bit-log
+        Retry_Limit     False
+        rdkafka.queue.buffering.max.kbytes 10240
+        rdkafka.request.required.acks      1
+

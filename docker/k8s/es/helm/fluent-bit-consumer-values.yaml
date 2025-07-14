@@ -1,29 +1,41 @@
-input:
-  kafka:
-    enabled: true
-    brokers: kafka-kraft.kafka.svc.cluster.local:9092
-    topics: logs-topic
-    group_id: fluentbit-group
-    format: json
-    auto_offset_reset: latest
-    tag: kafka.*
+image:
+  repository: bitnami/fluent-bit
+  tag: 2.2.0
 
-filter:
-  modify:
-    enabled: true
-    match: kafka.*
-    remove:
-      - log_level
-      - extra_field
-    rename:
-      message: log
+daemonset:
+  enabled: false
+replicaCount: 1
 
-output:
-  es:
-    enabled: true
-    host: elasticsearch-coordinating-only.search-platform.svc.cluster.local
-    port: 9200
-    index: kafka-logs
-    type: _doc
-    logstash_prefix: kafka-log
-    replace_dots: On
+
+resources:
+  limits:
+    memory: 200Mi
+    cpu: 200m
+  requests:
+    memory: 100Mi
+    cpu: 100m
+
+
+
+
+config:
+  inputs: |
+    [INPUT]
+        Name              kafka
+        Brokers           kafka-kraft.kafka.svc.cluster.local:9092
+        Topics            fluent-bit-log
+        Group_Id          fluent-bit
+        Tag               kafka.*
+
+  outputs: |
+    [OUTPUT]
+        Name            es
+        Match           *
+        Host            elasticsearch.search-platform.svc.cluster.local
+        Port            9200
+        Logstash_Format   On
+        Replace_Dots      On
+        Suppress_Type_Name On
+        Retry_Limit       False
+        Logstash_Prefix   fluentbit
+        Logstash_DateFormat %Y.%m.%d
