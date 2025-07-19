@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: docker-registry-ui
+  namespace: docker-registry
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: docker-registry-ui
+  template:
+    metadata:
+      labels:
+        app: docker-registry-ui
+    spec:
+      containers:
+        - name: docker-registry-ui
+          image: joxit/docker-registry-ui:main
+          ports:
+            - containerPort: 80
+          env:
+            - name: SINGLE_REGISTRY
+              value: "true"
+            - name: REGISTRY_TITLE
+              value: "Docker Registry UI"
+            - name: DELETE_IMAGES
+              value: "true"
+            - name: SHOW_CONTENT_DIGEST
+              value: "true"
+            - name: NGINX_PROXY_PASS_URL
+              value: "http://docker-registry.docker-registry.svc.cluster.local:5000"
+            - name: SHOW_CATALOG_NB_TAGS
+              value: "true"
+            - name: CATALOG_MIN_BRANCHES
+              value: "1"
+            - name: CATALOG_MAX_BRANCHES
+              value: "1"
+            - name: TAGLIST_PAGE_SIZE
+              value: "100"
+            - name: REGISTRY_SECURED
+              value: "false"
+            - name: CATALOG_ELEMENTS_LIMIT
+              value: "1000"
+          restartPolicy: Always
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: docker-registry-ui
+  namespace: docker-registry
+spec:
+  selector:
+    app: docker-registry-ui
+  ports:
+    - port: 5100
+      targetPort: 80
+      nodePort: 30051  # 你可以修改这个端口
+  type: NodePort
