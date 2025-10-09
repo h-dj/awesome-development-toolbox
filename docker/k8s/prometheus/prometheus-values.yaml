@@ -10,7 +10,9 @@ prometheus:
     loadBalancerIP: 192.168.56.239
   prometheusSpec:
     retention: "7d"
+    # 不限制 label，Prometheus 会抓取所有 ServiceMonitor，不用再要求必须加 release=xxx
     serviceMonitorSelectorNilUsesHelmValues: false
+    # 不限制 PrometheusRule 的 label，所有 PrometheusRule 都会被加载
     ruleSelectorNilUsesHelmValues: false
 
 alertmanager:

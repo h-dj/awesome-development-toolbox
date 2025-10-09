@@ -1,0 +1,27 @@
+replicaCount: 1
+
+service:
+  type: LoadBalancer
+  port: 8848
+
+nacos:
+  mode: cluster
+  image:
+    tag: 2.3.2
+  persistence:
+    enabled: false
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "1Gi"
+    limits:
+      cpu: "1"
+      memory: "2Gi"
+
+mysql:
+  enabled: false
+  externalHost: 192.168.56.80
+  externalPort: 30179
+  externalUser: root
+  externalPassword: 123456
+  externalDatabase: nacos_config

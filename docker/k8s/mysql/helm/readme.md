@@ -9,7 +9,8 @@ kubectl create namespace mysql
 helm install my-mysql bitnami/mysql -f mysql-values.yaml \
   --namespace mysql
   
- 
+ helm upgrade my-mysql bitnami/mysql -f mysql-values.yaml \
+  --namespace mysql
 
 ```
 
