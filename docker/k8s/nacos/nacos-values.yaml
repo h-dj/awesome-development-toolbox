@@ -1,27 +1,41 @@
-replicaCount: 1
+# Nacos 部署配置
+replicaCount: 1  # 单节点（测试环境）
+image:
+  repository: nacos/nacos-server
+  tag: v3.0.2
+  pullPolicy: IfNotPresent
 
+# 服务类型（LoadBalancer / NodePort / ClusterIP）
 service:
   type: LoadBalancer
-  port: 8848
+  loadBalancerIP: 192.168.56.240   # 指定 LoadBalancer IP（需要你的 LB 控制器支持）
+  http:
+    port: 8080  # Service port number for client-a port.
+    protocol: TCP
+  server:
+    port: 8848
+    protocol: TCP
 
-nacos:
-  mode: cluster
-  image:
-    tag: 2.3.2
-  persistence:
-    enabled: false
-  resources:
-    requests:
-      cpu: "500m"
-      memory: "1Gi"
-    limits:
-      cpu: "1"
-      memory: "2Gi"
+# 持久化配置（如果是测试环境可以关闭）
+persistence:
+  enabled: true
+  storageClass: ""  # k3s 默认存储类
+  size: 2Gi
 
+# 数据库配置（外部 MySQL 推荐）
 mysql:
   enabled: false
-  externalHost: 192.168.56.80
-  externalPort: 30179
-  externalUser: root
-  externalPassword: 123456
-  externalDatabase: nacos_config
+  # 如果你想用内置 MySQL，可设置 enabled: true
+  external:
+    mysqlMasterHost: "my-mysql-primary.mysql.svc.cluster.local"
+    mysqlDatabase: "nacos"
+    mysqlMasterPort: "3306"
+    mysqlMasterUser: "root"
+    mysqlMasterPassword: "123456"
+    mysqlSlaveHost: "my-mysql-secondary.mysql.svc.cluster.local"
+    mysqlSlavePort: "3306"
+
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: false
