@@ -1,7 +1,7 @@
 configdb:
   name: apollo-configdb
-  host: my-proxysql.mysql
-  port: 6033
+  host: 192.168.56.80
+  port: 30179
   dbName: ApolloConfigDB
   userName: "root"
   password: "123456"

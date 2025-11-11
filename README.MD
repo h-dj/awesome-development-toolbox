@@ -114,6 +114,9 @@
     - [jmh 图表](https://github.com/Sayi/jmh-visual-chart) 用于可视化 jmh 基准测试数据
     - [GCViewer](https://github.com/chewiebug/GCViewer) GC log 可视化工具
 
+- 文件加密工具
+  - Cryptomator
+
 ### 三、资讯 & 博客
 
 - https://readhub.cn/tech

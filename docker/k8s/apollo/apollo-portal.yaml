@@ -21,14 +21,14 @@ config:
   # dev: http://apollo-configservice-dev:8080
   # pro: http://apollo-configservice-pro:8080
   metaServers:
-    "dev": "http://apollo-service-dev-apollo-configservice.apollo.svc.cluster.local:8080"
+    "dev": "http://apollo-service-dev-apollo-configservice.youlai:8080"
 
 
 portaldb:
   name: apollo-portaldb
   # apolloportaldb host
-  host: my-proxysql.mysql
-  port: 6033
+  host: 192.168.56.80
+  port: 30179
   dbName: ApolloPortalDB
   userName: "root"
   password: "123456"
