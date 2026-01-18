@@ -8,7 +8,7 @@
 
 - [Java](./doc/java_dev_env_conf.md)
     - JDK安装
-    - 多版本 JDK 管理工具: jenv、jabba
+    - 多版本 JDK 管理工具: jenv、jabba、sdkman
     - Maven
 - [Node](./doc/node_conf.md)
     - 安装
@@ -121,6 +121,18 @@
 
 - https://readhub.cn/tech
 - [阮一峰科技周刊](http://www.ruanyifeng.com/blog/weekly/)
+
+
+### 四、AI 相关
+#### 4.1、编程工具
+- Claude Code
+- opencode
+
+#### 4.2、国内大模型
+  - https://www.volcengine.com/activity/codingplan
+  - https://platform.minimax.io/subscribe/coding-plan
+  - https://docs.bigmodel.cn/cn/coding-plan
+  - 智谱免费模型glm-4.5-flash https://docs.bigmodel.cn/cn/guide/models/free/glm-4.5-flash
 
 ### 其它 awesome toolbox
 

@@ -1,0 +1,35 @@
+# values.yaml - MinIO Helm 配置
+
+replicas: 1  # 单机模式，可改为 4 做分布式
+
+rootUser: "admin"
+rootPassword: "123456"
+
+# 指定镜像
+image:
+  repository: minio/minio
+  tag: RELEASE.2025-07-23T15-54-02Z-cpuv1
+  pullPolicy: IfNotPresent
+
+persistence:
+  enabled: true
+  size: 10Gi
+  storageClass: ""   # K3s 默认存储
+
+service:
+  type: LoadBalancer
+  port: "9000"
+  nodePort: 32000
+  loadBalancerIP: 192.168.56.242
+
+
+consoleService:
+  type: LoadBalancer
+  port: "9001"
+  loadBalancerIP: 192.168.56.242
+
+console:
+  enabled: true
+
+nodeSelector:
+  kubernetes.io/hostname: worker3
