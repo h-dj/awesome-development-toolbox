@@ -4,6 +4,8 @@ sudo sed -i s@/security.ubuntu.com/@/mirrors.aliyun.com/@g /etc/apt/sources.list
 sudo apt clean
 sudo apt-get update -y
 
+touch /etc/cloud/cloud-init.disabled
+
 # 安装 Docker
 # 下载安装脚本并安装 Docker
 #curl -fsSL get.docker.com -o get-docker.sh

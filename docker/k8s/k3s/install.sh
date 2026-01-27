@@ -3,8 +3,8 @@
 set -euo pipefail
 
 # 代理
-export http_proxy="http://192.168.8.3:7899"
-export https_proxy="http://192.168.8.3:7899"
+export http_proxy="http://192.168.8.9:7899"
+export https_proxy="http://192.168.8.9:7899"
 export no_proxy="127.0.0.1,localhost"
 
 echo "==============================="

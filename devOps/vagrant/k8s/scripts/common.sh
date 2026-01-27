@@ -1,82 +1,152 @@
-# 更换国内源
-sudo sed -i s@/archive.ubuntu.com/@/mirrors.aliyun.com/@g /etc/apt/sources.list
-sudo sed -i s@/security.ubuntu.com/@/mirrors.aliyun.com/@g /etc/apt/sources.list
-sudo apt clean
-sudo apt-get update -y
+#!/usr/bin/env bash
+set -e
 
-# 安装 Docker
-# 下载安装脚本并安装 Docker
-#curl -fsSL get.docker.com -o get-docker.sh
-#sudo sh get-docker.sh --mirror Aliyun
-sudo apt-get install -y \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-    gnupg-agent \
-    software-properties-common
+echo "===> Ubuntu 22.04 init start"
+echo "===> Switch APT mirror to Aliyun (Jammy)"
 
-curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+sed -i 's|http://archive.ubuntu.com|https://mirrors.aliyun.com|g' /etc/apt/sources.list
+sed -i 's|http://security.ubuntu.com|https://mirrors.aliyun.com|g' /etc/apt/sources.list
+
+########################################
+# 基础配置
+########################################
+
+# 代理（如不需要可注释）
+export http_proxy="http://192.168.8.9:7899"
+export https_proxy="http://192.168.8.9:7899"
+export no_proxy="127.0.0.1,localhost,mirrors.aliyun.com"
+
+# 时区
+timedatectl set-timezone Asia/Shanghai
+
+# 关闭 swap（K8s 必须）
+swapoff -a
+sed -ri 's/.*swap.*/#&/' /etc/fstab
+
+########################################
+# APT 初始化
+########################################
+
+apt clean
+apt update -y
+
+apt install -y \
+  ca-certificates \
+  curl \
+  gnupg \
+  lsb-release \
+  software-properties-common
+
+########################################
+# 常用工具 & 构建依赖
+########################################
+
+apt install -y \
+  build-essential \
+  gcc \
+  make \
+  llvm \
+  libssl-dev \
+  zlib1g-dev \
+  libbz2-dev \
+  libreadline-dev \
+  libsqlite3-dev \
+  libffi-dev \
+  liblzma-dev \
+  uuid-dev \
+  tk-dev \
+  xz-utils \
+  libncursesw5-dev \
+  libxml2-dev \
+  libxmlsec1-dev \
+  wget \
+  vim \
+  nfs-common \
+  socat \
+  conntrack \
+  ebtables \
+  ipset \
+  chrony
+
+########################################
+# Docker 安装（Ubuntu 22.04 官方方式）
+########################################
+
+echo "===> Install Docker"
+
+install -m 0755 -d /etc/apt/keyrings
+
+curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg \
+  | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+chmod a+r /etc/apt/keyrings/docker.gpg
+
 echo \
-  "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://mirrors.aliyun.com/docker-ce/linux/ubuntu \
-  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+  https://mirrors.aliyun.com/docker-ce/linux/ubuntu \
+  $(lsb_release -cs) stable" \
+  | tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-sudo apt clean
-sudo apt-get update -y
-sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+apt update -y
+apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
-# 启动 Docker
-sudo systemctl enable docker
-sudo systemctl start docker
-sudo usermod -aG docker $USER
-# docker 镜像加速
-# 获取阿里docker镜像加速器 https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors
-sudo cat <<EOF | sudo tee /etc/docker/daemon.json
+########################################
+# Docker 配置
+########################################
+
+mkdir -p /etc/docker
+
+tee /etc/docker/daemon.json > /dev/null <<EOF
 {
-   "registry-mirrors": [
-        "https://dockerhub.icu",
-        "https://30pma5a7.mirror.aliyuncs.com"
-    ],
+  "registry-mirrors": [
+    "https://dockerproxy.net"
+  ],
   "exec-opts": ["native.cgroupdriver=systemd"],
-  "proxies": {
-                "http-proxy": "http://192.168.8.7:7899",
-                "https-proxy": "http://192.168.8.7:7899",
-                "no-proxy": "*.test.example.com,.example.org,127.0.0.0/8,dockerhub.icu,30pma5a7.mirror.aliyuncs.com"
-        },
-        "insecure-registries":["192.168.56.200:5000"]
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m",
+    "max-file": "3"
+  },
+  "insecure-registries": ["192.168.56.200:5000"]
 }
 EOF
-sudo systemctl daemon-reload
-sudo systemctl restart docker
 
-# 安装docker-compose
-sudo curl  -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-#授予执行权限
-sudo chmod +x /usr/local/bin/docker-compose
+systemctl daemon-reload
+systemctl enable docker
+systemctl restart docker
 
-# 安装软件
-sudo apt-get install -y selinux-utils vim socat conntrack ebtables ipset chrony
+usermod -aG docker $USER
 
+########################################
+# SSH & Root（Vagrant / 内网）
+########################################
 
-# 修改root 密码
-sudo echo "root:123456" | chpasswd 
+echo "===> Configure SSH"
 
-# 在sshd配置文件中启用root密码登录
-sudo sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-sudo sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-sudo sed -i 's/#PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
-sudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
-sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
-# 重启SSH服务以应用更改
-sudo systemctl restart sshd
+echo "root:123456" | chpasswd  || true
 
-# 关闭防火墙
-sudo ufw disable
-# 关闭 selinx
-#sudo setenforce 0
-echo SELINUX=disabled | sudo tee -a /etc/selinux/config
-# 关闭 swap
-sudo swapoff -a
-sudo sed -ri 's/.*swap.*/#&/' /etc/fstab
+# 使用 drop-in 覆盖 cloud-init / cloudimg 默认配置
+cat <<EOF > /etc/ssh/sshd_config.d/99-force-password.conf
+PermitRootLogin yes
+PasswordAuthentication yes
+PubkeyAuthentication yes
+EOF
+# 重启 SSH（Ubuntu 22.04 服务名是 ssh）
+systemctl restart ssh
 
-# 设置时区
-sudo timedatectl set-timezone   Asia/Shanghai
+########################################
+# 防火墙
+########################################
+
+ufw disable || true
+# Ubuntu 无 SELinux
+# setenforce 0
+
+########################################
+# 验证
+########################################
+
+docker --version || true
+docker compose version || true
+
+echo "===> Init finished. Re-login recommended."

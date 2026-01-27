@@ -5,7 +5,7 @@ echo "🔧 安装 NFS 相关组件..."
 sudo apt update
 sudo apt install -y nfs-kernel-server rpcbind nfs-common
 
-echo "📁 创建共享目录 /srv/nfs/k8s..."
+echo "📁 创建共享目录 /opt/k3s/nfs..."
 sudo mkdir -p /opt/k3s/nfs
 sudo chown nobody:nogroup /opt/k3s/nfs
 sudo chmod 777 /opt/k3s/nfs  # 可根据需要调整权限

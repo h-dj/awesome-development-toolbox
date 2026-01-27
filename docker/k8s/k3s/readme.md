@@ -23,11 +23,6 @@ mirrors:
   "docker.io":
     endpoint:
       - "https://dockerproxy.net"
-      - "https://registry.cn-hangzhou.aliyuncs.com"
-      - "https://hub-mirror.c.163.com"
-      - "https://docker.mirrors.ustc.edu.cn"
-      - "https://reg-mirror.qiniu.com"
-      - "https://registry-1.docker.io"
   "quay.io":
     endpoint:
       - "https://quay.dockerproxy.net"
@@ -87,6 +82,7 @@ echo "✅ NFS 服务已安装并共享目录 /opt/k3s/nfs"
 
 7、安装 metallb
 ```shell
+# kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.9/config/manifests/metallb-native.yaml
 # kubectl create namespace metallb-system
 # kubectl apply -f metallb-config.yaml
 

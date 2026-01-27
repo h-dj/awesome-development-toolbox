@@ -5,3 +5,4 @@ devOps/vagrant/*.box
 devOps/vagrant/tmp
 devOps/vagrant/**/.vagrant
 *_db
+.claude
