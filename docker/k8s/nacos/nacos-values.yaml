@@ -16,10 +16,19 @@ service:
     port: 8848
     protocol: TCP
 
-# 持久化配置（如果是测试环境可以关闭）
+# 资源限制（根据 K3s 节点配置调整）
+resources:
+  requests:
+    cpu: 500m
+    memory: 1Gi
+  limits:
+    cpu: 1000m
+    memory: 2Gi
+
+# 持久化配置
 persistence:
   enabled: true
-  storageClass: ""  # k3s 默认存储类
+  storageClass: "nfs-local"  # k3s 默认存储类
   size: 2Gi
 
 # 数据库配置（外部 MySQL 推荐）
@@ -27,13 +36,11 @@ mysql:
   enabled: false
   # 如果你想用内置 MySQL，可设置 enabled: true
   external:
-    mysqlMasterHost: "my-mysql-primary.mysql.svc.cluster.local"
-    mysqlDatabase: "nacos"
+    mysqlMasterHost: "my-mysql.dev.svc.cluster.local"
+    mysqlDatabase: "nacos_config"
     mysqlMasterPort: "3306"
     mysqlMasterUser: "root"
     mysqlMasterPassword: "123456"
-    mysqlSlaveHost: "my-mysql-secondary.mysql.svc.cluster.local"
-    mysqlSlavePort: "3306"
 
 metrics:
   enabled: true
