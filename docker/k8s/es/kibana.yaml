@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kibana
+  namespace: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kibana
+  template:
+    metadata:
+      labels:
+        app: kibana
+    spec:
+      containers:
+        - name: kibana
+          image: docker.elastic.co/kibana/kibana:8.11.3
+          ports:
+            - containerPort: 5601
+          env:
+            # 直接连 Service 名称（不要用 NodePort）
+            - name: ELASTICSEARCH_HOSTS
+              value: "http://elasticsearch:9200"
+
+            # 关闭安全
+            - name: XPACK_SECURITY_ENABLED
+              value: "false"
+          volumeMounts:
+            - name: kibana-data
+              mountPath: /usr/share/kibana/data
+      volumes:
+        - name: kibana-data
+          persistentVolumeClaim:
+            claimName: kibana-data-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kibana
+  namespace: dev
+spec:
+  type: NodePort
+  selector:
+    app: kibana
+  ports:
+    - port: 5601
+      targetPort: 5601
+      nodePort: 30601

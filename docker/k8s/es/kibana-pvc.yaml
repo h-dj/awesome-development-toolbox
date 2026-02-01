@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: kibana-data-pvc
+  namespace: dev
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: nfs-local
+  resources:
+    requests:
+      storage: 5Gi
