@@ -25,7 +25,7 @@ Vagrant.configure("2") do |config|
             master.vm.hostname = "master"
             master.vm.network "private_network", ip: "192.168.56.80", auto_config: true
             master.vm.provider "virtualbox" do |vb|
-                    vb.memory = 8192
+                    vb.memory = 16384
                     vb.cpus = 2
             end
             master.vm.provision "shell", path: "scripts/common.sh", privileged: true
@@ -38,7 +38,7 @@ Vagrant.configure("2") do |config|
                     worker.vm.hostname = "worker#{i}"
                     worker.vm.network "private_network", ip: "192.168.56.8#{i}", auto_config: true
                     worker.vm.provider "virtualbox" do |vb|
-                              vb.memory = 8192
+                              vb.memory = 16384
                               vb.cpus = 2
                     end
                     worker.vm.provision "shell", path: "scripts/common.sh", privileged: true
